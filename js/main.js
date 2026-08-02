@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             var submitBtn = bookingForm.querySelector('button[type="submit"]');
             var originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Отправка...';
+            submitBtn.textContent = 'Надсилання...';
             submitBtn.disabled = true;
             
             var formData = new FormData(bookingForm);
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             iframe.onload = function() {
                 document.body.removeChild(form);
                 document.body.removeChild(iframe);
-                alert('Спасибо, ' + data.name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
+                alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
                 bookingForm.reset();
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
