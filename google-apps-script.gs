@@ -14,6 +14,35 @@ function formatDate(d) {
   return s;
 }
 
+function checkOverlap(sheet, roomType, dateIn, dateOut, excludeRow) {
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 6) return false;
+
+  var data = sheet.getRange(6, 1, lastRow - 5, 9).getValues();
+
+  for (var i = 0; i < data.length; i++) {
+    var rowNum = 6 + i;
+    if (excludeRow && rowNum === excludeRow) continue;
+
+    var existingRoom = String(data[i][3]).trim();
+    var existingStatus = String(data[i][8]).trim();
+    var existingDateIn = formatDate(data[i][4]);
+    var existingDateOut = formatDate(data[i][5]);
+
+    if (existingRoom !== roomType) continue;
+    if (existingStatus === 'Отменена') continue;
+
+    if (dateIn <= existingDateOut && dateOut >= existingDateIn) {
+      return {
+        from: existingDateIn,
+        to: existingDateOut,
+        name: data[i][1] || 'Невідомий'
+      };
+    }
+  }
+  return false;
+}
+
 function doPost(e) {
   var data = {};
 
@@ -86,6 +115,43 @@ function doPost(e) {
     sheet.setColumnWidth(8, 200);
     sheet.setColumnWidth(9, 140);
     sheet.setFrozenRows(5);
+  }
+
+  // === Проверка пересечений ===
+  var roomNames = {
+    'standart': 'Стандарт',
+    'cottage': 'Котедж',
+    'lux': 'Люкс'
+  };
+
+  var newDateIn = formatDate(data.dateIn);
+  var newDateOut = formatDate(data.dateOut);
+
+  var overlap = checkOverlap(sheet, data.roomType, newDateIn, newDateOut, null);
+  if (overlap) {
+    var roomLabel = roomNames[data.roomType] || data.roomType;
+    var msg = '❌ Бронювання неможливе!\n\n' +
+      'Тип: ' + roomLabel + '\n' +
+      'Ваші дати: ' + newDateIn + ' — ' + newDateOut + '\n\n' +
+      'Вже зайнято: ' + overlap.from + ' — ' + overlap.to + '\n' +
+      'Клієнт: ' + overlap.name;
+
+    try {
+      UrlFetchApp.fetch(
+        'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
+        {
+          method: 'post',
+          contentType: 'application/json; charset=utf-8',
+          payload: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: msg
+          })
+        }
+      );
+    } catch (err) {}
+
+    return ContentService.createTextOutput('OVERLAP')
+      .setMimeType(ContentService.MimeType.TEXT);
   }
 
   // Данные

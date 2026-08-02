@@ -96,10 +96,25 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.appendChild(form);
             
             iframe.onload = function() {
-                document.body.removeChild(form);
-                document.body.removeChild(iframe);
-                alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
-                bookingForm.reset();
+                try {
+                    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    var response = iframeDoc.body ? iframeDoc.body.textContent : '';
+                    
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+                    
+                    if (response.indexOf('OVERLAP') !== -1) {
+                        alert('❌ Ці дати вже зайняті!\n\nОберіть інші дати або зателефонуйте нам для уточнення.');
+                    } else {
+                        alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
+                        bookingForm.reset();
+                    }
+                } catch(e) {
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+                    alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
+                    bookingForm.reset();
+                }
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             };
