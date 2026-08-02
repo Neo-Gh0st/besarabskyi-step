@@ -74,22 +74,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZaBboRr4OVmYi9lLx5yUIY6Q_vGCanLRngJjLIYIM18pXBIu9bsRLd3OlG9__tcUKMQ/exec';
             
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(data)
-            })
-            .then(function() {
-                alert('Спасибо, ' + data.name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
-                bookingForm.reset();
-            })
-            .catch(function() {
-                alert('Ошибка отправки. Попробуйте позвонить нам: 067 264 10 17');
-            })
-            .finally(function() {
+            var params = new URLSearchParams(data).toString();
+            var callbackName = 'cb_' + Date.now();
+            
+            window[callbackName] = function(result) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                
+                if (result.status === 'ok') {
+                    alert('Спасибо, ' + data.name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
+                    bookingForm.reset();
+                } else {
+                    alert('Ошибка отправки. Попробуйте позвонить нам: 067 264 10 17');
+                }
+                
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            });
+            };
+            
+            var script = document.createElement('script');
+            script.src = SCRIPT_URL + '?' + params + '&callback=' + callbackName;
+            script.onerror = function() {
+                delete window[callbackName];
+                alert('Ошибка отправки. Попробуйте позвонить нам: 067 264 10 17');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            };
+            document.body.appendChild(script);
         });
     }
     
