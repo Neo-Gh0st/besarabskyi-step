@@ -150,8 +150,9 @@ function doPost(e) {
       );
     } catch (err) {}
 
-    return ContentService.createTextOutput('OVERLAP')
-      .setMimeType(ContentService.MimeType.TEXT);
+    var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
+    return ContentService.createTextOutput(html)
+      .setMimeType(ContentService.MimeType.HTML);
   }
 
   // Данные
@@ -224,8 +225,9 @@ function doPost(e) {
     );
   } catch (err) {}
 
-  return ContentService.createTextOutput('OK')
-    .setMimeType(ContentService.MimeType.TEXT);
+  var html = '<html><body><script>window.parent.postMessage("OK","*");</script></body></html>';
+  return ContentService.createTextOutput(html)
+    .setMimeType(ContentService.MimeType.HTML);
 }
 
 function doGet(e) {

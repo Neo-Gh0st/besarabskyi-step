@@ -95,29 +95,26 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.body.appendChild(form);
             
-            iframe.onload = function() {
-                try {
-                    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    var response = iframeDoc.body ? iframeDoc.body.textContent : '';
+            function handleMessage(e) {
+                if (e.data === 'OVERLAP' || e.data === 'OK') {
+                    window.removeEventListener('message', handleMessage);
+                    try {
+                        document.body.removeChild(form);
+                        document.body.removeChild(iframe);
+                    } catch(ex) {}
                     
-                    document.body.removeChild(form);
-                    document.body.removeChild(iframe);
-                    
-                    if (response.indexOf('OVERLAP') !== -1) {
+                    if (e.data === 'OVERLAP') {
                         alert('❌ Ці дати вже зайняті!\n\nОберіть інші дати або зателефонуйте нам для уточнення.');
                     } else {
                         alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
                         bookingForm.reset();
                     }
-                } catch(e) {
-                    document.body.removeChild(form);
-                    document.body.removeChild(iframe);
-                    alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
-                    bookingForm.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                 }
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            };
+            }
+            
+            window.addEventListener('message', handleMessage);
             
             form.submit();
         });
