@@ -74,33 +74,37 @@ document.addEventListener('DOMContentLoaded', function() {
             
             var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3qix4UVw4tEZi0kQQq36EQB3wSvqDTfj5Uq2dfu9T48uO2-rsmEjDn6MDb0RCvKzt/exec';
             
-            var params = new URLSearchParams(data).toString();
-            var callbackName = 'cb_' + Date.now();
+            var iframeName = 'submit_iframe_' + Date.now();
+            var iframe = document.createElement('iframe');
+            iframe.name = iframeName;
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
             
-            window[callbackName] = function(result) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                
-                if (result.status === 'ok') {
-                    alert('Спасибо, ' + data.name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
-                    bookingForm.reset();
-                } else {
-                    alert('Ошибка отправки. Попробуйте позвонить нам: 067 264 10 17');
-                }
-                
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = SCRIPT_URL;
+            form.target = iframeName;
+            
+            for (var key in data) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = data[key] || '';
+                form.appendChild(input);
+            }
+            
+            document.body.appendChild(form);
+            
+            iframe.onload = function() {
+                document.body.removeChild(form);
+                document.body.removeChild(iframe);
+                alert('Спасибо, ' + data.name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
+                bookingForm.reset();
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             };
             
-            var script = document.createElement('script');
-            script.src = SCRIPT_URL + '?' + params + '&callback=' + callbackName;
-            script.onerror = function() {
-                delete window[callbackName];
-                alert('Ошибка отправки. Попробуйте позвонить нам: 067 264 10 17');
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            };
-            document.body.appendChild(script);
+            form.submit();
         });
     }
     
