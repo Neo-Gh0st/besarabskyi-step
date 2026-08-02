@@ -227,6 +227,67 @@ body {
     width: 100%;
 }
 
+/* Booked Banner */
+.booked-banner {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    padding: 20px 0;
+    border-bottom: 3px solid #f59e0b;
+}
+
+.booked-banner__inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.booked-banner__icon {
+    font-size: 2rem;
+}
+
+.booked-banner__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 5px;
+}
+
+.booked-banner__list {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.booked-banner__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #78350f;
+    border: 1px solid #f59e0b;
+}
+
+.booked-banner__item span {
+    font-weight: 600;
+}
+
+.booked-banner__empty {
+    color: #166534;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.booked-banner__loading {
+    color: #92400e;
+    font-style: italic;
+}
+
 /* About */
 .about__grid {
     display: grid;

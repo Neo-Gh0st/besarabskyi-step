@@ -164,4 +164,47 @@ document.addEventListener('DOMContentLoaded', function() {
         feature.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(feature);
     });
+
+    // Загрузка забронированных дат
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxW-z3Lj0AVRYz9obEWWaZAC3mWYIisuQ1-ctyzHtM0mCwzbv89L-1hbJq5zcya0T9iwA/exec';
+    var bookedList = document.getElementById('bookedList');
+    
+    if (bookedList) {
+        var callbackName = 'bookedCallback_' + Date.now();
+        
+        window[callbackName] = function(data) {
+            delete window[callbackName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            
+            if (!data || data.length === 0) {
+                bookedList.innerHTML = '<span class="booked-banner__empty">Вільно! Можна бронювати будь-які дати</span>';
+                return;
+            }
+            
+            var roomLabels = {
+                'standart': 'Стандарт',
+                'cottage': 'Котедж',
+                'lux': 'Люкс'
+            };
+            
+            var html = '';
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var label = roomLabels[item.room] || item.room || '';
+                html += '<div class="booked-banner__item">';
+                html += '<span>' + item.from + ' — ' + item.to + '</span>';
+                if (label) html += ' (' + label + ')';
+                html += '</div>';
+            }
+            bookedList.innerHTML = html;
+        };
+        
+        var script = document.createElement('script');
+        script.src = SCRIPT_URL + '?callback=' + callbackName + '&action=booked';
+        script.onerror = function() {
+            delete window[callbackName];
+            bookedList.innerHTML = '<span class="booked-banner__empty">Перевірте наявність дат по телефону</span>';
+        };
+        document.body.appendChild(script);
+    }
 });

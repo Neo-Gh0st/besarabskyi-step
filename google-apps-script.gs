@@ -150,6 +150,54 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  var action = e.parameter.action;
+
+  if (action === 'booked') {
+    return getBookedDates(e);
+  }
+
   return ContentService.createTextOutput('OK')
     .setMimeType(ContentService.MimeType.TEXT);
+}
+
+function getBookedDates(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+
+  if (lastRow < 6) {
+    return ContentService.createTextOutput('[]')
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var data = sheet.getRange(6, 1, lastRow - 5, 9).getValues();
+  var booked = [];
+
+  for (var i = 0; i < data.length; i++) {
+    var status = String(data[i][8]).trim();
+    var dateIn = String(data[i][4]).trim();
+    var dateOut = String(data[i][5]).trim();
+    var roomType = String(data[i][3]).trim();
+
+    if (status === 'Новая' || status === 'Подтверждена') {
+      if (dateIn && dateOut) {
+        booked.push({
+          from: dateIn,
+          to: dateOut,
+          room: roomType
+        });
+      }
+    }
+  }
+
+  var result = JSON.stringify(booked);
+  var callback = e.parameter.callback;
+
+  if (callback) {
+    return ContentService.createTextOutput(callback + '(' + result + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  } else {
+    return ContentService.createTextOutput(result)
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
