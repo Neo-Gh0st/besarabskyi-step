@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 comment: formData.get('comment')
             };
             
-            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZaBboRr4OVmYi9lLx5yUIY6Q_vGCanLRngJjLIYIM18pXBIu9bsRLd3OlG9__tcUKMQ/exec';
+            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3qix4UVw4tEZi0kQQq36EQB3wSvqDTfj5Uq2dfu9T48uO2-rsmEjDn6MDb0RCvKzt/exec';
             
             var params = new URLSearchParams(data).toString();
             var callbackName = 'cb_' + Date.now();
