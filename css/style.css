@@ -832,6 +832,131 @@ body {
     text-decoration: underline;
 }
 
+/* Checkpoint */
+.checkpoint {
+    background: var(--bg-dark);
+}
+
+.checkpoint__card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid var(--accent);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.checkpoint__header {
+    background: linear-gradient(135deg, var(--accent) 0%, #b8860b 100%);
+    padding: 30px;
+    text-align: center;
+}
+
+.checkpoint__icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.checkpoint__title {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.checkpoint__warning {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    backdrop-filter: blur(5px);
+}
+
+.checkpoint__body {
+    padding: 30px;
+}
+
+.checkpoint__alert {
+    background: rgba(255, 107, 107, 0.15);
+    border-left: 4px solid #ff6b6b;
+    color: #ff6b6b;
+    padding: 15px 20px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.checkpoint__section {
+    margin-bottom: 25px;
+}
+
+.checkpoint__section h3 {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.checkpoint__section ul,
+.checkpoint__section ol {
+    color: var(--text);
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.checkpoint__section li {
+    margin-bottom: 8px;
+}
+
+.checkpoint__section li a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.checkpoint__section li a:hover {
+    text-decoration: underline;
+}
+
+.checkpoint__section--highlight {
+    background: rgba(212, 175, 55, 0.08);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.checkpoint__section--highlight h3 {
+    color: #fff;
+}
+
+.checkpoint__contacts {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.checkpoint__contacts h3 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.checkpoint__contacts p {
+    color: var(--text);
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
+
+.checkpoint__contacts a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.checkpoint__contacts a:hover {
+    text-decoration: underline;
+}
+
 /* Footer */
 .footer {
     background: var(--dark);
@@ -986,6 +1111,18 @@ body {
     
     .map__wrapper {
         grid-template-columns: 1fr;
+    }
+    
+    .checkpoint__title {
+        font-size: 1.4rem;
+    }
+    
+    .checkpoint__body {
+        padding: 20px;
+    }
+    
+    .checkpoint__section--highlight {
+        padding: 15px;
     }
     
     .contacts__grid {
