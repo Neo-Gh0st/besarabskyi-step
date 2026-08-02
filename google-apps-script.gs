@@ -11,13 +11,18 @@ function doGet(e) {
 
 function processRequest(e) {
   try {
-    var data;
-    if (e.postData && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
-    } else if (e.parameter) {
-      data = e.parameter;
-    } else {
-      throw new Error('No data received');
+    var data = e.parameter || {};
+
+    if (!data.name && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch(err) {
+        var params = e.postData.contents.split('&');
+        for (var i = 0; i < params.length; i++) {
+          var pair = params[i].split('=');
+          data[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+        }
+      }
     }
 
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
