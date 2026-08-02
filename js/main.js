@@ -56,37 +56,41 @@ document.addEventListener('DOMContentLoaded', function() {
         bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            var formData = new FormData(bookingForm);
-            var name = formData.get('name');
-            var phone = formData.get('phone');
-            var roomType = formData.get('roomType');
-            var dateIn = formData.get('dateIn');
-            var dateOut = formData.get('dateOut');
-            var guests = formData.get('guests');
+            var submitBtn = bookingForm.querySelector('button[type="submit"]');
+            var originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
             
-            var roomNames = {
-                'standart': 'Стандарт',
-                'cottage': 'Коттедж',
-                'lux': 'Люкс'
+            var formData = new FormData(bookingForm);
+            var data = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                roomType: formData.get('roomType'),
+                dateIn: formData.get('dateIn'),
+                dateOut: formData.get('dateOut'),
+                guests: formData.get('guests'),
+                comment: formData.get('comment')
             };
             
-            var message = 'Здравствуйте! Хочу забронировать:\n\n';
-            message += 'Имя: ' + name + '\n';
-            message += 'Телефон: ' + phone + '\n';
-            message += 'Тип: ' + (roomNames[roomType] || roomType) + '\n';
-            message += 'Заезд: ' + dateIn + '\n';
-            message += 'Выезд: ' + dateOut + '\n';
-            message += 'Гостей: ' + guests + '\n';
+            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_EnQmuxYqYwotccxtAnk4NGBodEbk-2N_3wtS2bme649dFT0RYFyRnoTHLERtW2kQow/exec';
             
-            var comment = formData.get('comment');
-            if (comment) {
-                message += 'Комментарий: ' + comment + '\n';
-            }
-            
-            message += '\nЖду подтверждения!';
-            
-            alert('Спасибо, ' + name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
-            bookingForm.reset();
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function() {
+                alert('Спасибо, ' + data.name + '! Ваша заявка отправлена.\n\nМы свяжемся с вами в ближайшее время.');
+                bookingForm.reset();
+            })
+            .catch(function() {
+                alert('Ошибка отправки. Попробуйте позвонить нам: 067 264 10 17');
+            })
+            .finally(function() {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
         });
     }
     
