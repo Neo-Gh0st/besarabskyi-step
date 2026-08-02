@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 comment: formData.get('comment')
             };
             
-            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxW-z3Lj0AVRYz9obEWWaZAC3mWYIisuQ1-ctyzHtM0mCwzbv89L-1hbJq5zcya0T9iwA/exec';
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzc8f_NCYenApYdXBwiPuPdn8BJeomA6y8i0oimzUCbPJHWBg-UD2fGLDF40E0OZMTxNA/exec';
             
             var iframeName = 'submit_iframe_' + Date.now();
             var iframe = document.createElement('iframe');
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Календарь забронированных дат
-    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxW-z3Lj0AVRYz9obEWWaZAC3mWYIisuQ1-ctyzHtM0mCwzbv89L-1hbJq5zcya0T9iwA/exec';
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzc8f_NCYenApYdXBwiPuPdn8BJeomA6y8i0oimzUCbPJHWBg-UD2fGLDF40E0OZMTxNA/exec';
     var calDays = document.getElementById('calDays');
     var calMonth = document.getElementById('calMonth');
     var calPrev = document.getElementById('calPrev');

@@ -1,6 +1,19 @@
 var TELEGRAM_BOT_TOKEN = '8737422467:AAEzLfb8K5SaVhl2ffCpPOaSiYfx5CLiKyY';
 var TELEGRAM_CHAT_ID = '6680739920';
 
+function formatDate(d) {
+  if (!d) return '';
+  if (d instanceof Date) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+  var s = String(d).trim();
+  if (s.match(/^\d{4}-\d{2}-\d{2}/)) return s.substring(0, 10);
+  return s;
+}
+
 function doPost(e) {
   var data = {};
 
@@ -175,11 +188,13 @@ function getBookedDates(e) {
 
   for (var i = 0; i < data.length; i++) {
     var status = String(data[i][8]).trim();
-    var dateIn = String(data[i][4]).trim();
-    var dateOut = String(data[i][5]).trim();
+    var dateInRaw = data[i][4];
+    var dateOutRaw = data[i][5];
     var roomType = String(data[i][3]).trim();
 
     if (status === 'Новая' || status === 'Подтверждена') {
+      var dateIn = formatDate(dateInRaw);
+      var dateOut = formatDate(dateOutRaw);
       if (dateIn && dateOut) {
         booked.push({
           from: dateIn,
