@@ -287,39 +287,57 @@ document.addEventListener('DOMContentLoaded', function() {
     // Сначала рендерим пустой календарь
     renderCalendar();
 
-    // Потом загружаем данные и перерисовываем
-    var calCallbackName = 'calCb_' + Date.now();
-    window[calCallbackName] = function(data) {
-        delete window[calCallbackName];
-        bookedDates = data || [];
-        renderCalendar();
-    };
+    // Завантажуємо заброньовані дати
+    loadBookedDates();
 
-    // JSONP
-    var calScriptEl = document.createElement('script');
-    calScriptEl.src = calScriptUrl + '?callback=' + calCallbackName + '&action=booked&_=' + Date.now();
-    calScriptEl.onerror = function() {
-        delete window[calCallbackName];
-        // Fallback: fetch
-        fetchBookedDates();
-    };
-    document.body.appendChild(calScriptEl);
+    function loadBookedDates() {
+        var callbackName = 'calCb_' + Date.now();
+        var called = false;
+        var timeout = null;
 
-    // Таймаут: якщо через 3 сек JSONP не спрацював — fetch
-    setTimeout(function() {
-        if (window[calCallbackName]) {
-            delete window[calCallbackName];
-            fetchBookedDates();
-        }
-    }, 3000);
+        window[callbackName] = function(data) {
+            if (called) return;
+            called = true;
+            clearTimeout(timeout);
+            delete window[callbackName];
+            bookedDates = data || [];
+            renderCalendar();
+        };
 
-    function fetchBookedDates() {
-        fetch(calScriptUrl + '?action=booked&_=' + Date.now())
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
+        // Таймаут 4 сек — якщо JSONP не спрацював
+        timeout = setTimeout(function() {
+            if (!called) {
+                called = true;
+                delete window[callbackName];
+                // Пробуємо fetch напряму
+                fetchBookedDirect();
+            }
+        }, 4000);
+
+        var script = document.createElement('script');
+        script.src = calScriptUrl + '?callback=' + callbackName + '&action=booked&_=' + Date.now();
+        script.onerror = function() {
+            if (!called) {
+                called = true;
+                clearTimeout(timeout);
+                delete window[callbackName];
+                fetchBookedDirect();
+            }
+        };
+        document.body.appendChild(script);
+    }
+
+    function fetchBookedDirect() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', calScriptUrl + '?action=booked&_=' + Date.now(), true);
+        xhr.onload = function() {
+            try {
+                var data = JSON.parse(xhr.responseText);
                 bookedDates = data || [];
                 renderCalendar();
-            })
-            .catch(function() {});
+            } catch(e) {}
+        };
+        xhr.onerror = function() {};
+        xhr.send();
     }
 });
