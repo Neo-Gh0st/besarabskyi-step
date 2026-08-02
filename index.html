@@ -49,13 +49,19 @@
 
         <section class="booked-banner" id="bookedBanner">
             <div class="container">
-                <div class="booked-banner__inner">
-                    <div class="booked-banner__icon">📅</div>
-                    <div class="booked-banner__content">
-                        <h3 class="booked-banner__title">Зайняті дати</h3>
-                        <div class="booked-banner__list" id="bookedList">
-                            <span class="booked-banner__loading">Завантаження...</span>
-                        </div>
+                <div class="calendar">
+                    <div class="calendar__header">
+                        <button class="calendar__nav calendar__prev" id="calPrev">◀</button>
+                        <h3 class="calendar__month" id="calMonth"></h3>
+                        <button class="calendar__nav calendar__next" id="calNext">▶</button>
+                    </div>
+                    <div class="calendar__weekdays">
+                        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                    </div>
+                    <div class="calendar__days" id="calDays"></div>
+                    <div class="calendar__legend">
+                        <span class="calendar__legend-item"><span class="calendar__dot calendar__dot--free"></span> Вільно</span>
+                        <span class="calendar__legend-item"><span class="calendar__dot calendar__dot--booked"></span> Зайнято</span>
                     </div>
                 </div>
             </div>

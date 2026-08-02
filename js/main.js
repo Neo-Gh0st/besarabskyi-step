@@ -165,46 +165,104 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(feature);
     });
 
-    // Загрузка забронированных дат
+    // Календарь забронированных дат
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxW-z3Lj0AVRYz9obEWWaZAC3mWYIisuQ1-ctyzHtM0mCwzbv89L-1hbJq5zcya0T9iwA/exec';
-    var bookedList = document.getElementById('bookedList');
-    
-    if (bookedList) {
-        var callbackName = 'bookedCallback_' + Date.now();
-        
-        window[callbackName] = function(data) {
-            delete window[callbackName];
-            if (script.parentNode) script.parentNode.removeChild(script);
-            
-            if (!data || data.length === 0) {
-                bookedList.innerHTML = '<span class="booked-banner__empty">Вільно! Можна бронювати будь-які дати</span>';
-                return;
+    var calDays = document.getElementById('calDays');
+    var calMonth = document.getElementById('calMonth');
+    var calPrev = document.getElementById('calPrev');
+    var calNext = document.getElementById('calNext');
+    var bookedDates = [];
+    var currentMonth = new Date().getMonth();
+    var currentYear = new Date().getFullYear();
+
+    var monthNames = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
+        'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+
+    function renderCalendar() {
+        if (!calDays || !calMonth) return;
+
+        calMonth.textContent = monthNames[currentMonth] + ' ' + currentYear;
+
+        var firstDay = new Date(currentYear, currentMonth, 1);
+        var lastDay = new Date(currentYear, currentMonth + 1, 0);
+        var startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+        var daysInMonth = lastDay.getDate();
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        var html = '';
+
+        for (var i = 0; i < startDay; i++) {
+            html += '<div class="calendar__day calendar__day--empty"></div>';
+        }
+
+        for (var d = 1; d <= daysInMonth; d++) {
+            var date = new Date(currentYear, currentMonth, d);
+            var dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+            var cls = 'calendar__day';
+
+            if (date < today) {
+                cls += ' calendar__day--past';
+            } else if (isBooked(dateStr)) {
+                cls += ' calendar__day--booked';
+            } else {
+                cls += ' calendar__day--free';
             }
-            
-            var roomLabels = {
-                'standart': 'Стандарт',
-                'cottage': 'Котедж',
-                'lux': 'Люкс'
-            };
-            
-            var html = '';
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                var label = roomLabels[item.room] || item.room || '';
-                html += '<div class="booked-banner__item">';
-                html += '<span>' + item.from + ' — ' + item.to + '</span>';
-                if (label) html += ' (' + label + ')';
-                html += '</div>';
+
+            if (date.getTime() === today.getTime()) {
+                cls += ' calendar__day--today';
             }
-            bookedList.innerHTML = html;
-        };
-        
-        var script = document.createElement('script');
-        script.src = SCRIPT_URL + '?callback=' + callbackName + '&action=booked';
-        script.onerror = function() {
-            delete window[callbackName];
-            bookedList.innerHTML = '<span class="booked-banner__empty">Перевірте наявність дат по телефону</span>';
-        };
-        document.body.appendChild(script);
+
+            html += '<div class="' + cls + '" title="' + dateStr + '">' + d + '</div>';
+        }
+
+        calDays.innerHTML = html;
     }
+
+    function isBooked(dateStr) {
+        for (var i = 0; i < bookedDates.length; i++) {
+            var item = bookedDates[i];
+            if (dateStr >= item.from && dateStr <= item.to) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    if (calPrev) {
+        calPrev.addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        });
+    }
+
+    if (calNext) {
+        calNext.addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        });
+    }
+
+    var calCallback = 'calCallback_' + Date.now();
+    window[calCallback] = function(data) {
+        delete window[calCallback];
+        if (calScript.parentNode) calScript.parentNode.removeChild(calScript);
+        bookedDates = data || [];
+        renderCalendar();
+    };
+    var calScript = document.createElement('script');
+    calScript.src = SCRIPT_URL + '?callback=' + calCallback + '&action=booked';
+    calScript.onerror = function() {
+        delete window[calCallback];
+        if (calDays) calDays.innerHTML = '<div style="grid-column:1/8;text-align:center;color:var(--gray);padding:20px;">Завантаження...</div>';
+    };
+    document.body.appendChild(calScript);
 });
