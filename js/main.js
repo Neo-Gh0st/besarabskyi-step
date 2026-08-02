@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Календарь забронированных дат
-    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8hv9hoJ15Q_O3IrbCd5UOXDEfqQBui0yTXyGZ7bOFunxoHIXQQdjuv6zqTbRebili2A/exec';
+    var calScriptUrl = 'https://script.google.com/macros/s/AKfycbw8hv9hoJ15Q_O3IrbCd5UOXDEfqQBui0yTXyGZ7bOFunxoHIXQQdjuv6zqTbRebili2A/exec';
     var calDays = document.getElementById('calDays');
     var calMonth = document.getElementById('calMonth');
     var calPrev = document.getElementById('calPrev');
@@ -251,18 +251,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    var calCallback = 'calCallback_' + Date.now();
-    window[calCallback] = function(data) {
-        delete window[calCallback];
-        if (calScript.parentNode) calScript.parentNode.removeChild(calScript);
+    // Сначала рендерим пустой календарь
+    renderCalendar();
+
+    // Потом загружаем данные и перерисовываем
+    var calCallbackName = 'calCb_' + Date.now();
+    window[calCallbackName] = function(data) {
+        delete window[calCallbackName];
         bookedDates = data || [];
         renderCalendar();
     };
-    var calScript = document.createElement('script');
-    calScript.src = SCRIPT_URL + '?callback=' + calCallback + '&action=booked';
-    calScript.onerror = function() {
-        delete window[calCallback];
-        if (calDays) calDays.innerHTML = '<div style="grid-column:1/8;text-align:center;color:var(--gray);padding:20px;">Завантаження...</div>';
+    var calScriptEl = document.createElement('script');
+    calScriptEl.src = calScriptUrl + '?callback=' + calCallbackName + '&action=booked';
+    calScriptEl.onerror = function() {
+        delete window[calCallbackName];
     };
-    document.body.appendChild(calScript);
+    document.body.appendChild(calScriptEl);
 });
