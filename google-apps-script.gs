@@ -37,15 +37,16 @@ function doPost(e) {
       (data.comment ? 'Комментарий: ' + data.comment + '\n' : '');
     
     var url = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
-    UrlFetchApp.fetch(url, {
+    var payload = {
+      chat_id: TELEGRAM_CHAT_ID,
+      text: telegramMessage
+    };
+    var options = {
       method: 'post',
-      contentType: 'application/json',
-      payload: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: telegramMessage,
-        parse_mode: 'HTML'
-      })
-    });
+      contentType: 'application/json; charset=utf-8',
+      payload: JSON.stringify(payload)
+    };
+    UrlFetchApp.fetch(url, options);
     
     return ContentService.createTextOutput(JSON.stringify({status: 'ok'}))
       .setMimeType(ContentService.MimeType.JSON);

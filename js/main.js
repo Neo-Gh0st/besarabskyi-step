@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 comment: formData.get('comment')
             };
             
-            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMrx4yT8BJpJNhbKsaInuC6U4Rxg5-ylu-VNsTiQPpRg11nX3NeQocmrj3gGObertR/exec';
+            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZaBboRr4OVmYi9lLx5yUIY6Q_vGCanLRngJjLIYIM18pXBIu9bsRLd3OlG9__tcUKMQ/exec';
             
             fetch(SCRIPT_URL, {
                 method: 'POST',
