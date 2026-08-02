@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 comment: formData.get('comment')
             };
             
-            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRIyAuua1EWiwF3EJvU28wgFS8O8m5Hb7TT_IaPRAKmwldVUf2vfl8K4KLgiuZesTjiA/exec';
+            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_hUzodUexKg-wbBJ3LdGXkUa8VabtxsS6NRLijJtthMWs_uJl7yG4eZ-ejrYAprIZ-g/exec';
             
             var iframeName = 'submit_iframe_' + Date.now();
             var iframe = document.createElement('iframe');

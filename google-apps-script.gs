@@ -15,9 +15,32 @@ function doPost(e) {
     }
   }
 
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  // === Google Таблица ===
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+
+  // Заголовки в первой строке
+  if (lastRow <= 1) {
+    var headers = [['Дата', 'Имя', 'Телефон', 'Тип', 'Заезд', 'Выезд', 'Гостей', 'Комментарий', 'Статус']];
+    sheet.getRange(1, 1, 1, 9).setValues(headers);
+    sheet.getRange(1, 1, 1, 9)
+      .setBackground('#1a73e8')
+      .setFontColor('#ffffff')
+      .setFontWeight('bold')
+      .setHorizontalAlignment('center')
+      .setFontSize(11);
+    sheet.setColumnWidths(1, 9, 150);
+    sheet.setColumnWidth(1, 160);
+    sheet.setColumnWidth(2, 150);
+    sheet.setColumnWidth(3, 150);
+    sheet.setColumnWidth(9, 120);
+    sheet.setFrozenRows(1);
+  }
+
+  // Данные
   var now = new Date();
-  sheet.appendRow([
+  var rowData = [
     now.toLocaleString('uk-UA'),
     data.name || '',
     data.phone || '',
@@ -27,22 +50,48 @@ function doPost(e) {
     data.guests || '',
     data.comment || '',
     'Новая'
-  ]);
+  ];
 
+  var newRow = sheet.getLastRow() + 1;
+  sheet.getRange(newRow, 1, 1, 9).setValues([rowData]);
+  sheet.getRange(newRow, 1, 1, 9)
+    .setHorizontalAlignment('center')
+    .setVerticalAlignment('middle')
+    .setBorder(true, true, true, true, true, true);
+
+  // Цвет строки
+  if (newRow % 2 === 0) {
+    sheet.getRange(newRow, 1, 1, 9).setBackground('#f0f7ff');
+  }
+
+  // Статус "Новая" красным
+  sheet.getRange(newRow, 9)
+    .setFontColor('#d93025')
+    .setFontWeight('bold');
+
+  // === Telegram ===
   var roomNames = {
-    'standart': 'Стандарт',
-    'cottage': 'Коттедж',
-    'lux': 'Люкс'
+    'standart': '🏠 Стандарт',
+    'cottage': '🏡 Коттедж',
+    'lux': '🏰 Люкс'
   };
 
-  var msg = 'НОВАЯ ЗАЯВКА\n\n' +
-    'Имя: ' + (data.name || '-') + '\n' +
-    'Телефон: ' + (data.phone || '-') + '\n' +
-    'Тип: ' + (roomNames[data.roomType] || data.roomType || '-') + '\n' +
-    'Заезд: ' + (data.dateIn || '-') + '\n' +
-    'Выезд: ' + (data.dateOut || '-') + '\n' +
-    'Гостей: ' + (data.guests || '-') + '\n' +
-    'Комментарий: ' + (data.comment || '-');
+  var msg = '━━━━━━━━━━━━━━━\n' +
+    '📩 *НОВАЯ ЗАЯВКА*\n' +
+    '━━━━━━━━━━━━━━━\n\n' +
+    '👤 *Имя:* ' + (data.name || '-') + '\n' +
+    '📞 *Телефон:* ' + (data.phone || '-') + '\n' +
+    '🏠 *Тип:* ' + (roomNames[data.roomType] || data.roomType || '-') + '\n\n' +
+    '📅 *Заезд:* ' + (data.dateIn || '-') + '\n' +
+    '📅 *Выезд:* ' + (data.dateOut || '-') + '\n' +
+    '👥 *Гостей:* ' + (data.guests || '-') + '\n';
+
+  if (data.comment) {
+    msg += '\n💬 *Комментарий:*\n' + data.comment + '\n';
+  }
+
+  msg += '\n━━━━━━━━━━━━━━━\n' +
+    '🆔 Заявка #' + newRow;
 
   try {
     UrlFetchApp.fetch(
@@ -52,13 +101,12 @@ function doPost(e) {
         contentType: 'application/json; charset=utf-8',
         payload: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
-          text: msg
+          text: msg,
+          parse_mode: 'Markdown'
         })
       }
     );
-  } catch (err) {
-    // Telegram error, still save to sheet
-  }
+  } catch (err) {}
 
   return ContentService.createTextOutput('OK')
     .setMimeType(ContentService.MimeType.TEXT);
