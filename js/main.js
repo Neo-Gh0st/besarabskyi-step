@@ -95,26 +95,18 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.body.appendChild(form);
             
-            function handleMessage(e) {
-                if (e.data === 'OVERLAP' || e.data === 'OK') {
-                    window.removeEventListener('message', handleMessage);
+            iframe.onload = function() {
+                setTimeout(function() {
                     try {
                         document.body.removeChild(form);
                         document.body.removeChild(iframe);
                     } catch(ex) {}
-                    
-                    if (e.data === 'OVERLAP') {
-                        alert('❌ Ці дати вже зайняті!\n\nОберіть інші дати або зателефонуйте нам для уточнення.');
-                    } else {
-                        alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
-                        bookingForm.reset();
-                    }
+                    alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
+                    bookingForm.reset();
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
-                }
-            }
-            
-            window.addEventListener('message', handleMessage);
+                }, 500);
+            };
             
             form.submit();
         });
