@@ -230,18 +230,9 @@ function doPost(e) {
     .setMimeType(ContentService.MimeType.HTML);
 }
 
-function doGet(e) {
-  var action = e.parameter.action;
-
-  if (action === 'booked') {
-    return getBookedDates(e);
-  }
-
-  return ContentService.createTextOutput('OK')
-    .setMimeType(ContentService.MimeType.TEXT);
-}
-
 function getBookedDates(e) {
+  checkExpiredBookings();
+
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
   var lastRow = sheet.getLastRow();
@@ -283,4 +274,58 @@ function getBookedDates(e) {
     return ContentService.createTextOutput(result)
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function checkExpiredBookings() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+
+  if (lastRow < 6) return;
+
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  var data = sheet.getRange(6, 1, lastRow - 5, 9).getValues();
+  var updated = 0;
+
+  for (var i = 0; i < data.length; i++) {
+    var rowNum = 6 + i;
+    var status = String(data[i][8]).trim();
+    var dateOutRaw = data[i][5];
+
+    if (status !== 'Новая' && status !== 'Подтверждена') continue;
+
+    var dateOut = formatDate(dateOutRaw);
+    if (!dateOut) continue;
+
+    var outDate = new Date(dateOut + 'T00:00:00');
+
+    if (outDate < today) {
+      sheet.getRange(rowNum, 9).setValue('Завершено');
+      sheet.getRange(rowNum, 9)
+        .setFontColor('#166534')
+        .setFontWeight('bold');
+      updated++;
+    }
+  }
+
+  return updated;
+}
+
+function doGet(e) {
+  var action = e.parameter.action;
+
+  if (action === 'booked') {
+    return getBookedDates(e);
+  }
+
+  if (action === 'check') {
+    var updated = checkExpiredBookings();
+    return ContentService.createTextOutput('Оновлено: ' + updated + ' записів')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  return ContentService.createTextOutput('OK')
+    .setMimeType(ContentService.MimeType.TEXT);
 }
