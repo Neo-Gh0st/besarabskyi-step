@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База Отдыха "Бесарабський степ" — Отдых у моря недалеко от Одессы</title>
+    <meta name="description" content="База отдыха Бесарабський степ — уютное место для семейного отдыха у Чёрного моря недалеко от Одессы. Коттеджи, номера, пляж, анимация.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="container header__inner">
+            <a href="#" class="logo">
+                <span class="logo__icon">🌾</span>
+                <span class="logo__text">Бесарабський степ</span>
+            </a>
+            <nav class="nav" id="nav">
+                <a href="#about" class="nav__link">О нас</a>
+                <a href="#rooms" class="nav__link">Номера</a>
+                <a href="#gallery" class="nav__link">Галерея</a>
+                <a href="#booking" class="nav__link">Бронирование</a>
+                <a href="#contacts" class="nav__link">Контакты</a>
+            </nav>
+            <a href="tel:+380672641017" class="header__phone">067 264 10 17</a>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="hero__overlay"></div>
+            <div class="container hero__content">
+                <h1 class="hero__title">Отдых у моря<br>рядом с Одессой</h1>
+                <p class="hero__subtitle">Уютная база отдыха для семей, компаний и тех, кто хочет отдохнуть от городской суеты</p>
+                <div class="hero__buttons">
+                    <a href="#booking" class="btn btn--primary">Забронировать</a>
+                    <a href="#about" class="btn btn--outline">Узнать больше</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="about section" id="about">
+            <div class="container">
+                <h2 class="section__title">О нашей базе</h2>
+                <div class="about__grid">
+                    <div class="about__text">
+                        <p>База отдыха «Бесарабський степ» расположена в живописном месте Чёрного моря, всего в 30 минутах езды от Одессы. Мы предлагаем комфортное размещение в уютных коттеджах и номерах с видом на море.</p>
+                        <p>На территории базы есть собственный пляж, детская площадка, зона барбекю и многое другое для вашего комфортного отдыха.</p>
+                    </div>
+                    <div class="about__features">
+                        <div class="feature">
+                            <div class="feature__icon">🏖️</div>
+                            <h3 class="feature__title">Собственный пляж</h3>
+                            <p class="feature__text">Чистый песчаный пляж с удобным заходом в море</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature__icon">🏡</div>
+                            <h3 class="feature__title">Уютные коттеджи</h3>
+                            <p class="feature__text">Коттеджи от 2 до 8 человек с всеми удобствами</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature__icon">🍖</div>
+                            <h3 class="feature__title">Зона барбекю</h3>
+                            <p class="feature__text">Мангалы и беседки для вечерних посиделок</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature__icon">👶</div>
+                            <h3 class="feature__title">Для детей</h3>
+                            <p class="feature__text">Детская площадка и анимация в сезон</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="rooms section" id="rooms">
+            <div class="container">
+                <h2 class="section__title">Номера и коттеджи</h2>
+                <div class="rooms__grid">
+                    <div class="room-card">
+                        <div class="room-card__image">
+                            <div class="room-card__placeholder">🏠</div>
+                        </div>
+                        <div class="room-card__content">
+                            <h3 class="room-card__title">Стандарт</h3>
+                            <p class="room-card__description">Уютный двухместный номер с видом на территорию. Ванная комната, кондиционер, Wi-Fi.</p>
+                            <ul class="room-card__features">
+                                <li>2 гостя</li>
+                                <li>20 м²</li>
+                                <li>Кондиционер</li>
+                            </ul>
+                            <div class="room-card__price">от 1 500 грн <span>/сутки</span></div>
+                        </div>
+                    </div>
+                    <div class="room-card">
+                        <div class="room-card__image">
+                            <div class="room-card__placeholder">🏡</div>
+                        </div>
+                        <div class="room-card__content">
+                            <h3 class="room-card__title">Коттедж</h3>
+                            <p class="room-card__description">Просторный коттедж для семьи. Две спальни, кухня, терраса с видом на море.</p>
+                            <ul class="room-card__features">
+                                <li>4-6 гостей</li>
+                                <li>50 м²</li>
+                                <li>Кухня</li>
+                            </ul>
+                            <div class="room-card__price">от 4 000 грн <span>/сутки</span></div>
+                        </div>
+                    </div>
+                    <div class="room-card">
+                        <div class="room-card__image">
+                            <div class="room-card__placeholder">🏰</div>
+                        </div>
+                        <div class="room-card__content">
+                            <h3 class="room-card__title">Люкс</h3>
+                            <p class="room-card__description">Премиальный коттедж с панорамным видом на море. Джакузи, три спальни, просторная гостиная.</p>
+                            <ul class="room-card__features">
+                                <li>6-8 гостей</li>
+                                <li>80 м²</li>
+                                <li>Джакузи</li>
+                            </ul>
+                            <div class="room-card__price">от 7 000 грн <span>/сутки</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery section" id="gallery">
+            <div class="container">
+                <h2 class="section__title">Галерея</h2>
+                <div class="gallery__filters">
+                    <button class="gallery__filter active" data-filter="all">Все</button>
+                    <button class="gallery__filter" data-filter="territory">Территория</button>
+                    <button class="gallery__filter" data-filter="rooms">Номера</button>
+                    <button class="gallery__filter" data-filter="beach">Пляж</button>
+                </div>
+                <div class="gallery__grid" id="galleryGrid">
+                    <div class="gallery__item" data-category="territory">
+                        <div class="gallery__placeholder">🌅</div>
+                        <div class="gallery__caption">Территория базы</div>
+                    </div>
+                    <div class="gallery__item" data-category="beach">
+                        <div class="gallery__placeholder">🏖️</div>
+                        <div class="gallery__caption">Наш пляж</div>
+                    </div>
+                    <div class="gallery__item" data-category="rooms">
+                        <div class="gallery__placeholder">🛏️</div>
+                        <div class="gallery__caption">Номер Стандарт</div>
+                    </div>
+                    <div class="gallery__item" data-category="territory">
+                        <div class="gallery__placeholder">🌳</div>
+                        <div class="gallery__caption">Зелёная зона</div>
+                    </div>
+                    <div class="gallery__item" data-category="rooms">
+                        <div class="gallery__placeholder">🛋️</div>
+                        <div class="gallery__caption">Коттедж — гостиная</div>
+                    </div>
+                    <div class="gallery__item" data-category="beach">
+                        <div class="gallery__placeholder">🏊</div>
+                        <div class="gallery__caption">Море</div>
+                    </div>
+                    <div class="gallery__item" data-category="territory">
+                        <div class="gallery__placeholder">🔥</div>
+                        <div class="gallery__caption">Зона барбекю</div>
+                    </div>
+                    <div class="gallery__item" data-category="rooms">
+                        <div class="gallery__placeholder">🍳</div>
+                        <div class="gallery__caption">Кухня в коттедже</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="booking section" id="booking">
+            <div class="container">
+                <h2 class="section__title">Бронирование</h2>
+                <div class="booking__wrapper">
+                    <div class="booking__info">
+                        <h3>Как забронировать?</h3>
+                        <ol class="booking__steps">
+                            <li>Выберите удобные даты и тип размещения</li>
+                            <li>Заполните форму или позвоните нам</li>
+                            <li>Мы подтвердим бронирование в течение 1 часа</li>
+                            <li>Внесите предоплату для гарантии брони</li>
+                        </ol>
+                        <div class="booking__contacts">
+                            <p>📞 Телефон: <a href="tel:+380672641017">067 264 10 17</a></p>
+                            <p>📞 Телефон: <a href="tel:+380507713856">050 771 38 56</a></p>
+                            <p>💬 WhatsApp: <a href="https://wa.me/380672641017">Написать в WhatsApp</a></p>
+                        </div>
+                    </div>
+                    <form class="booking__form" id="bookingForm">
+                        <div class="form__group">
+                            <label for="name">Ваше имя</label>
+                            <input type="text" id="name" name="name" required placeholder="Иван Иванов">
+                        </div>
+                        <div class="form__group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+38 (0__) ___-__-__">
+                        </div>
+                        <div class="form__group">
+                            <label for="roomType">Тип размещения</label>
+                            <select id="roomType" name="roomType" required>
+                                <option value="">Выберите тип</option>
+                                <option value="standart">Стандарт — от 1 500 грн</option>
+                                <option value="cottage">Коттедж — от 4 000 грн</option>
+                                <option value="lux">Люкс — от 7 000 грн</option>
+                            </select>
+                        </div>
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="dateIn">Заезд</label>
+                                <input type="date" id="dateIn" name="dateIn" required>
+                            </div>
+                            <div class="form__group">
+                                <label for="dateOut">Выезд</label>
+                                <input type="date" id="dateOut" name="dateOut" required>
+                            </div>
+                        </div>
+                        <div class="form__group">
+                            <label for="guests">Количество гостей</label>
+                            <input type="number" id="guests" name="guests" min="1" max="10" value="2" required>
+                        </div>
+                        <div class="form__group">
+                            <label for="comment">Комментарий</label>
+                            <textarea id="comment" name="comment" rows="3" placeholder="Особые пожелания..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full">Отправить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="map section" id="map">
+            <div class="container">
+                <h2 class="section__title">Как добраться</h2>
+                <div class="map__wrapper">
+                    <div class="map__info">
+                        <div class="map__address">
+                            <h3>📍 Адрес</h3>
+                            <p>Одесская область, с. Косяковка,<br>ул. Морская, 15</p>
+                        </div>
+                        <div class="map__routes">
+                            <h3>🚗 Как доехать</h3>
+                            <p><strong>Из Одессы:</strong> Через Цурюпское шоссе, от 1,5 до 2,5 часов в зависимости от загрузки дороги</p>
+                        </div>
+                        <div class="map__pickup">
+                            <h3>🚌 Трансфер</h3>
+                            <p>Трансфер организует отдельный человек. Номер телефона для связи уточняйте у нас.</p>
+                        </div>
+                    </div>
+                    <div class="map__iframe">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=Бесарабський+степ,+Одеська+область&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contacts section" id="contacts">
+            <div class="container">
+                <h2 class="section__title">Контакты</h2>
+                <div class="contacts__grid">
+                    <div class="contact-card">
+                        <div class="contact-card__icon">📞</div>
+                        <h3 class="contact-card__title">Телефон</h3>
+                        <a href="tel:+380672641017" class="contact-card__value">067 264 10 17</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card__icon">📞</div>
+                        <h3 class="contact-card__title">Телефон</h3>
+                        <a href="tel:+380507713856" class="contact-card__value">050 771 38 56</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card__icon">💬</div>
+                        <h3 class="contact-card__title">WhatsApp</h3>
+                        <a href="https://wa.me/380672641017" class="contact-card__value">Написать в WhatsApp</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card__icon">📍</div>
+                        <h3 class="contact-card__title">Адрес</h3>
+                        <span class="contact-card__value">Одесская обл., с. Косяковка</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <a href="#" class="logo">
+                    <span class="logo__icon">🌾</span>
+                    <span class="logo__text">Бесарабський степ</span>
+                </a>
+                <p class="footer__tagline">Отдых у моря рядом с Одессой</p>
+            </div>
+            <div class="footer__nav">
+                <a href="#about">О нас</a>
+                <a href="#rooms">Номера</a>
+                <a href="#gallery">Галерея</a>
+                <a href="#booking">Бронирование</a>
+                <a href="#contacts">Контакты</a>
+            </div>
+            <div class="footer__social">
+                <a href="#" class="footer__social-link" aria-label="Instagram">📷</a>
+                <a href="#" class="footer__social-link" aria-label="Facebook">📘</a>
+                <a href="#" class="footer__social-link" aria-label="Telegram">✈️</a>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <div class="container">
+                <p>&copy; 2026 База отдыха «Бесарабський степ». Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
