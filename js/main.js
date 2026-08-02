@@ -1,4 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Модальное окно
+    var modalOverlay = document.getElementById('modalOverlay');
+    var modalIcon = document.getElementById('modalIcon');
+    var modalTitle = document.getElementById('modalTitle');
+    var modalText = document.getElementById('modalText');
+    var modalBtn = document.getElementById('modalBtn');
+
+    function showModal(type, title, text) {
+        if (!modalOverlay) return;
+        modalIcon.textContent = type === 'success' ? '✅' : '❌';
+        modalTitle.textContent = title;
+        modalText.textContent = text;
+        modalOverlay.className = 'modal-overlay active modal--' + type;
+    }
+
+    if (modalBtn) {
+        modalBtn.addEventListener('click', function() {
+            modalOverlay.className = 'modal-overlay';
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.className = 'modal-overlay';
+            }
+        });
+    }
+
     // Mobile menu
     const burger = document.getElementById('burger');
     const nav = document.getElementById('nav');
@@ -101,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.body.removeChild(form);
                         document.body.removeChild(iframe);
                     } catch(ex) {}
-                    alert('Дякуємо, ' + data.name + '! Ваша заявку надіслано.\n\nМи зв\'яжемося з вами найближчим часом.');
+                    showModal('success', 'Заявку надіслано!', 'Дякуємо, ' + data.name + '! Ми зв\'яжемося з вами найближчим часом для підтвердження бронювання.');
                     bookingForm.reset();
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
