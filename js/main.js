@@ -294,10 +294,32 @@ document.addEventListener('DOMContentLoaded', function() {
         bookedDates = data || [];
         renderCalendar();
     };
+
+    // JSONP
     var calScriptEl = document.createElement('script');
-    calScriptEl.src = calScriptUrl + '?callback=' + calCallbackName + '&action=booked';
+    calScriptEl.src = calScriptUrl + '?callback=' + calCallbackName + '&action=booked&_=' + Date.now();
     calScriptEl.onerror = function() {
         delete window[calCallbackName];
+        // Fallback: fetch
+        fetchBookedDates();
     };
     document.body.appendChild(calScriptEl);
+
+    // Таймаут: якщо через 3 сек JSONP не спрацював — fetch
+    setTimeout(function() {
+        if (window[calCallbackName]) {
+            delete window[calCallbackName];
+            fetchBookedDates();
+        }
+    }, 3000);
+
+    function fetchBookedDates() {
+        fetch(calScriptUrl + '?action=booked&_=' + Date.now())
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                bookedDates = data || [];
+                renderCalendar();
+            })
+            .catch(function() {});
+    }
 });
