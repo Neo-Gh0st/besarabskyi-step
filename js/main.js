@@ -177,20 +177,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             document.body.appendChild(form);
-            
-            iframe.onload = function() {
-                setTimeout(function() {
-                    try {
-                        document.body.removeChild(form);
-                        document.body.removeChild(iframe);
-                    } catch(ex) {}
-                    showModal('success', 'Заявку надіслано!', 'Дякуємо, ' + data.name + '! Ми зв\'яжемося з вами найближчим часом для підтвердження бронювання.');
-                    bookingForm.reset();
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                }, 500);
+
+            // Слухаємо postMessage з iframe (сервер повертає OK або OVERLAP)
+            var messageHandler = function(e) {
+                if (e.data === 'OK' || e.data === 'OVERLAP') {
+                    window.removeEventListener('message', messageHandler);
+                    clearTimeout(fallbackTimer);
+                    setTimeout(function() {
+                        try {
+                            document.body.removeChild(form);
+                            document.body.removeChild(iframe);
+                        } catch(ex) {}
+                        if (e.data === 'OVERLAP') {
+                            showConflictModal([{from: data.dateIn, to: data.dateOut, room: data.roomType}]);
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        } else {
+                            showModal('success', 'Заявку надіслано!', 'Дякуємо, ' + data.name + '! Ми зв\'яжемося з вами найближчим часом для підтвердження бронювання.');
+                            bookingForm.reset();
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    }, 300);
+                }
             };
-            
+            window.addEventListener('message', messageHandler);
+
+            // Fallback: якщо postMessage не прийшов за 8 сек — показуємо success
+            var fallbackTimer = setTimeout(function() {
+                window.removeEventListener('message', messageHandler);
+                try {
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+                } catch(ex) {}
+                showModal('success', 'Заявку надіслано!', 'Дякуємо, ' + data.name + '! Ми зв\'яжемося з вами найближчим часом для підтвердження бронювання.');
+                bookingForm.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 8000);
+
             form.submit();
         });
     }
