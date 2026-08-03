@@ -66,6 +66,19 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.TEXT);
   }
 
+  // === Обробка /start в групі — відправка кнопки Web App ===
+  if (rawData.message) {
+    var msg = rawData.message;
+    var text = (msg.text || '').trim();
+    var chatType = msg.chat.type;
+
+    if (text === '/start' && (chatType === 'group' || chatType === 'supergroup')) {
+      sendWebAppButton(msg.chat.id);
+      return ContentService.createTextOutput('OK')
+        .setMimeType(ContentService.MimeType.TEXT);
+    }
+  }
+
   // === Обробка бронювання з сайту ===
   var data = rawData;
   if (!data.name && e.parameter && e.parameter.name) {
@@ -482,9 +495,35 @@ function setWebhook() {
       contentType: 'application/json; charset=utf-8',
       payload: JSON.stringify({
         url: webAppUrl,
-        allowed_updates: ['callback_query']
+        allowed_updates: ['callback_query', 'message']
       })
     }
   );
   return result.getContentText();
+}
+
+// === Відправка кнопки Web App в групу ===
+function sendWebAppButton(chatId) {
+  var WEB_APP_URL = 'https://neo-gh0st.github.io/besarabskyi-step/admin.html';
+
+  try {
+    UrlFetchApp.fetch(
+      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
+      {
+        method: 'post',
+        contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({
+          chat_id: chatId,
+          text: 'Натисніть кнопку нижче, щоб забронювати номер:',
+          reply_markup: JSON.stringify({
+            inline_keyboard: [
+              [
+                { text: 'Забронювати', web_app: { url: WEB_APP_URL } }
+              ]
+            ]
+          })
+        })
+      }
+    );
+  } catch (err) {}
 }
