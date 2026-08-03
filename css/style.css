@@ -642,119 +642,184 @@ body {
 }
 
 .plan {
-    max-width: 800px;
+    max-width: 850px;
     margin: 0 auto;
 }
 
-/* Вагон */
-.plan__wagon {
-    background: var(--white);
-    border: 3px solid var(--dark);
-    border-radius: 12px;
+/* Головна форма П */
+.plan__shape {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: auto 1fr;
+    gap: 0;
+    border: 4px solid var(--dark);
+    border-radius: 8px;
     overflow: hidden;
+    background: var(--white);
+    min-height: 420px;
 }
 
-.plan__wagon-label {
-    background: var(--dark);
-    color: var(--white);
-    text-align: center;
-    padding: 10px;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.plan__floors {
+/* Крила (ліве і праве) — вертикальні, повна висота */
+.plan__wing {
+    grid-row: 1 / -1;
     display: flex;
     flex-direction: column;
 }
 
-.plan__floor {
-    display: flex;
-    align-items: stretch;
-    border-top: 2px solid #e2e8f0;
+.plan__wing:first-child {
+    grid-column: 1;
+    border-right: 3px solid var(--dark);
 }
 
-.plan__floor:first-child {
-    border-top: none;
+.plan__wing:last-child {
+    grid-column: 3;
+    border-left: 3px solid var(--dark);
 }
 
-.plan__floor-label {
-    background: #f1f5f9;
-    color: var(--gray);
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 8px 10px;
-    display: flex;
-    align-items: center;
-    min-width: 60px;
+.plan__wing-label {
+    background: #1e40af;
+    color: var(--white);
     text-align: center;
-    border-right: 2px solid #e2e8f0;
-    text-transform: uppercase;
+    padding: 10px 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
-.plan__rooms {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.plan__wing-floors {
+    display: flex;
+    flex-direction: column;
     flex: 1;
 }
 
-.plan__room {
+.plan__wing-floor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 8px;
+}
+
+.plan__wing-floor:last-child {
+    border-bottom: none;
+}
+
+.plan__wing-floor > span {
+    font-size: 0.7rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
     text-align: center;
-    padding: 10px 6px;
-    border-right: 1px solid #e2e8f0;
+}
+
+.plan__wing-rooms {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+}
+
+/* Середина: корпус Б зверху, двір знизу */
+.plan__middle {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan__bridge {
+    border-bottom: 3px solid var(--dark);
+    display: flex;
+    flex-direction: column;
+}
+
+.plan__bridge-label {
+    background: #92400e;
+    color: var(--white);
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.plan__bridge-floors {
+    display: flex;
+    flex-direction: column;
+}
+
+.plan__bridge-floor {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.plan__bridge-floor:last-child {
+    border-bottom: none;
+}
+
+.plan__bridge-floor > span {
+    font-size: 0.7rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-right: 8px;
+    min-width: 45px;
+}
+
+.plan__bridge-rooms {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+
+/* Двір (порожній простір) */
+.plan__courtyard {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+    color: #166534;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 2px dashed #86efac;
+    border-radius: 0 0 4px 4px;
+    margin: 0 20px 20px;
+}
+
+/* Номер */
+.plan__room {
+    background: #dbeafe;
+    border: 1px solid #93c5fd;
+    border-radius: 4px;
+    padding: 6px 4px;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
     transition: var(--transition);
 }
 
-.plan__room:last-child {
-    border-right: none;
-}
-
 .plan__room:hover {
-    background: #eff6ff;
+    background: #bfdbfe;
+    transform: scale(1.05);
 }
 
 .plan__room span {
     display: block;
     font-weight: 700;
-    font-size: 1rem;
-    color: var(--dark);
-    margin-bottom: 2px;
+    font-size: 0.85rem;
+    color: #1e40af;
 }
 
 .plan__room small {
-    font-size: 0.75rem;
-    color: var(--gray);
-}
-
-/* Горизонтальний вагон (зверху) */
-.plan__wagon--top {
-    width: 100%;
-}
-
-/* З'єднувачі (вертикальні лінії П) */
-.plan__connector {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15%;
-}
-
-.plan__connector-line {
-    width: 6px;
-    height: 30px;
-    background: var(--dark);
-    border-radius: 3px;
-}
-
-/* Два бічних вагони */
-.plan__wings {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.plan__wagon--side {
-    width: 100%;
+    font-size: 0.65rem;
+    color: #3b82f6;
 }
 
 /* Легенда */
@@ -781,19 +846,19 @@ body {
     border: 1px solid rgba(0,0,0,0.1);
 }
 
-.layout__legend-color--wagon {
-    background: var(--white);
-    border-color: var(--dark);
+.layout__legend-color--wing {
+    background: #1e40af;
+    border-color: #1e40af;
+}
+
+.layout__legend-color--bridge {
+    background: #92400e;
+    border-color: #92400e;
 }
 
 .layout__legend-color--room {
     background: #dbeafe;
     border-color: #93c5fd;
-}
-
-.layout__legend-color--connector {
-    background: var(--dark);
-    border-color: var(--dark);
 }
 
 /* Gallery */
@@ -1340,13 +1405,50 @@ body {
         font-size: 1.4rem;
     }
 
-    .plan__wings {
+    .plan__shape {
         grid-template-columns: 1fr;
-        gap: 20px;
+        grid-template-rows: auto auto auto;
+        min-height: auto;
     }
 
-    .plan__connector {
-        padding: 0 40%;
+    .plan__wing:first-child {
+        grid-column: 1;
+        grid-row: 1;
+        border-right: none;
+        border-bottom: 3px solid var(--dark);
+    }
+
+    .plan__wing:last-child {
+        grid-column: 1;
+        grid-row: 3;
+        border-left: none;
+        border-top: 3px solid var(--dark);
+    }
+
+    .plan__wing-floors {
+        flex-direction: row;
+    }
+
+    .plan__wing-floor {
+        border-bottom: none;
+        border-right: 2px solid #e2e8f0;
+    }
+
+    .plan__wing-floor:last-child {
+        border-right: none;
+    }
+
+    .plan__wing-rooms {
+        flex-direction: row;
+    }
+
+    .plan__middle {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .plan__bridge-rooms {
+        flex-direction: row;
     }
 
     .layout__legend {

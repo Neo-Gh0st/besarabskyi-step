@@ -196,53 +196,25 @@
         <section class="layout section" id="layout">
             <div class="container">
                 <h2 class="section__title">Схема корпусів</h2>
-                <p class="layout__subtitle">Три корпуси-вагони розташовані буквою «П». Кожен корпус має 2 поверхи, 3 номери на поверсі, в кожному номері по 2 кімнати.</p>
+                <p class="layout__subtitle">Три корпуси-вагони розташовані буквою «П». Кожен корпус — 2 поверхи, 3 номери на поверсі, в кожному номері по 2 кімнати.</p>
 
                 <div class="plan">
-                    <!-- Верхній (горизонтальний) вагон -->
-                    <div class="plan__wagon plan__wagon--top">
-                        <div class="plan__wagon-label">Корпус Б</div>
-                        <div class="plan__floors">
-                            <div class="plan__floor">
-                                <span class="plan__floor-label">2 пов.</span>
-                                <div class="plan__rooms">
-                                    <div class="plan__room"><span>Б1</span><small>А|Б</small></div>
-                                    <div class="plan__room"><span>Б2</span><small>А|Б</small></div>
-                                    <div class="plan__room"><span>Б3</span><small>А|Б</small></div>
-                                </div>
-                            </div>
-                            <div class="plan__floor">
-                                <span class="plan__floor-label">1 пов.</span>
-                                <div class="plan__rooms">
-                                    <div class="plan__room"><span>Б4</span><small>А|Б</small></div>
-                                    <div class="plan__room"><span>Б5</span><small>А|Б</small></div>
-                                    <div class="plan__room"><span>Б6</span><small>А|Б</small></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="plan__connector">
-                        <div class="plan__connector-line"></div>
-                        <div class="plan__connector-line"></div>
-                    </div>
-
-                    <div class="plan__wings">
-                        <!-- Лівий вагон -->
-                        <div class="plan__wagon plan__wagon--side">
-                            <div class="plan__wagon-label">Корпус А</div>
-                            <div class="plan__floors">
-                                <div class="plan__floor">
-                                    <span class="plan__floor-label">2 пов.</span>
-                                    <div class="plan__rooms">
+                    <div class="plan__shape">
+                        <!-- Ліве крило -->
+                        <div class="plan__wing">
+                            <div class="plan__wing-label">Корпус А</div>
+                            <div class="plan__wing-floors">
+                                <div class="plan__wing-floor">
+                                    <span>2 пов.</span>
+                                    <div class="plan__wing-rooms">
                                         <div class="plan__room"><span>А1</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>А2</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>А3</span><small>А|Б</small></div>
                                     </div>
                                 </div>
-                                <div class="plan__floor">
-                                    <span class="plan__floor-label">1 пов.</span>
-                                    <div class="plan__rooms">
+                                <div class="plan__wing-floor">
+                                    <span>1 пов.</span>
+                                    <div class="plan__wing-rooms">
                                         <div class="plan__room"><span>А4</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>А5</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>А6</span><small>А|Б</small></div>
@@ -251,21 +223,47 @@
                             </div>
                         </div>
 
-                        <!-- Правий вагон -->
-                        <div class="plan__wagon plan__wagon--side">
-                            <div class="plan__wagon-label">Корпус В</div>
-                            <div class="plan__floors">
-                                <div class="plan__floor">
-                                    <span class="plan__floor-label">2 пов.</span>
-                                    <div class="plan__rooms">
+                        <!-- Середина: горизонтальний корпус зверху + порожній простір знизу -->
+                        <div class="plan__middle">
+                            <div class="plan__bridge">
+                                <div class="plan__bridge-label">Корпус Б</div>
+                                <div class="plan__bridge-floors">
+                                    <div class="plan__bridge-floor">
+                                        <span>2 пов.</span>
+                                        <div class="plan__bridge-rooms">
+                                            <div class="plan__room"><span>Б1</span><small>А|Б</small></div>
+                                            <div class="plan__room"><span>Б2</span><small>А|Б</small></div>
+                                            <div class="plan__room"><span>Б3</span><small>А|Б</small></div>
+                                        </div>
+                                    </div>
+                                    <div class="plan__bridge-floor">
+                                        <span>1 пов.</span>
+                                        <div class="plan__bridge-rooms">
+                                            <div class="plan__room"><span>Б4</span><small>А|Б</small></div>
+                                            <div class="plan__room"><span>Б5</span><small>А|Б</small></div>
+                                            <div class="plan__room"><span>Б6</span><small>А|Б</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="plan__courtyard">Двір</div>
+                        </div>
+
+                        <!-- Праве крило -->
+                        <div class="plan__wing">
+                            <div class="plan__wing-label">Корпус В</div>
+                            <div class="plan__wing-floors">
+                                <div class="plan__wing-floor">
+                                    <span>2 пов.</span>
+                                    <div class="plan__wing-rooms">
                                         <div class="plan__room"><span>В1</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>В2</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>В3</span><small>А|Б</small></div>
                                     </div>
                                 </div>
-                                <div class="plan__floor">
-                                    <span class="plan__floor-label">1 пов.</span>
-                                    <div class="plan__rooms">
+                                <div class="plan__wing-floor">
+                                    <span>1 пов.</span>
+                                    <div class="plan__wing-rooms">
                                         <div class="plan__room"><span>В4</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>В5</span><small>А|Б</small></div>
                                         <div class="plan__room"><span>В6</span><small>А|Б</small></div>
@@ -277,9 +275,9 @@
                 </div>
 
                 <div class="layout__legend">
-                    <span class="layout__legend-item"><span class="layout__legend-color layout__legend-color--wagon"></span> Корпус-вагон</span>
+                    <span class="layout__legend-item"><span class="layout__legend-color layout__legend-color--wing"></span> Крило (2 поверхи)</span>
+                    <span class="layout__legend-item"><span class="layout__legend-color layout__legend-color--bridge"></span> З'єднання (Корпус Б)</span>
                     <span class="layout__legend-item"><span class="layout__legend-color layout__legend-color--room"></span> Номер (А|Б = 2 кімнати)</span>
-                    <span class="layout__legend-item"><span class="layout__legend-color layout__legend-color--connector"></span> Перехід</span>
                 </div>
             </div>
         </section>
