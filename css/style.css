@@ -656,10 +656,10 @@ body {
     border-radius: 8px;
     overflow: hidden;
     background: var(--white);
-    min-height: 420px;
+    min-height: 350px;
 }
 
-/* Крила (ліве і праве) — вертикальні, повна висота */
+/* Крила */
 .plan__wing {
     grid-row: 1 / -1;
     display: flex;
@@ -680,48 +680,20 @@ body {
     background: #1e40af;
     color: var(--white);
     text-align: center;
-    padding: 10px 8px;
-    font-size: 0.85rem;
+    padding: 12px 8px;
+    font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: 1px;
-}
-
-.plan__wing-floors {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.plan__wing-floor {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 2px solid #e2e8f0;
-    padding: 8px;
-}
-
-.plan__wing-floor:last-child {
-    border-bottom: none;
-}
-
-.plan__wing-floor > span {
-    font-size: 0.7rem;
-    color: var(--gray);
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 6px;
-    text-align: center;
 }
 
 .plan__wing-rooms {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
     flex: 1;
-    justify-content: center;
 }
 
-/* Середина: корпус Б зверху, двір знизу */
+/* Середина */
 .plan__middle {
     grid-column: 2;
     grid-row: 1 / -1;
@@ -739,44 +711,19 @@ body {
     background: #92400e;
     color: var(--white);
     text-align: center;
-    padding: 10px 8px;
-    font-size: 0.85rem;
+    padding: 12px 8px;
+    font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: 1px;
 }
 
-.plan__bridge-floors {
-    display: flex;
-    flex-direction: column;
-}
-
-.plan__bridge-floor {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.plan__bridge-floor:last-child {
-    border-bottom: none;
-}
-
-.plan__bridge-floor > span {
-    font-size: 0.7rem;
-    color: var(--gray);
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-right: 8px;
-    min-width: 45px;
-}
-
 .plan__bridge-rooms {
     display: flex;
-    gap: 4px;
-    flex: 1;
+    flex-direction: column;
+    gap: 0;
 }
 
-/* Двір (порожній простір) */
+/* Двір */
 .plan__courtyard {
     flex: 1;
     display: flex;
@@ -797,68 +744,20 @@ body {
 .plan__room {
     background: #dbeafe;
     border: 1px solid #93c5fd;
-    border-radius: 4px;
-    padding: 6px 4px;
+    padding: 14px 8px;
     text-align: center;
     flex: 1;
-    min-width: 0;
     transition: var(--transition);
 }
 
 .plan__room:hover {
     background: #bfdbfe;
-    transform: scale(1.05);
-}
-
-.plan__room span {
-    display: block;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: #1e40af;
 }
 
 .plan__room small {
-    font-size: 0.65rem;
-    color: #3b82f6;
-}
-
-/* Легенда */
-.layout__legend {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.layout__legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: var(--gray);
-}
-
-.layout__legend-color {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.layout__legend-color--wing {
-    background: #1e40af;
-    border-color: #1e40af;
-}
-
-.layout__legend-color--bridge {
-    background: #92400e;
-    border-color: #92400e;
-}
-
-.layout__legend-color--room {
-    background: #dbeafe;
-    border-color: #93c5fd;
+    font-size: 0.8rem;
+    color: #1e40af;
+    font-weight: 600;
 }
 
 /* Gallery */
@@ -1425,19 +1324,6 @@ body {
         border-top: 3px solid var(--dark);
     }
 
-    .plan__wing-floors {
-        flex-direction: row;
-    }
-
-    .plan__wing-floor {
-        border-bottom: none;
-        border-right: 2px solid #e2e8f0;
-    }
-
-    .plan__wing-floor:last-child {
-        border-right: none;
-    }
-
     .plan__wing-rooms {
         flex-direction: row;
     }
@@ -1449,11 +1335,6 @@ body {
 
     .plan__bridge-rooms {
         flex-direction: row;
-    }
-
-    .layout__legend {
-        flex-direction: column;
-        align-items: center;
     }
     
     .checkpoint__body {
