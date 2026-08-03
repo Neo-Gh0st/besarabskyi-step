@@ -74,13 +74,14 @@ body {
     align-items: center;
     gap: 8px;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--dark);
+    white-space: nowrap;
 }
 
 .logo__icon {
-    font-size: 1.8rem;
+    display: none;
 }
 
 .nav {
@@ -230,11 +231,6 @@ body {
 }
 
 /* Calendar */
-.booked-banner {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    padding: 40px 0;
-}
-
 .calendar {
     max-width: 400px;
     margin: 0 auto;
@@ -335,40 +331,6 @@ body {
     color: #cbd5e1;
     background: #f8fafc;
 }
-
-.calendar__legend {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    padding: 15px;
-    border-top: 1px solid var(--light);
-}
-
-.calendar__legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    color: var(--gray);
-}
-
-.calendar__dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-}
-
-.calendar__dot--free {
-    background: #dcfce7;
-    border: 1px solid #86efac;
-}
-
-.calendar__dot--booked {
-    background: #fecaca;
-    border: 1px solid #fca5a5;
-}
-
-/* Calendar Legend */
 
 /* Modal */
 .modal-overlay {

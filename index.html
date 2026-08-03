@@ -14,15 +14,15 @@
     <header class="header" id="header">
         <div class="container header__inner">
             <a href="#" class="logo">
-                <span class="logo__icon">🌾</span>
+                    <span class="logo__icon"></span>
                 <span class="logo__text">Бесарабський степ</span>
             </a>
             <nav class="nav" id="nav">
                 <a href="#about" class="nav__link">Про нас</a>
-                <a href="#layout" class="nav__link">🏗️ Корпуси</a>
+                <a href="#layout" class="nav__link">Корпуси</a>
                 <a href="#rooms" class="nav__link">Номери</a>
                 <a href="#gallery" class="nav__link">Галерея</a>
-                <a href="#checkpoint" class="nav__link">🚗 Проїзд</a>
+                <a href="#checkpoint" class="nav__link">Проїзд</a>
                 <a href="#booking" class="nav__link">Бронювання</a>
                 <a href="#contacts" class="nav__link">Контакти</a>
             </nav>
@@ -48,22 +48,53 @@
             </div>
         </section>
 
-        <section class="booked-banner" id="bookedBanner">
+        <section class="layout section" id="layout">
             <div class="container">
-                <div class="calendar">
+                <h2 class="section__title">Наявність номерів</h2>
+                <p class="layout__subtitle">Заброньовані номери підсвічуються червоним.</p>
+
+                <div class="plan-floors">
+                    <div class="plan-floor">
+                        <h3 class="plan-floor__title">1 этаж</h3>
+                        <div class="plan-p">
+                            <div class="plan-p__left" data-room="standart" id="plan1Left">
+                                <span>Стандарт</span>
+                            </div>
+                            <div class="plan-p__top" data-room="cottage" id="plan1Top">
+                                <span>Котедж</span>
+                            </div>
+                            <div class="plan-p__right" data-room="lux" id="plan1Right">
+                                <span>Люкс</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plan-floor">
+                        <h3 class="plan-floor__title">2 этаж</h3>
+                        <div class="plan-p">
+                            <div class="plan-p__left" data-room="standart" id="plan2Left">
+                                <span>Стандарт</span>
+                            </div>
+                            <div class="plan-p__top" data-room="cottage" id="plan2Top">
+                                <span>Котедж</span>
+                            </div>
+                            <div class="plan-p__right" data-room="lux" id="plan2Right">
+                                <span>Люкс</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar" style="margin-top:30px;">
                     <div class="calendar__header">
-                        <button class="calendar__nav calendar__prev" id="calPrev">◀</button>
+                        <button class="calendar__nav calendar__prev" id="calPrev">&#9664;</button>
                         <h3 class="calendar__month" id="calMonth"></h3>
-                        <button class="calendar__nav calendar__next" id="calNext">▶</button>
+                        <button class="calendar__nav calendar__next" id="calNext">&#9654;</button>
                     </div>
                     <div class="calendar__weekdays">
                         <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
                     </div>
                     <div class="calendar__days" id="calDays"></div>
-                    <div class="calendar__legend">
-                        <span class="calendar__legend-item"><span class="calendar__dot calendar__dot--free"></span> Вільно</span>
-                        <span class="calendar__legend-item"><span class="calendar__dot calendar__dot--booked"></span> Зайнято</span>
-                    </div>
                 </div>
             </div>
         </section>
@@ -72,9 +103,9 @@
             <div class="container">
                 <div class="checkpoint__card">
                     <div class="checkpoint__header">
-                        <span class="checkpoint__icon">🚗</span>
+                        <span class="checkpoint__icon"></span>
                         <h2 class="checkpoint__title">Проїзд через КПП «Паланка»</h2>
-                        <span class="checkpoint__warning">⚠️ Важливо для чоловіків 18-60 років</span>
+                        <span class="checkpoint__warning">Важливо для чоловіків 18-60 років</span>
                     </div>
                     <div class="checkpoint__body">
                         <div class="checkpoint__alert">
@@ -82,7 +113,7 @@
                         </div>
 
                         <div class="checkpoint__section">
-                            <h3>✅ Хто може проїхати без дозволу:</h3>
+                            <h3>Хто може проїхати без дозволу:</h3>
                             <ul>
                                 <li>Жінки та чоловіки старші 60 / молодші 18 років — <strong>вільно за паспортом</strong></li>
                                 <li>Особи з дійсною візою або дозволом на виїзд за кордон (загранпаспорт + віза)</li>
@@ -174,60 +205,19 @@
                             <p class="feature__text">Чистий піщаний пляж зі зручним заходом у море</p>
                         </div>
                         <div class="feature">
-                            <div class="feature__icon">🏡</div>
+                            <div class="feature__icon"></div>
                             <h3 class="feature__title">Затишні котеджі</h3>
                             <p class="feature__text">Котеджі від 2 до 8 осіб з усіма зручностями</p>
                         </div>
                         <div class="feature">
-                            <div class="feature__icon">🍖</div>
+                            <div class="feature__icon"></div>
                             <h3 class="feature__title">Зона барбекю</h3>
                             <p class="feature__text">Мангали та альтанки для вечірніх посиденьок</p>
                         </div>
                         <div class="feature">
-                            <div class="feature__icon">👶</div>
+                            <div class="feature__icon"></div>
                             <h3 class="feature__title">Для дітей</h3>
                             <p class="feature__text">Дитячий майданчик та анімація в сезон</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="layout section" id="layout">
-            <div class="container">
-                <h2 class="section__title">Наявність номерів</h2>
-                <p class="layout__subtitle">Заброньовані номери підсвічуються червоним.</p>
-
-                <div class="plan-floors">
-                    <!-- 1 поверх -->
-                    <div class="plan-floor">
-                        <h3 class="plan-floor__title">1 этаж</h3>
-                        <div class="plan-p">
-                            <div class="plan-p__left" data-room="standart" id="plan1Left">
-                                <span>Стандарт</span>
-                            </div>
-                            <div class="plan-p__top" data-room="cottage" id="plan1Top">
-                                <span>Котедж</span>
-                            </div>
-                            <div class="plan-p__right" data-room="lux" id="plan1Right">
-                                <span>Люкс</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2 поверх -->
-                    <div class="plan-floor">
-                        <h3 class="plan-floor__title">2 этаж</h3>
-                        <div class="plan-p">
-                            <div class="plan-p__left" data-room="standart" id="plan2Left">
-                                <span>Стандарт</span>
-                            </div>
-                            <div class="plan-p__top" data-room="cottage" id="plan2Top">
-                                <span>Котедж</span>
-                            </div>
-                            <div class="plan-p__right" data-room="lux" id="plan2Right">
-                                <span>Люкс</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,7 +230,7 @@
                 <div class="rooms__grid">
                     <div class="room-card">
                         <div class="room-card__image">
-                            <div class="room-card__placeholder">🏠</div>
+                            <div class="room-card__placeholder"></div>
                         </div>
                         <div class="room-card__content">
                             <h3 class="room-card__title">Стандарт</h3>
@@ -255,7 +245,7 @@
                     </div>
                     <div class="room-card">
                         <div class="room-card__image">
-                            <div class="room-card__placeholder">🏡</div>
+                            <div class="room-card__placeholder"></div>
                         </div>
                         <div class="room-card__content">
                             <h3 class="room-card__title">Котедж</h3>
@@ -270,7 +260,7 @@
                     </div>
                     <div class="room-card">
                         <div class="room-card__image">
-                            <div class="room-card__placeholder">🏰</div>
+                            <div class="room-card__placeholder"></div>
                         </div>
                         <div class="room-card__content">
                             <h3 class="room-card__title">Люкс</h3>
@@ -403,7 +393,7 @@
                             <p>Одеська область, с. Косяківка</p>
                         </div>
                         <div class="map__routes">
-                            <h3>🚗 Як доїхати</h3>
+                            <h3>Як доїхати</h3>
                             <p><strong>З Одеси:</strong> від 1,5 до 2,5 годин в залежності від завантаженості дороги</p>
                         </div>
                         <div class="map__pickup">
@@ -454,7 +444,7 @@
         <div class="container footer__inner">
             <div class="footer__brand">
                 <a href="#" class="logo">
-                    <span class="logo__icon">🌾</span>
+                <span class="logo__icon"></span>
                     <span class="logo__text">Бесарабський степ</span>
                 </a>
                 <p class="footer__tagline">Відпочинок біля моря поруч з Одесою</p>
