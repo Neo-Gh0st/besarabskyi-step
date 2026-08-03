@@ -81,15 +81,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Booking form
     var bookingForm = document.getElementById('bookingForm');
+    var conflictOverlay = document.getElementById('conflictOverlay');
+    var conflictBtn = document.getElementById('conflictBtn');
+    var conflictTable = document.getElementById('conflictTable');
+
+    if (conflictBtn && conflictOverlay) {
+        conflictBtn.addEventListener('click', function() {
+            conflictOverlay.className = 'modal-overlay';
+        });
+        conflictOverlay.addEventListener('click', function(e) {
+            if (e.target === conflictOverlay) {
+                conflictOverlay.className = 'modal-overlay';
+            }
+        });
+    }
+
+    function findConflicts(dateIn, dateOut, roomType) {
+        var conflicts = [];
+        for (var i = 0; i < bookedDates.length; i++) {
+            var item = bookedDates[i];
+            if (roomType && item.room !== roomType) continue;
+            if (dateIn <= item.to && dateOut >= item.from) {
+                conflicts.push(item);
+            }
+        }
+        return conflicts;
+    }
+
+    function roomTypeLabel(type) {
+        var labels = { standart: 'Стандарт', cottage: 'Котедж', lux: 'Люкс' };
+        return labels[type] || type;
+    }
+
+    function showConflictModal(conflicts) {
+        var roomName = roomTypeLabel(document.getElementById('roomType').value);
+        var html = '<table class="conflict-table">';
+        html += '<tr><th>Тип</th><th>Зайнято з</th><th>Зайнято по</th></tr>';
+        for (var i = 0; i < conflicts.length; i++) {
+            var c = conflicts[i];
+            html += '<tr><td>' + roomTypeLabel(c.room) + '</td><td>' + c.from + '</td><td>' + c.to + '</td></tr>';
+        }
+        html += '</table>';
+        conflictTable.innerHTML = html;
+        conflictOverlay.className = 'modal-overlay active';
+    }
+
     if (bookingForm) {
         bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            var submitBtn = bookingForm.querySelector('button[type="submit"]');
-            var originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Надсилання...';
-            submitBtn.disabled = true;
-            
+
             var formData = new FormData(bookingForm);
             var data = {
                 name: formData.get('name'),
@@ -100,6 +140,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 guests: formData.get('guests'),
                 comment: formData.get('comment')
             };
+
+            // Клієнтська перевірка перетину дат
+            if (data.dateIn && data.dateOut && data.roomType) {
+                var conflicts = findConflicts(data.dateIn, data.dateOut, data.roomType);
+                if (conflicts.length > 0) {
+                    showConflictModal(conflicts);
+                    return;
+                }
+            }
+            
+            var submitBtn = bookingForm.querySelector('button[type="submit"]');
+            var originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Надсилання...';
+            submitBtn.disabled = true;
             
             var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAJCZfTBiJ-QA40521pJ8fQGSYojwsirXLSMwMibu3Mo3m57rRGclPwhrG4uPJ0oewHg/exec';
             
