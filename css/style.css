@@ -234,7 +234,31 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
+    margin-top: 20px;
+}
+
+/* Floor section */
+.floor-section {
     margin-top: 30px;
+}
+
+.floor-banner {
+    text-align: center;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.floor-banner--1 {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.floor-banner--2 {
+    background: #fce7f3;
+    color: #9d174d;
 }
 
 /* Calendar */

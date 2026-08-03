@@ -111,7 +111,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function roomTypeLabel(type) {
-        var labels = { standart: 'Стандарт', cottage: 'Котедж', lux: 'Люкс' };
+        var labels = {
+            family: 'Сімейний',
+            'family-plus': 'Сімейний+',
+            'family-lux': 'Сімейний Люкс',
+            double: 'Двомісний',
+            'double-lux': 'Двомісний Люкс',
+            'double-premium': 'Двомісний Преміум'
+        };
         return labels[type] || type;
     }
 
@@ -279,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(feature);
     });
 
-    // === 3 календаря (по одному на тип номера) ===
+    // === 6 календарів (по одному на тип номера) ===
     var calScriptUrl = 'https://script.google.com/macros/s/AKfycbx9DyhnHn1t8ecI-5zwfzpJq0bJgMB-bSloIid848ZTSB331ZA4G9HxIBh9YB89_F0R9g/exec';
     var bookedDates = [];
 
@@ -287,33 +294,24 @@ document.addEventListener('DOMContentLoaded', function() {
         'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
 
     var calendars = [
-        {
-            type: 'standart',
-            month: new Date().getMonth(),
-            year: new Date().getFullYear(),
-            monthEl: document.getElementById('calMonthStandart'),
-            daysEl: document.getElementById('calDaysStandart'),
-            prevBtn: document.getElementById('calPrevStandart'),
-            nextBtn: document.getElementById('calNextStandart')
-        },
-        {
-            type: 'cottage',
-            month: new Date().getMonth(),
-            year: new Date().getFullYear(),
-            monthEl: document.getElementById('calMonthCottage'),
-            daysEl: document.getElementById('calDaysCottage'),
-            prevBtn: document.getElementById('calPrevCottage'),
-            nextBtn: document.getElementById('calNextCottage')
-        },
-        {
-            type: 'lux',
-            month: new Date().getMonth(),
-            year: new Date().getFullYear(),
-            monthEl: document.getElementById('calMonthLux'),
-            daysEl: document.getElementById('calDaysLux'),
-            prevBtn: document.getElementById('calPrevLux'),
-            nextBtn: document.getElementById('calNextLux')
-        }
+        { type: 'family', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthFamily'), daysEl: document.getElementById('calDaysFamily'),
+          prevBtn: document.getElementById('calPrevFamily'), nextBtn: document.getElementById('calNextFamily') },
+        { type: 'family-plus', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthFamilyPlus'), daysEl: document.getElementById('calDaysFamilyPlus'),
+          prevBtn: document.getElementById('calPrevFamilyPlus'), nextBtn: document.getElementById('calNextFamilyPlus') },
+        { type: 'family-lux', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthFamilyLux'), daysEl: document.getElementById('calDaysFamilyLux'),
+          prevBtn: document.getElementById('calPrevFamilyLux'), nextBtn: document.getElementById('calNextFamilyLux') },
+        { type: 'double', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthDouble'), daysEl: document.getElementById('calDaysDouble'),
+          prevBtn: document.getElementById('calPrevDouble'), nextBtn: document.getElementById('calNextDouble') },
+        { type: 'double-lux', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthDoubleLux'), daysEl: document.getElementById('calDaysDoubleLux'),
+          prevBtn: document.getElementById('calPrevDoubleLux'), nextBtn: document.getElementById('calNextDoubleLux') },
+        { type: 'double-premium', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthDoublePremium'), daysEl: document.getElementById('calDaysDoublePremium'),
+          prevBtn: document.getElementById('calPrevDoublePremium'), nextBtn: document.getElementById('calNextDoublePremium') }
     ];
 
     function renderCal(cal) {
@@ -449,19 +447,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        var floor1Map = { Left: 'family', Top: 'family-plus', Right: 'family-lux' };
+        var floor2Map = { Left: 'double', Top: 'double-lux', Right: 'double-premium' };
         var parts = ['Left', 'Top', 'Right'];
-        var floors = [1, 2];
-        var roomMap = { Left: 'standart', Top: 'cottage', Right: 'lux' };
 
-        for (var f = 0; f < floors.length; f++) {
-            for (var p = 0; p < parts.length; p++) {
-                var el = document.getElementById('plan' + floors[f] + parts[p]);
-                if (!el) continue;
-                var roomType = roomMap[parts[p]];
-                if (bookedRooms[roomType]) {
-                    el.classList.add('booked');
+        for (var p = 0; p < parts.length; p++) {
+            var el1 = document.getElementById('plan1' + parts[p]);
+            if (el1) {
+                if (bookedRooms[floor1Map[parts[p]]]) {
+                    el1.classList.add('booked');
                 } else {
-                    el.classList.remove('booked');
+                    el1.classList.remove('booked');
+                }
+            }
+            var el2 = document.getElementById('plan2' + parts[p]);
+            if (el2) {
+                if (bookedRooms[floor2Map[parts[p]]]) {
+                    el2.classList.add('booked');
+                } else {
+                    el2.classList.remove('booked');
                 }
             }
         }

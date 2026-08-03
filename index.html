@@ -55,76 +55,124 @@
 
                 <div class="plan-floors">
                     <div class="plan-floor">
-                        <h3 class="plan-floor__title">1 этаж</h3>
+                        <h3 class="plan-floor__title">1 этаж — Сімейні</h3>
                         <div class="plan-p">
-                            <div class="plan-p__left" data-room="standart" id="plan1Left">
-                                <span>Стандарт</span>
+                            <div class="plan-p__left" data-room="family" id="plan1Left">
+                                <span>Сімейний</span>
                             </div>
-                            <div class="plan-p__top" data-room="cottage" id="plan1Top">
-                                <span>Котедж</span>
+                            <div class="plan-p__top" data-room="family-plus" id="plan1Top">
+                                <span>Сімейний+</span>
                             </div>
-                            <div class="plan-p__right" data-room="lux" id="plan1Right">
-                                <span>Люкс</span>
+                            <div class="plan-p__right" data-room="family-lux" id="plan1Right">
+                                <span>Сімейний Люкс</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="plan-floor">
-                        <h3 class="plan-floor__title">2 этаж</h3>
+                        <h3 class="plan-floor__title">2 этаж — Для пар</h3>
                         <div class="plan-p">
-                            <div class="plan-p__left" data-room="standart" id="plan2Left">
-                                <span>Стандарт</span>
+                            <div class="plan-p__left" data-room="double" id="plan2Left">
+                                <span>Двомісний</span>
                             </div>
-                            <div class="plan-p__top" data-room="cottage" id="plan2Top">
-                                <span>Котедж</span>
+                            <div class="plan-p__top" data-room="double-lux" id="plan2Top">
+                                <span>Двомісний Люкс</span>
                             </div>
-                            <div class="plan-p__right" data-room="lux" id="plan2Right">
-                                <span>Люкс</span>
+                            <div class="plan-p__right" data-room="double-premium" id="plan2Right">
+                                <span>Двомісний Преміум</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="calendars-row">
-                    <div class="calendar calendar--standart">
-                        <div class="calendar__type-name">Стандарт</div>
-                        <div class="calendar__header">
-                            <button class="calendar__nav calendar__prev" id="calPrevStandart">&#9664;</button>
-                            <h3 class="calendar__month" id="calMonthStandart"></h3>
-                            <button class="calendar__nav calendar__next" id="calNextStandart">&#9654;</button>
+                <div class="floor-section">
+                    <div class="floor-banner floor-banner--1">1 этаж — Сімейні номери (2 дорослих + 1-2 дитини)</div>
+                    <div class="calendars-row">
+                        <div class="calendar">
+                            <div class="calendar__type-name">Сімейний</div>
+                            <div class="calendar__header">
+                                <button class="calendar__nav calendar__prev" id="calPrevFamily">&#9664;</button>
+                                <h3 class="calendar__month" id="calMonthFamily"></h3>
+                                <button class="calendar__nav calendar__next" id="calNextFamily">&#9654;</button>
+                            </div>
+                            <div class="calendar__weekdays">
+                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                            </div>
+                            <div class="calendar__days" id="calDaysFamily"></div>
                         </div>
-                        <div class="calendar__weekdays">
-                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
-                        </div>
-                        <div class="calendar__days" id="calDaysStandart"></div>
-                    </div>
 
-                    <div class="calendar calendar--cottage">
-                        <div class="calendar__type-name">Коттедж</div>
-                        <div class="calendar__header">
-                            <button class="calendar__nav calendar__prev" id="calPrevCottage">&#9664;</button>
-                            <h3 class="calendar__month" id="calMonthCottage"></h3>
-                            <button class="calendar__nav calendar__next" id="calNextCottage">&#9654;</button>
+                        <div class="calendar">
+                            <div class="calendar__type-name">Сімейний+</div>
+                            <div class="calendar__header">
+                                <button class="calendar__nav calendar__prev" id="calPrevFamilyPlus">&#9664;</button>
+                                <h3 class="calendar__month" id="calMonthFamilyPlus"></h3>
+                                <button class="calendar__nav calendar__next" id="calNextFamilyPlus">&#9654;</button>
+                            </div>
+                            <div class="calendar__weekdays">
+                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                            </div>
+                            <div class="calendar__days" id="calDaysFamilyPlus"></div>
                         </div>
-                        <div class="calendar__weekdays">
-                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
-                        </div>
-                        <div class="calendar__days" id="calDaysCottage"></div>
-                    </div>
 
-                    <div class="calendar calendar--lux">
-                        <div class="calendar__type-name">Люкс</div>
-                        <div class="calendar__header">
-                            <button class="calendar__nav calendar__prev" id="calPrevLux">&#9664;</button>
-                            <h3 class="calendar__month" id="calMonthLux"></h3>
-                            <button class="calendar__nav calendar__next" id="calNextLux">&#9654;</button>
+                        <div class="calendar">
+                            <div class="calendar__type-name">Сімейний Люкс</div>
+                            <div class="calendar__header">
+                                <button class="calendar__nav calendar__prev" id="calPrevFamilyLux">&#9664;</button>
+                                <h3 class="calendar__month" id="calMonthFamilyLux"></h3>
+                                <button class="calendar__nav calendar__next" id="calNextFamilyLux">&#9654;</button>
+                            </div>
+                            <div class="calendar__weekdays">
+                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                            </div>
+                            <div class="calendar__days" id="calDaysFamilyLux"></div>
                         </div>
-                        <div class="calendar__weekdays">
-                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
-                        </div>
-                        <div class="calendar__days" id="calDaysLux"></div>
                     </div>
                 </div>
+
+                <div class="floor-section">
+                    <div class="floor-banner floor-banner--2">2 этаж — Для пар (2 дорослих)</div>
+                    <div class="calendars-row">
+                        <div class="calendar">
+                            <div class="calendar__type-name">Двомісний</div>
+                            <div class="calendar__header">
+                                <button class="calendar__nav calendar__prev" id="calPrevDouble">&#9664;</button>
+                                <h3 class="calendar__month" id="calMonthDouble"></h3>
+                                <button class="calendar__nav calendar__next" id="calNextDouble">&#9654;</button>
+                            </div>
+                            <div class="calendar__weekdays">
+                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                            </div>
+                            <div class="calendar__days" id="calDaysDouble"></div>
+                        </div>
+
+                        <div class="calendar">
+                            <div class="calendar__type-name">Двомісний Люкс</div>
+                            <div class="calendar__header">
+                                <button class="calendar__nav calendar__prev" id="calPrevDoubleLux">&#9664;</button>
+                                <h3 class="calendar__month" id="calMonthDoubleLux"></h3>
+                                <button class="calendar__nav calendar__next" id="calNextDoubleLux">&#9654;</button>
+                            </div>
+                            <div class="calendar__weekdays">
+                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                            </div>
+                            <div class="calendar__days" id="calDaysDoubleLux"></div>
+                        </div>
+
+                        <div class="calendar">
+                            <div class="calendar__type-name">Двомісний Преміум</div>
+                            <div class="calendar__header">
+                                <button class="calendar__nav calendar__prev" id="calPrevDoublePremium">&#9664;</button>
+                                <h3 class="calendar__month" id="calMonthDoublePremium"></h3>
+                                <button class="calendar__nav calendar__next" id="calNextDoublePremium">&#9654;</button>
+                            </div>
+                            <div class="calendar__weekdays">
+                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                            </div>
+                            <div class="calendar__days" id="calDaysDoublePremium"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -383,9 +431,16 @@
                             <label for="roomType">Тип розміщення</label>
                             <select id="roomType" name="roomType" required>
                                 <option value="">Оберіть тип</option>
-                                <option value="standart">Стандарт — від 1 500 грн</option>
-                                <option value="cottage">Котедж — від 4 000 грн</option>
-                                <option value="lux">Люкс — від 7 000 грн</option>
+                                <optgroup label="1 поверх — Сімейні">
+                                    <option value="family">Сімейний — від 1 500 грн</option>
+                                    <option value="family-plus">Сімейний+ — від 2 000 грн</option>
+                                    <option value="family-lux">Сімейний Люкс — від 3 000 грн</option>
+                                </optgroup>
+                                <optgroup label="2 поверх — Для пар">
+                                    <option value="double">Двомісний — від 1 200 грн</option>
+                                    <option value="double-lux">Двомісний Люкс — від 2 500 грн</option>
+                                    <option value="double-premium">Двомісний Преміум — від 4 000 грн</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="form__row">
