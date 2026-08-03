@@ -286,6 +286,27 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(feature);
     });
 
+    // === Вкладки поверхів ===
+    var floorTabs = document.querySelectorAll('.floor-tab');
+    var floor1 = document.getElementById('floor1');
+    var floor2 = document.getElementById('floor2');
+
+    floorTabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            floorTabs.forEach(function(t) { t.classList.remove('floor-tab--active'); });
+            tab.classList.add('floor-tab--active');
+
+            var floor = tab.getAttribute('data-floor');
+            if (floor === '1') {
+                floor1.style.display = '';
+                floor2.style.display = 'none';
+            } else {
+                floor1.style.display = 'none';
+                floor2.style.display = '';
+            }
+        });
+    });
+
     // === 6 календарів (по одному на тип номера) ===
     var calScriptUrl = 'https://script.google.com/macros/s/AKfycbx9DyhnHn1t8ecI-5zwfzpJq0bJgMB-bSloIid848ZTSB331ZA4G9HxIBh9YB89_F0R9g/exec';
     var bookedDates = [];

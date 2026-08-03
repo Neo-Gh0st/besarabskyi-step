@@ -237,28 +237,33 @@ body {
     margin-top: 20px;
 }
 
-/* Floor section */
-.floor-section {
-    margin-top: 30px;
+/* Floor tabs */
+.floor-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0 20px;
 }
 
-.floor-banner {
-    text-align: center;
+.floor-tab {
+    flex: 1;
     padding: 14px 20px;
+    border: 2px solid var(--primary);
     border-radius: var(--radius);
+    background: var(--white);
+    color: var(--primary);
     font-weight: 700;
     font-size: 1rem;
-    margin-bottom: 5px;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.floor-banner--1 {
-    background: #dbeafe;
-    color: #1e40af;
+.floor-tab:hover {
+    background: var(--light);
 }
 
-.floor-banner--2 {
-    background: #fce7f3;
-    color: #9d174d;
+.floor-tab--active {
+    background: var(--primary);
+    color: var(--white);
 }
 
 /* Calendar */

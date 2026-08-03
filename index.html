@@ -85,8 +85,12 @@
                     </div>
                 </div>
 
-                <div class="floor-section">
-                    <div class="floor-banner floor-banner--1">1 этаж — Сімейні номери (2 дорослих + 1-2 дитини)</div>
+                <div class="floor-tabs">
+                    <button class="floor-tab floor-tab--active" data-floor="1">1 поверх — Сімейні</button>
+                    <button class="floor-tab" data-floor="2">2 поверх — Для пар</button>
+                </div>
+
+                <div class="floor-content" id="floor1">
                     <div class="calendars-row">
                         <div class="calendar">
                             <div class="calendar__type-name">Сімейний</div>
@@ -129,8 +133,7 @@
                     </div>
                 </div>
 
-                <div class="floor-section">
-                    <div class="floor-banner floor-banner--2">2 этаж — Для пар (2 дорослих)</div>
+                <div class="floor-content" id="floor2" style="display:none;">
                     <div class="calendars-row">
                         <div class="calendar">
                             <div class="calendar__type-name">Двомісний</div>
