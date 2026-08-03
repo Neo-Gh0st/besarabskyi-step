@@ -44,17 +44,32 @@ function checkOverlap(sheet, roomType, dateIn, dateOut, excludeRow) {
 }
 
 function doPost(e) {
-  var data = {};
+  var rawData = {};
 
-  if (e.parameter && e.parameter.name) {
-    data = e.parameter;
-  } else if (e.postData && e.postData.contents) {
-    var raw = e.postData.contents;
-    var pairs = raw.split('&');
-    for (var i = 0; i < pairs.length; i++) {
-      var kv = pairs[i].split('=');
-      data[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+  if (e.postData && e.postData.contents) {
+    try {
+      rawData = JSON.parse(e.postData.contents);
+    } catch(err) {
+      var raw = e.postData.contents;
+      var pairs = raw.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var kv = pairs[i].split('=');
+        rawData[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+      }
     }
+  }
+
+  // === Обробка callback_query від Telegram кнопок ===
+  if (rawData.callback_query) {
+    handleCallbackQuery(rawData.callback_query);
+    return ContentService.createTextOutput('OK')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  // === Обробка бронювання з сайту ===
+  var data = rawData;
+  if (!data.name && e.parameter && e.parameter.name) {
+    data = e.parameter;
   }
 
   // === Google Таблица ===
@@ -219,7 +234,15 @@ function doPost(e) {
         payload: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
           text: msg,
-          parse_mode: 'Markdown'
+          parse_mode: 'Markdown',
+          reply_markup: JSON.stringify({
+            inline_keyboard: [
+              [
+                { text: '✅ Підтвердити', callback_data: 'confirm_' + newRow },
+                { text: '❌ Скасувати', callback_data: 'cancel_' + newRow }
+              ]
+            ]
+          })
         })
       }
     );
@@ -328,4 +351,122 @@ function doGet(e) {
 
   return ContentService.createTextOutput('OK')
     .setMimeType(ContentService.MimeType.TEXT);
+}
+
+// === Обробка натискання кнопок в Telegram ===
+function handleCallbackQuery(callbackQuery) {
+  var data = callbackQuery.data;
+  var message = callbackQuery.message;
+
+  if (!data || !message) return;
+
+  var parts = data.split('_');
+  var action = parts[0];
+  var rowId = parseInt(parts[1]);
+
+  if (!rowId) return;
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();
+
+  // Знаходимо рядок за номером заявки
+  var lastRow = sheet.getLastRow();
+  var targetRow = -1;
+
+  for (var i = 6; i <= lastRow; i++) {
+    if (sheet.getRange(i, 1).getValue() == rowId || i == rowId) {
+      targetRow = i;
+      break;
+    }
+  }
+
+  // Якщо не знайшли по ID, шукаємо по тексту повідомлення
+  if (targetRow === -1) {
+    for (var i = 6; i <= lastRow; i++) {
+      var status = String(sheet.getRange(i, 9).getValue()).trim();
+      if (status === 'Новая') {
+        targetRow = i;
+        break;
+      }
+    }
+  }
+
+  if (targetRow === -1) return;
+
+  var newStatus = '';
+  var emoji = '';
+  var btnText = '';
+
+  if (action === 'confirm') {
+    newStatus = 'Подтверждена';
+    emoji = '✅';
+    btnText = 'Підтверджено';
+  } else if (action === 'cancel') {
+    newStatus = 'Отменена';
+    emoji = '❌';
+    btnText = 'Скасовано';
+  }
+
+  // Оновлюємо статус в таблиці
+  sheet.getRange(targetRow, 9).setValue(newStatus);
+  if (action === 'confirm') {
+    sheet.getRange(targetRow, 9).setFontColor('#166534').setFontWeight('bold');
+  } else {
+    sheet.getRange(targetRow, 9).setFontColor('#dc2626').setFontWeight('bold');
+  }
+
+  // Редагуємо повідомлення в Telegram
+  var oldText = message.text;
+  var newText = oldText + '\n\n' + emoji + ' *Статус:* ' + btnText;
+
+  try {
+    UrlFetchApp.fetch(
+      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/editMessageText',
+      {
+        method: 'post',
+        contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({
+          chat_id: message.chat.id,
+          message_id: message.message_id,
+          text: newText,
+          parse_mode: 'Markdown',
+          reply_markup: JSON.stringify({
+            inline_keyboard: []
+          })
+        })
+      }
+    );
+  } catch (err) {}
+
+  // Відповідаємо на callback
+  try {
+    UrlFetchApp.fetch(
+      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/answerCallbackQuery',
+      {
+        method: 'post',
+        contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({
+          callback_query_id: callbackQuery.id,
+          text: btnText
+        })
+      }
+    );
+  } catch (err) {}
+}
+
+// === Встановлення webhook ===
+function setWebhook() {
+  var webAppUrl = ScriptApp.getService().getUrl();
+  var result = UrlFetchApp.fetch(
+    'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/setWebhook',
+    {
+      method: 'post',
+      contentType: 'application/json; charset=utf-8',
+      payload: JSON.stringify({
+        url: webAppUrl,
+        allowed_updates: ['callback_query']
+      })
+    }
+  );
+  return result.getContentText();
 }
