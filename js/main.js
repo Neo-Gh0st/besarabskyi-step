@@ -279,26 +279,50 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(feature);
     });
 
-    // Календарь забронированных дат
+    // === 3 календаря (по одному на тип номера) ===
     var calScriptUrl = 'https://script.google.com/macros/s/AKfycbx9DyhnHn1t8ecI-5zwfzpJq0bJgMB-bSloIid848ZTSB331ZA4G9HxIBh9YB89_F0R9g/exec';
-    var calDays = document.getElementById('calDays');
-    var calMonth = document.getElementById('calMonth');
-    var calPrev = document.getElementById('calPrev');
-    var calNext = document.getElementById('calNext');
     var bookedDates = [];
-    var currentMonth = new Date().getMonth();
-    var currentYear = new Date().getFullYear();
 
     var monthNames = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
         'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
 
-    function renderCalendar() {
-        if (!calDays || !calMonth) return;
+    var calendars = [
+        {
+            type: 'standart',
+            month: new Date().getMonth(),
+            year: new Date().getFullYear(),
+            monthEl: document.getElementById('calMonthStandart'),
+            daysEl: document.getElementById('calDaysStandart'),
+            prevBtn: document.getElementById('calPrevStandart'),
+            nextBtn: document.getElementById('calNextStandart')
+        },
+        {
+            type: 'cottage',
+            month: new Date().getMonth(),
+            year: new Date().getFullYear(),
+            monthEl: document.getElementById('calMonthCottage'),
+            daysEl: document.getElementById('calDaysCottage'),
+            prevBtn: document.getElementById('calPrevCottage'),
+            nextBtn: document.getElementById('calNextCottage')
+        },
+        {
+            type: 'lux',
+            month: new Date().getMonth(),
+            year: new Date().getFullYear(),
+            monthEl: document.getElementById('calMonthLux'),
+            daysEl: document.getElementById('calDaysLux'),
+            prevBtn: document.getElementById('calPrevLux'),
+            nextBtn: document.getElementById('calNextLux')
+        }
+    ];
 
-        calMonth.textContent = monthNames[currentMonth] + ' ' + currentYear;
+    function renderCal(cal) {
+        if (!cal.daysEl || !cal.monthEl) return;
 
-        var firstDay = new Date(currentYear, currentMonth, 1);
-        var lastDay = new Date(currentYear, currentMonth + 1, 0);
+        cal.monthEl.textContent = monthNames[cal.month] + ' ' + cal.year;
+
+        var firstDay = new Date(cal.year, cal.month, 1);
+        var lastDay = new Date(cal.year, cal.month + 1, 0);
         var startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
         var daysInMonth = lastDay.getDate();
         var today = new Date();
@@ -311,13 +335,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         for (var d = 1; d <= daysInMonth; d++) {
-            var date = new Date(currentYear, currentMonth, d);
-            var dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+            var date = new Date(cal.year, cal.month, d);
+            var dateStr = cal.year + '-' + String(cal.month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
             var cls = 'calendar__day';
 
             if (date < today) {
                 cls += ' calendar__day--past';
-            } else if (isBooked(dateStr)) {
+            } else if (isBookedForType(dateStr, cal.type)) {
                 cls += ' calendar__day--booked';
             } else {
                 cls += ' calendar__day--free';
@@ -330,12 +354,14 @@ document.addEventListener('DOMContentLoaded', function() {
             html += '<div class="' + cls + '" title="' + dateStr + '">' + d + '</div>';
         }
 
-        calDays.innerHTML = html;
+        cal.daysEl.innerHTML = html;
     }
 
-    function isBooked(dateStr) {
+    function isBookedForType(dateStr, roomType) {
         for (var i = 0; i < bookedDates.length; i++) {
             var item = bookedDates[i];
+            var itemRoom = (item.room || '').toLowerCase().trim();
+            if (itemRoom !== roomType) continue;
             if (dateStr >= item.from && dateStr <= item.to) {
                 return true;
             }
@@ -343,32 +369,36 @@ document.addEventListener('DOMContentLoaded', function() {
         return false;
     }
 
-    if (calPrev) {
-        calPrev.addEventListener('click', function() {
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            renderCalendar();
-        });
+    function renderAllCalendars() {
+        for (var i = 0; i < calendars.length; i++) {
+            renderCal(calendars[i]);
+        }
     }
 
-    if (calNext) {
-        calNext.addEventListener('click', function() {
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
+    // Навигация для каждого календаря
+    for (var i = 0; i < calendars.length; i++) {
+        (function(cal) {
+            if (cal.prevBtn) {
+                cal.prevBtn.addEventListener('click', function() {
+                    cal.month--;
+                    if (cal.month < 0) { cal.month = 11; cal.year--; }
+                    renderCal(cal);
+                });
             }
-            renderCalendar();
-        });
+            if (cal.nextBtn) {
+                cal.nextBtn.addEventListener('click', function() {
+                    cal.month++;
+                    if (cal.month > 11) { cal.month = 0; cal.year++; }
+                    renderCal(cal);
+                });
+            }
+        })(calendars[i]);
     }
 
-    // Сначала рендерим пустой календарь
-    renderCalendar();
+    // Сначала рендерим пустые календари
+    renderAllCalendars();
 
-    // Завантажуємо заброньовані дати через fetch (Google Apps Script робить 302 redirect)
+    // Завантажуємо заброньовані дати
     fetchBookedDates();
 
     function fetchBookedDates() {
@@ -381,11 +411,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 } catch(e) {
                     bookedDates = [];
                 }
-                renderCalendar();
+                renderAllCalendars();
                 updateFloorPlan();
             })
             .catch(function() {
-                // Fallback: JSONP
                 loadBookedDatesJSONP();
             });
     }
@@ -395,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window[callbackName] = function(data) {
             delete window[callbackName];
             bookedDates = data || [];
-            renderCalendar();
+            renderAllCalendars();
             updateFloorPlan();
         };
         var script = document.createElement('script');

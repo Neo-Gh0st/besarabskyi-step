@@ -231,12 +231,51 @@ body {
 
 /* Calendar */
 .calendar {
-    max-width: 400px;
-    margin: 0 auto;
     background: var(--white);
     border-radius: var(--radius);
     box-shadow: var(--shadow-lg);
     overflow: hidden;
+}
+
+.calendar__type-name {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px 0 0;
+    color: var(--text);
+}
+
+.calendar--standart .calendar__header {
+    background: #dc2626;
+}
+.calendar--standart .calendar__day--booked {
+    background: #fecaca;
+    color: #991b1b;
+}
+.calendar--standart .calendar__type-name {
+    color: #dc2626;
+}
+
+.calendar--cottage .calendar__header {
+    background: #ea580c;
+}
+.calendar--cottage .calendar__day--booked {
+    background: #fed7aa;
+    color: #9a3412;
+}
+.calendar--cottage .calendar__type-name {
+    color: #ea580c;
+}
+
+.calendar--lux .calendar__header {
+    background: #9333ea;
+}
+.calendar--lux .calendar__day--booked {
+    background: #e9d5ff;
+    color: #6b21a8;
+}
+.calendar--lux .calendar__type-name {
+    color: #9333ea;
 }
 
 .calendar__header {
@@ -244,7 +283,6 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    background: var(--primary);
     color: var(--white);
 }
 

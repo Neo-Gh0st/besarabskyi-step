@@ -85,16 +85,45 @@
                     </div>
                 </div>
 
-                <div class="calendar" style="margin-top:30px;">
-                    <div class="calendar__header">
-                        <button class="calendar__nav calendar__prev" id="calPrev">&#9664;</button>
-                        <h3 class="calendar__month" id="calMonth"></h3>
-                        <button class="calendar__nav calendar__next" id="calNext">&#9654;</button>
+                <div class="calendars-row" style="margin-top:30px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;">
+                    <div class="calendar calendar--standart">
+                        <div class="calendar__type-name">Стандарт</div>
+                        <div class="calendar__header">
+                            <button class="calendar__nav calendar__prev" id="calPrevStandart">&#9664;</button>
+                            <h3 class="calendar__month" id="calMonthStandart"></h3>
+                            <button class="calendar__nav calendar__next" id="calNextStandart">&#9654;</button>
+                        </div>
+                        <div class="calendar__weekdays">
+                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                        </div>
+                        <div class="calendar__days" id="calDaysStandart"></div>
                     </div>
-                    <div class="calendar__weekdays">
-                        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+
+                    <div class="calendar calendar--cottage">
+                        <div class="calendar__type-name">Коттедж</div>
+                        <div class="calendar__header">
+                            <button class="calendar__nav calendar__prev" id="calPrevCottage">&#9664;</button>
+                            <h3 class="calendar__month" id="calMonthCottage"></h3>
+                            <button class="calendar__nav calendar__next" id="calNextCottage">&#9654;</button>
+                        </div>
+                        <div class="calendar__weekdays">
+                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                        </div>
+                        <div class="calendar__days" id="calDaysCottage"></div>
                     </div>
-                    <div class="calendar__days" id="calDays"></div>
+
+                    <div class="calendar calendar--lux">
+                        <div class="calendar__type-name">Люкс</div>
+                        <div class="calendar__header">
+                            <button class="calendar__nav calendar__prev" id="calPrevLux">&#9664;</button>
+                            <h3 class="calendar__month" id="calMonthLux"></h3>
+                            <button class="calendar__nav calendar__next" id="calNextLux">&#9654;</button>
+                        </div>
+                        <div class="calendar__weekdays">
+                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                        </div>
+                        <div class="calendar__days" id="calDaysLux"></div>
+                    </div>
                 </div>
             </div>
         </section>
