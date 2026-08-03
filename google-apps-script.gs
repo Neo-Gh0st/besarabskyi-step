@@ -72,7 +72,7 @@ function doPost(e) {
     var text = (msg.text || '').trim();
     var chatType = msg.chat.type;
 
-    if (text === '/start' && (chatType === 'group' || chatType === 'supergroup')) {
+    if (text.indexOf('/start') === 0 && (chatType === 'group' || chatType === 'supergroup')) {
       sendWebAppButton(msg.chat.id);
       return ContentService.createTextOutput('OK')
         .setMimeType(ContentService.MimeType.TEXT);
