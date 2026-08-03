@@ -1347,7 +1347,16 @@ body {
     .contacts__grid {
         grid-template-columns: 1fr;
     }
-    
+
+    .calendars-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .floor-tabs {
+        flex-direction: column;
+    }
+
     .footer__inner {
         flex-direction: column;
         align-items: center;
@@ -1380,5 +1389,17 @@ body {
     
     .form__row {
         grid-template-columns: 1fr;
+    }
+
+    .calendar__type-name {
+        font-size: 0.9rem;
+    }
+
+    .calendar__header {
+        padding: 14px;
+    }
+
+    .calendar__month {
+        font-size: 1rem;
     }
 }
