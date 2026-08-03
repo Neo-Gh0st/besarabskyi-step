@@ -134,40 +134,47 @@ function doPost(e) {
 
   // === Проверка пересечений ===
   var roomNames = {
-    'standart': 'Стандарт',
-    'cottage': 'Котедж',
-    'lux': 'Люкс'
+    'family': 'Сімейний',
+    'family-plus': 'Сімейний+',
+    'family-lux': 'Сімейний Люкс',
+    'double': 'Двомісний',
+    'double-lux': 'Двомісний Люкс',
+    'double-premium': 'Двомісний Преміум'
   };
 
   var newDateIn = formatDate(data.dateIn);
   var newDateOut = formatDate(data.dateOut);
+  var isAdmin = data.admin === '1' || data.admin === 1;
 
-  var overlap = checkOverlap(sheet, data.roomType, newDateIn, newDateOut, null);
-  if (overlap) {
-    var roomLabel = roomNames[data.roomType] || data.roomType;
-    var msg = '❌ Бронювання неможливе!\n\n' +
-      'Тип: ' + roomLabel + '\n' +
-      'Ваші дати: ' + newDateIn + ' — ' + newDateOut + '\n\n' +
-      'Вже зайнято: ' + overlap.from + ' — ' + overlap.to + '\n' +
-      'Клієнт: ' + overlap.name;
+  // Перевірка перетину тільки для звичайних бронювань
+  if (!isAdmin) {
+    var overlap = checkOverlap(sheet, data.roomType, newDateIn, newDateOut, null);
+    if (overlap) {
+      var roomLabel = roomNames[data.roomType] || data.roomType;
+      var msg = '❌ Бронювання неможливе!\n\n' +
+        'Тип: ' + roomLabel + '\n' +
+        'Ваші дати: ' + newDateIn + ' — ' + newDateOut + '\n\n' +
+        'Вже зайнято: ' + overlap.from + ' — ' + overlap.to + '\n' +
+        'Клієнт: ' + overlap.name;
 
-    try {
-      UrlFetchApp.fetch(
-        'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-        {
-          method: 'post',
-          contentType: 'application/json; charset=utf-8',
-          payload: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: msg
-          })
-        }
-      );
-    } catch (err) {}
+      try {
+        UrlFetchApp.fetch(
+          'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
+          {
+            method: 'post',
+            contentType: 'application/json; charset=utf-8',
+            payload: JSON.stringify({
+              chat_id: TELEGRAM_CHAT_ID,
+              text: msg
+            })
+          }
+        );
+      } catch (err) {}
 
-    var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
-    return ContentService.createTextOutput(html)
-      .setMimeType(ContentService.MimeType.HTML);
+      var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
+      return ContentService.createTextOutput(html)
+        .setMimeType(ContentService.MimeType.HTML);
+    }
   }
 
   // Данные
@@ -180,8 +187,8 @@ function doPost(e) {
     data.dateIn || '',
     data.dateOut || '',
     data.guests || '',
-    data.comment || '',
-    'Новая'
+    (isAdmin ? '[Телефон] ' : '') + (data.comment || ''),
+    isAdmin ? 'Подтверждена' : 'Новая'
   ];
 
   var newRow = sheet.getLastRow() + 1;
@@ -196,24 +203,35 @@ function doPost(e) {
     sheet.getRange(newRow, 1, 1, 9).setBackground('#f0f7ff');
   }
 
-  // Статус "Новая" красным
-  sheet.getRange(newRow, 9)
-    .setFontColor('#d93025')
-    .setFontWeight('bold');
+  // Статус
+  if (isAdmin) {
+    sheet.getRange(newRow, 9)
+      .setFontColor('#166534')
+      .setFontWeight('bold');
+  } else {
+    sheet.getRange(newRow, 9)
+      .setFontColor('#d93025')
+      .setFontWeight('bold');
+  }
 
   // === Telegram ===
-  var roomNames = {
-    'standart': '🏠 Стандарт',
-    'cottage': '🏡 Коттедж',
-    'lux': '🏰 Люкс'
+  var roomNames2 = {
+    'family': '🏠 Сімейний',
+    'family-plus': '🏠 Сімейний+',
+    'family-lux': '🏠 Сімейний Люкс',
+    'double': '🛏️ Двомісний',
+    'double-lux': '🛏️ Двомісний Люкс',
+    'double-premium': '🛏️ Двомісний Преміум'
   };
 
+  var header = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВАЯ ЗАЯВКА*';
+
   var msg = '━━━━━━━━━━━━━━━\n' +
-    '📩 *НОВАЯ ЗАЯВКА*\n' +
+    header + '\n' +
     '━━━━━━━━━━━━━━━\n\n' +
     '👤 *Имя:* ' + (data.name || '-') + '\n' +
     '📞 *Телефон:* ' + (data.phone || '-') + '\n' +
-    '🏠 *Тип:* ' + (roomNames[data.roomType] || data.roomType || '-') + '\n\n' +
+    '🏠 *Тип:* ' + (roomNames2[data.roomType] || data.roomType || '-') + '\n\n' +
     '📅 *Заезд:* ' + (data.dateIn || '-') + '\n' +
     '📅 *Выезд:* ' + (data.dateOut || '-') + '\n' +
     '👥 *Гостей:* ' + (data.guests || '-') + '\n';
