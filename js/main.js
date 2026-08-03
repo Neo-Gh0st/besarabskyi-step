@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.textContent = 'Надсилання...';
             submitBtn.disabled = true;
             
-            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_L_hh4-Su007xsqWcTTCupgKblr2_5DXzVpXHSsBAZPIeEQd5w4xVbTA-OgCy9LdC2A/exec';
+            var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysivI3t48CWYOSHpyngI5gOBkn26zxJyktzdBaKvWN65eumVURdk_1gmG8ACjGFce74w/exec';
             
             var iframeName = 'submit_iframe_' + Date.now();
             var iframe = document.createElement('iframe');
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // === 6 календарів (по одному на тип номера) ===
-    var calScriptUrl = 'https://script.google.com/macros/s/AKfycby_L_hh4-Su007xsqWcTTCupgKblr2_5DXzVpXHSsBAZPIeEQd5w4xVbTA-OgCy9LdC2A/exec';
+    var calScriptUrl = 'https://script.google.com/macros/s/AKfycbysivI3t48CWYOSHpyngI5gOBkn26zxJyktzdBaKvWN65eumVURdk_1gmG8ACjGFce74w/exec';
     var bookedDates = [];
 
     var monthNames = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
