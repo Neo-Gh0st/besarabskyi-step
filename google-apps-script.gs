@@ -1,5 +1,5 @@
 var TELEGRAM_BOT_TOKEN = '8737422467:AAEzLfb8K5SaVhl2ffCpPOaSiYfx5CLiKyY';
-var TELEGRAM_CHAT_ID = '-5586022794';
+var TELEGRAM_CHAT_ID = '-1004464763561';
 
 function formatDate(d) {
   if (!d) return '';
