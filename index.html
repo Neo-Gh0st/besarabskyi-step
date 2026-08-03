@@ -195,41 +195,38 @@
 
         <section class="layout section" id="layout">
             <div class="container">
-                <h2 class="section__title">Схема корпусів</h2>
-                <p class="layout__subtitle">Три корпуси-вагони розташовані буквою «П». В кожному корпусі — 3 номери, в кожному номері по 2 кімнати.</p>
+                <h2 class="section__title">Наявність номерів</h2>
+                <p class="layout__subtitle">Заброньовані номери підсвічуються червоним.</p>
 
-                <div class="plan">
-                    <div class="plan__shape">
-                        <!-- Ліве крило -->
-                        <div class="plan__wing">
-                            <div class="plan__wing-label">Корпус А</div>
-                            <div class="plan__wing-rooms">
-                                <div class="plan__room"><small>А|Б</small></div>
-                                <div class="plan__room"><small>А|Б</small></div>
-                                <div class="plan__room"><small>А|Б</small></div>
+                <div class="plan-floors">
+                    <!-- 1 поверх -->
+                    <div class="plan-floor">
+                        <h3 class="plan-floor__title">1 этаж</h3>
+                        <div class="plan-p">
+                            <div class="plan-p__left" data-room="standart" id="plan1Left">
+                                <span>Стандарт</span>
+                            </div>
+                            <div class="plan-p__top" data-room="cottage" id="plan1Top">
+                                <span>Котедж</span>
+                            </div>
+                            <div class="plan-p__right" data-room="lux" id="plan1Right">
+                                <span>Люкс</span>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Середина -->
-                        <div class="plan__middle">
-                            <div class="plan__bridge">
-                                <div class="plan__bridge-label">Корпус Б</div>
-                                <div class="plan__bridge-rooms">
-                                    <div class="plan__room"><small>А|Б</small></div>
-                                    <div class="plan__room"><small>А|Б</small></div>
-                                    <div class="plan__room"><small>А|Б</small></div>
-                                </div>
+                    <!-- 2 поверх -->
+                    <div class="plan-floor">
+                        <h3 class="plan-floor__title">2 этаж</h3>
+                        <div class="plan-p">
+                            <div class="plan-p__left" data-room="standart" id="plan2Left">
+                                <span>Стандарт</span>
                             </div>
-                            <div class="plan__courtyard">Двір</div>
-                        </div>
-
-                        <!-- Праве крило -->
-                        <div class="plan__wing">
-                            <div class="plan__wing-label">Корпус В</div>
-                            <div class="plan__wing-rooms">
-                                <div class="plan__room"><small>А|Б</small></div>
-                                <div class="plan__room"><small>А|Б</small></div>
-                                <div class="plan__room"><small>А|Б</small></div>
+                            <div class="plan-p__top" data-room="cottage" id="plan2Top">
+                                <span>Котедж</span>
+                            </div>
+                            <div class="plan-p__right" data-room="lux" id="plan2Right">
+                                <span>Люкс</span>
                             </div>
                         </div>
                     </div>

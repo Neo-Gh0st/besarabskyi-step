@@ -626,7 +626,7 @@ body {
     color: var(--gray);
 }
 
-/* Layout / Floor Plan — П-shape */
+/* Layout / Floor Plan */
 .layout {
     background: var(--light);
 }
@@ -635,129 +635,118 @@ body {
     text-align: center;
     color: var(--gray);
     font-size: 1.05rem;
-    margin-bottom: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 30px;
 }
 
-.plan {
-    max-width: 850px;
-    margin: 0 auto;
+/* Два поверхи поруч */
+.plan-floors {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
 }
 
-/* Головна форма П */
-.plan__shape {
-    display: grid;
-    grid-template-columns: 200px 1fr 200px;
-    grid-template-rows: auto 1fr;
-    gap: 0;
-    border: 4px solid var(--dark);
-    border-radius: 8px;
-    overflow: hidden;
+/* Один поверх */
+.plan-floor {
+    text-align: center;
+}
+
+.plan-floor__title {
+    font-size: 1rem;
+    color: var(--dark);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Форма П */
+.plan-p {
+    position: relative;
+    width: 220px;
+    height: 180px;
+}
+
+/* Ліве крило */
+.plan-p__left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 100%;
     background: var(--white);
-    min-height: 350px;
-}
-
-/* Крила */
-.plan__wing {
-    grid-row: 1 / -1;
-    display: flex;
-    flex-direction: column;
-}
-
-.plan__wing:first-child {
-    grid-column: 1;
-    border-right: 3px solid var(--dark);
-}
-
-.plan__wing:last-child {
-    grid-column: 3;
-    border-left: 3px solid var(--dark);
-}
-
-.plan__wing-label {
-    background: #1e40af;
-    color: var(--white);
-    text-align: center;
-    padding: 12px 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.plan__wing-rooms {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    flex: 1;
-}
-
-/* Середина */
-.plan__middle {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    display: flex;
-    flex-direction: column;
-}
-
-.plan__bridge {
-    border-bottom: 3px solid var(--dark);
-    display: flex;
-    flex-direction: column;
-}
-
-.plan__bridge-label {
-    background: #92400e;
-    color: var(--white);
-    text-align: center;
-    padding: 12px 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.plan__bridge-rooms {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-/* Двір */
-.plan__courtyard {
-    flex: 1;
+    border: 3px solid var(--dark);
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f0fdf4;
-    color: #166534;
-    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.plan-p__left span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border: 2px dashed #86efac;
-    border-radius: 0 0 4px 4px;
-    margin: 0 20px 20px;
+    color: var(--dark);
 }
 
-/* Номер */
-.plan__room {
-    background: #dbeafe;
-    border: 1px solid #93c5fd;
-    padding: 14px 8px;
-    text-align: center;
-    flex: 1;
-    transition: var(--transition);
+/* Верхня частина (поперечина) */
+.plan-p__top {
+    position: absolute;
+    left: 50px;
+    top: 0;
+    right: 50px;
+    height: 50px;
+    background: var(--white);
+    border: 3px solid var(--dark);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
 }
 
-.plan__room:hover {
-    background: #bfdbfe;
-}
-
-.plan__room small {
-    font-size: 0.8rem;
-    color: #1e40af;
+.plan-p__top span {
+    font-size: 0.75rem;
     font-weight: 600;
+    color: var(--dark);
+}
+
+/* Праве крило */
+.plan-p__right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    background: var(--white);
+    border: 3px solid var(--dark);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.plan-p__right span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+/* Заброньовано — червоний */
+.plan-p__left.booked,
+.plan-p__top.booked,
+.plan-p__right.booked {
+    background: #fecaca;
+    border-color: #dc2626;
+}
+
+.plan-p__left.booked span,
+.plan-p__top.booked span,
+.plan-p__right.booked span {
+    color: #991b1b;
 }
 
 /* Gallery */

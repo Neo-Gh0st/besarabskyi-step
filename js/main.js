@@ -382,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     bookedDates = [];
                 }
                 renderCalendar();
+                updateFloorPlan();
             })
             .catch(function() {
                 // Fallback: JSONP
@@ -395,6 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
             delete window[callbackName];
             bookedDates = data || [];
             renderCalendar();
+            updateFloorPlan();
         };
         var script = document.createElement('script');
         script.src = calScriptUrl + '?callback=' + callbackName + '&action=booked&_=' + Date.now();
@@ -402,5 +404,37 @@ document.addEventListener('DOMContentLoaded', function() {
             delete window[callbackName];
         };
         document.body.appendChild(script);
+    }
+
+    // Підсвітка заброньованих номерів на схемі
+    function updateFloorPlan() {
+        var today = new Date();
+        var todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+        var bookedRooms = {};
+        for (var i = 0; i < bookedDates.length; i++) {
+            var item = bookedDates[i];
+            if (todayStr >= item.from && todayStr <= item.to) {
+                var room = (item.room || '').toLowerCase();
+                bookedRooms[room] = true;
+            }
+        }
+
+        var parts = ['Left', 'Top', 'Right'];
+        var floors = [1, 2];
+        var roomMap = { Left: 'standart', Top: 'cottage', Right: 'lux' };
+
+        for (var f = 0; f < floors.length; f++) {
+            for (var p = 0; p < parts.length; p++) {
+                var el = document.getElementById('plan' + floors[f] + parts[p]);
+                if (!el) continue;
+                var roomType = roomMap[parts[p]];
+                if (bookedRooms[roomType]) {
+                    el.classList.add('booked');
+                } else {
+                    el.classList.remove('booked');
+                }
+            }
+        }
     }
 });
