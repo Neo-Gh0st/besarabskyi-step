@@ -98,9 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function findConflicts(dateIn, dateOut, roomType) {
         var conflicts = [];
+        var rt = (roomType || '').toLowerCase().trim();
         for (var i = 0; i < bookedDates.length; i++) {
             var item = bookedDates[i];
-            if (roomType && item.room !== roomType) continue;
+            var itemRoom = (item.room || '').toLowerCase().trim();
+            if (rt && itemRoom !== rt) continue;
             if (dateIn <= item.to && dateOut >= item.from) {
                 conflicts.push(item);
             }
