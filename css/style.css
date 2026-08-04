@@ -47,6 +47,8 @@ body {
     text-align: center;
     margin-bottom: 50px;
     color: var(--dark);
+    min-height: 2.8rem;
+}
 }
 
 /* Header */
@@ -74,10 +76,11 @@ body {
     align-items: center;
     gap: 8px;
     text-decoration: none;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--primary);
     white-space: nowrap;
+    letter-spacing: -0.5px;
 }
 
 .logo__icon {
@@ -1200,6 +1203,10 @@ body {
 }
 
 /* Reviews */
+.reviews {
+    background: var(--bg-alt);
+}
+
 .reviews__slider {
     position: relative;
     overflow: hidden;
