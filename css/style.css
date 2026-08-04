@@ -75,9 +75,9 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     text-decoration: none;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--primary);
     white-space: nowrap;
@@ -91,16 +91,17 @@ body {
 
 .nav {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     flex: 1;
     justify-content: center;
+    flex-wrap: nowrap;
 }
 
 .nav__link {
     text-decoration: none;
     color: var(--dark);
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     white-space: nowrap;
     transition: var(--transition);
 }
@@ -116,10 +117,10 @@ body {
     text-decoration: none;
     color: var(--white);
     background: var(--primary);
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 30px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: var(--transition);
     flex-shrink: 0;
 }
