@@ -1711,3 +1711,29 @@ body {
     color: var(--text);
     font-size: 1rem;
 }
+
+/* Booking Total */
+.booking__total {
+    background: var(--light);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.booking__total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.booking__total-row--sum {
+    border-top: 2px solid var(--primary);
+    margin-top: 8px;
+    padding-top: 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+}

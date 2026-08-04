@@ -12,6 +12,16 @@ var ROOM_NAMES = {
   'double-lux-2': 'Люкс 2'
 };
 
+var PRICES = {
+  'family': 1500,
+  'family-plus': 2000,
+  'family-lux': 3000,
+  'family-2': 1500,
+  'family-plus-2': 2000,
+  'double-lux-1': 2500,
+  'double-lux-2': 2500
+};
+
 function formatDate(d) {
   if (!d) return '';
   if (d instanceof Date) {
@@ -89,24 +99,24 @@ function doPost(e) {
   var sheet = ss.getActiveSheet();
 
   sheet.getRange('A1').setValue('База відпочинку «Бесарабський степ» — Заявки з сайту');
-  sheet.getRange('A1:I1').merge().setBackground('#1e293b').setFontColor('#ffffff').setFontWeight('bold').setFontSize(14).setHorizontalAlignment('center');
+  sheet.getRange('A1:J1').merge().setBackground('#1e293b').setFontColor('#ffffff').setFontWeight('bold').setFontSize(14).setHorizontalAlignment('center');
   sheet.setRowHeight(1, 40);
 
   sheet.getRange('A2').setValue('Автообробка заявок з сайта besarabskyi-step.github.io');
-  sheet.getRange('A2:I2').merge().setBackground('#e2e8f0').setFontColor('#475569').setFontSize(10).setHorizontalAlignment('center');
+  sheet.getRange('A2:J2').merge().setBackground('#e2e8f0').setFontColor('#475569').setFontSize(10).setHorizontalAlignment('center');
   sheet.setRowHeight(2, 28);
   sheet.setRowHeight(3, 10);
 
-  var headers = [['Дата / час', 'Ім\'я', 'Телефон', 'Тип розміщення', 'Дата заїзду', 'Дата виїзду', 'Кількість гостей', 'Коментар', 'Статус']];
-  sheet.getRange(4, 1, 1, 9).setValues(headers);
-  sheet.getRange(4, 1, 1, 9).setBackground('#1a73e8').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+  var headers = [['Дата / час', 'Ім\'я', 'Телефон', 'Тип розміщення', 'Дата заїзду', 'Дата виїзду', 'Кількість гостей', 'Коментар', 'Статус', 'Сума (грн)']];
+  sheet.getRange(4, 1, 1, 10).setValues(headers);
+  sheet.getRange(4, 1, 1, 10).setBackground('#1a73e8').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
   sheet.setRowHeight(4, 35);
 
-  var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Тип', 'Заїзд', 'Виїзд', 'Гостей', 'Коментар', 'Статус']];
-  sheet.getRange(5, 1, 1, 9).setValues(hints);
-  sheet.getRange(5, 1, 1, 9).setBackground('#dbeafe').setFontColor('#64748b').setFontStyle('italic').setFontSize(9).setHorizontalAlignment('center');
+  var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Тип', 'Заїзд', 'Виїзд', 'Гостей', 'Коментар', 'Статус', 'Загальна сума']];
+  sheet.getRange(5, 1, 1, 10).setValues(hints);
+  sheet.getRange(5, 1, 1, 10).setBackground('#dbeafe').setFontColor('#64748b').setFontStyle('italic').setFontSize(9).setHorizontalAlignment('center');
   sheet.setRowHeight(5, 25);
-  sheet.setColumnWidths(1, 9, 150);
+  sheet.setColumnWidths(1, 10, 150);
   sheet.setFrozenRows(5);
 
   var newDateIn = formatDate(data.dateIn);
@@ -131,19 +141,33 @@ function doPost(e) {
   }
 
   var now = new Date();
+  var nights = 0;
+  var totalPrice = parseInt(data.totalPrice) || 0;
+  if (!totalPrice && data.roomType && data.dateIn && data.dateOut && PRICES[data.roomType]) {
+    var d1 = new Date(newDateIn);
+    var d2 = new Date(newDateOut);
+    nights = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    totalPrice = nights * PRICES[data.roomType];
+  } else if (data.nights) {
+    nights = parseInt(data.nights) || 0;
+  }
+  var pricePerDay = PRICES[data.roomType] || 0;
+
   var rowData = [
     now.toLocaleString('uk-UA'),
     data.name, data.phone, data.roomType,
     data.dateIn, data.dateOut, data.guests,
     (isAdmin ? '[Телефон] ' : '') + (data.comment || ''),
-    isAdmin ? 'Підтверджена' : 'Нова'
+    isAdmin ? 'Підтверджена' : 'Нова',
+    totalPrice
   ];
 
   var newRow = sheet.getLastRow() + 1;
-  sheet.getRange(newRow, 1, 1, 9).setValues([rowData]);
-  sheet.getRange(newRow, 1, 1, 9).setHorizontalAlignment('center').setVerticalAlignment('middle').setBorder(true, true, true, true, true, true);
-  if (newRow % 2 === 0) sheet.getRange(newRow, 1, 1, 9).setBackground('#f0f7ff');
+  sheet.getRange(newRow, 1, 1, 10).setValues([rowData]);
+  sheet.getRange(newRow, 1, 1, 10).setHorizontalAlignment('center').setVerticalAlignment('middle').setBorder(true, true, true, true, true, true);
+  if (newRow % 2 === 0) sheet.getRange(newRow, 1, 1, 10).setBackground('#f0f7ff');
   sheet.getRange(newRow, 9).setFontColor(isAdmin ? '#166534' : '#d93025').setFontWeight('bold');
+  sheet.getRange(newRow, 10).setFontWeight('bold').setNumberFormat('#,##0');
 
   var headerText = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВА ЗАЯВКА*';
   var tgMsgText = '━━━━━━━━━━━━━━━\n' + headerText + '\n━━━━━━━━━━━━━━━\n\n' +
@@ -153,6 +177,13 @@ function doPost(e) {
     '📅 *Заїзд:* ' + data.dateIn + '\n' +
     '📅 *Виїзд:* ' + data.dateOut + '\n' +
     '👥 *Гостей:* ' + data.guests + '\n';
+  if (totalPrice > 0) {
+    tgMsgText += '\n💰 *Сума:* ' + totalPrice.toLocaleString('uk-UA') + ' грн';
+    if (nights > 0 && pricePerDay > 0) {
+      tgMsgText += ' (' + nights + ' дн. × ' + pricePerDay.toLocaleString('uk-UA') + ' грн)';
+    }
+    tgMsgText += '\n';
+  }
   if (data.comment) tgMsgText += '\n💬 *Коментар:*\n' + data.comment + '\n';
   tgMsgText += '\n━━━━━━━━━━━━━━━\n🆔 Заявка #' + newRow;
 

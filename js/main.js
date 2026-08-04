@@ -138,19 +138,83 @@ document.addEventListener('DOMContentLoaded', function() {
         conflictOverlay.className = 'modal-overlay active';
     }
 
+    // === Ціни за добу (легко змінити) ===
+    var PRICES = {
+        'family': 1500,
+        'family-plus': 2000,
+        'family-lux': 3000,
+        'family-2': 1500,
+        'family-plus-2': 2000,
+        'double-lux-1': 2500,
+        'double-lux-2': 2500
+    };
+
+    function formatPrice(n) {
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн';
+    }
+
+    function calcTotal() {
+        var roomType = document.getElementById('roomType').value;
+        var dateIn = document.getElementById('dateIn').value;
+        var dateOut = document.getElementById('dateOut').value;
+        var totalBlock = document.getElementById('bookingTotal');
+
+        if (!roomType || !dateIn || !dateOut || !PRICES[roomType]) {
+            totalBlock.style.display = 'none';
+            return;
+        }
+
+        var d1 = new Date(dateIn);
+        var d2 = new Date(dateOut);
+        var nights = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+        if (nights <= 0) {
+            totalBlock.style.display = 'none';
+            return;
+        }
+
+        var pricePerDay = PRICES[roomType];
+        var total = nights * pricePerDay;
+
+        document.getElementById('totalNights').textContent = nights;
+        document.getElementById('totalPricePerDay').textContent = formatPrice(pricePerDay);
+        document.getElementById('totalSum').textContent = formatPrice(total);
+        totalBlock.style.display = '';
+    }
+
+    var roomTypeEl = document.getElementById('roomType');
+    var dateInEl = document.getElementById('dateIn');
+    var dateOutEl = document.getElementById('dateOut');
+    if (roomTypeEl) roomTypeEl.addEventListener('change', calcTotal);
+    if (dateInEl) dateInEl.addEventListener('change', calcTotal);
+    if (dateOutEl) dateOutEl.addEventListener('change', calcTotal);
+
     if (bookingForm) {
         bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             var formData = new FormData(bookingForm);
+            var roomType = formData.get('roomType');
+            var dateIn = formData.get('dateIn');
+            var dateOut = formData.get('dateOut');
+            var nights = 0;
+            var totalPrice = 0;
+            if (roomType && dateIn && dateOut && PRICES[roomType]) {
+                var d1 = new Date(dateIn);
+                var d2 = new Date(dateOut);
+                nights = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+                totalPrice = nights * PRICES[roomType];
+            }
+
             var data = {
                 name: formData.get('name'),
                 phone: formData.get('phone'),
-                roomType: formData.get('roomType'),
-                dateIn: formData.get('dateIn'),
-                dateOut: formData.get('dateOut'),
+                roomType: roomType,
+                dateIn: dateIn,
+                dateOut: dateOut,
                 guests: formData.get('guests'),
-                comment: formData.get('comment')
+                comment: formData.get('comment'),
+                totalPrice: totalPrice,
+                nights: nights
             };
 
             // Клієнтська перевірка перетину дат
@@ -847,7 +911,8 @@ document.addEventListener('DOMContentLoaded', function() {
             review_form_rating: 'Оцінка',
             review_form_text: 'Ваш відгук', review_form_text_ph: 'Розкажіть про свій досвід відпочинку...',
             review_form_submit: 'Надіслати відгук',
-            review_form_success: 'Дякуємо! Ваш відгук надіслано і з\'явиться на сайті після перевірки.'
+            review_form_success: 'Дякуємо! Ваш відгук надіслано і з\'явиться на сайті після перевірки.',
+            booking_total_nights: 'Ночей:', booking_total_price_per_day: 'Ціна за добу:', booking_total_sum: 'Разом:'
         },
         en: {
             logo_text: 'Bessarabskyi Steppe',
@@ -963,7 +1028,8 @@ document.addEventListener('DOMContentLoaded', function() {
             review_form_rating: 'Rating',
             review_form_text: 'Your review', review_form_text_ph: 'Tell us about your stay...',
             review_form_submit: 'Submit review',
-            review_form_success: 'Thank you! Your review has been submitted and will appear on the site after moderation.'
+            review_form_success: 'Thank you! Your review has been submitted and will appear on the site after moderation.',
+            booking_total_nights: 'Nights:', booking_total_price_per_day: 'Price per night:', booking_total_sum: 'Total:'
         }
     };
 

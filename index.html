@@ -495,6 +495,20 @@
                             <label for="comment" data-i18n="booking_form_comment">Коментар</label>
                             <textarea id="comment" name="comment" rows="3" data-i18n-placeholder="booking_form_comment_ph" placeholder="Особливі побажання..."></textarea>
                         </div>
+                        <div class="booking__total" id="bookingTotal" style="display:none;">
+                            <div class="booking__total-row">
+                                <span data-i18n="booking_total_nights">Ночей:</span>
+                                <span id="totalNights"></span>
+                            </div>
+                            <div class="booking__total-row">
+                                <span data-i18n="booking_total_price_per_day">Ціна за добу:</span>
+                                <span id="totalPricePerDay"></span>
+                            </div>
+                            <div class="booking__total-row booking__total-row--sum">
+                                <span data-i18n="booking_total_sum">Разом:</span>
+                                <span id="totalSum"></span>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn--primary btn--full" data-i18n="booking_form_submit">Надіслати заявку</button>
                     </form>
                 </div>
