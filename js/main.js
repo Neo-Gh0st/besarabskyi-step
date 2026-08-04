@@ -1,3 +1,5 @@
+window.getCurrentLang = function() { return localStorage.getItem('lang') || 'uk'; };
+
 document.addEventListener('DOMContentLoaded', function() {
     // Модальное окно
     var modalOverlay = document.getElementById('modalOverlay');
@@ -312,9 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // === Мова ===
-    window.getCurrentLang = function() { return localStorage.getItem('lang') || 'uk'; };
 
     // === 6 календарів (по одному на тип номера) ===
     var calScriptUrl = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
@@ -850,11 +849,15 @@ document.addEventListener('DOMContentLoaded', function() {
             var key = el.getAttribute('data-i18n-placeholder');
             if (t[key]) el.placeholder = t[key];
         });
+        document.querySelectorAll('optgroup[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            if (t[key]) el.label = t[key];
+        });
         langBtns.forEach(function(btn) { btn.classList.toggle('active', btn.dataset.lang === lang); });
         document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
         localStorage.setItem('lang', lang);
-        if (window.renderAllCalendars) window.renderAllCalendars();
-        if (window.renderReviews) window.renderReviews();
+        try { if (window.renderAllCalendars) window.renderAllCalendars(); } catch(e) { console.error('renderCal error', e); }
+        try { if (window.renderReviews) window.renderReviews(); } catch(e) { console.error('renderReviews error', e); }
     }
 
     langBtns.forEach(function(btn) {
