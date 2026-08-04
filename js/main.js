@@ -1039,17 +1039,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyLang(lang) {
         var t = translations[lang];
         if (!t) return;
+        document.querySelectorAll('optgroup[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            if (t[key]) el.label = t[key];
+        });
         document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            if (el.tagName === 'OPTGROUP') return;
             var key = el.getAttribute('data-i18n');
             if (t[key]) el.innerHTML = t[key];
         });
         document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
             var key = el.getAttribute('data-i18n-placeholder');
             if (t[key]) el.placeholder = t[key];
-        });
-        document.querySelectorAll('optgroup[data-i18n]').forEach(function(el) {
-            var key = el.getAttribute('data-i18n');
-            if (t[key]) el.label = t[key];
         });
         langBtns.forEach(function(btn) { btn.classList.toggle('active', btn.dataset.lang === lang); });
         document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
