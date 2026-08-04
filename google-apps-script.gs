@@ -1,5 +1,4 @@
 var TELEGRAM_BOT_TOKEN = '8737422467:AAEzLfb8K5SaVhl2ffCpPOaSiYfx5CLiKyY';
-var TELEGRAM_CHAT_ID = '-1004464763561';
 
 // ID чатів модераторів (особисті чати з ботом)
 var MODERATOR_CHAT_IDS = [
@@ -189,19 +188,24 @@ function doPost(e) {
         'Вже зайнято: ' + overlap.from + ' — ' + overlap.to + '\n' +
         'Клієнт: ' + overlap.name;
 
-      try {
-        UrlFetchApp.fetch(
-          'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-          {
-            method: 'post',
-            contentType: 'application/json; charset=utf-8',
-            payload: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: msg
-            })
-          }
-        );
-      } catch (err) {}
+      // Відправляємо кожному модератору
+      for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
+        var chatId = MODERATOR_CHAT_IDS[i];
+        if (!chatId) continue;
+        try {
+          UrlFetchApp.fetch(
+            'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
+            {
+              method: 'post',
+              contentType: 'application/json; charset=utf-8',
+              payload: JSON.stringify({
+                chat_id: chatId,
+                text: msg
+              })
+            }
+          );
+        } catch (err) {}
+      }
 
       var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
       return ContentService.createTextOutput(html)
@@ -276,28 +280,33 @@ function doPost(e) {
   msg += '\n━━━━━━━━━━━━━━━\n' +
     '🆔 Заявка #' + newRow;
 
-  try {
-    UrlFetchApp.fetch(
-      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-      {
-        method: 'post',
-        contentType: 'application/json; charset=utf-8',
-        payload: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: msg,
-          parse_mode: 'Markdown',
-          reply_markup: JSON.stringify({
-            inline_keyboard: [
-              [
-                { text: '✅ Підтвердити', callback_data: 'confirm_' + newRow },
-                { text: '❌ Скасувати', callback_data: 'cancel_' + newRow }
+  // Відправляємо кожному модератору
+  for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
+    var chatId = MODERATOR_CHAT_IDS[i];
+    if (!chatId) continue;
+    try {
+      UrlFetchApp.fetch(
+        'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
+        {
+          method: 'post',
+          contentType: 'application/json; charset=utf-8',
+          payload: JSON.stringify({
+            chat_id: chatId,
+            text: msg,
+            parse_mode: 'Markdown',
+            reply_markup: JSON.stringify({
+              inline_keyboard: [
+                [
+                  { text: '✅ Підтвердити', callback_data: 'confirm_' + newRow },
+                  { text: '❌ Скасувати', callback_data: 'cancel_' + newRow }
+                ]
               ]
-            ]
+            })
           })
-        })
-      }
-    );
-  } catch (err) {}
+        }
+      );
+    } catch (err) {}
+  }
 
   var html = '<html><body><script>window.parent.postMessage("OK","*");</script></body></html>';
   return ContentService.createTextOutput(html)
