@@ -313,6 +313,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // === Мова ===
+    window.getCurrentLang = function() { return localStorage.getItem('lang') || 'uk'; };
+
     // === 6 календарів (по одному на тип номера) ===
     var calScriptUrl = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
     var bookedDates = [];
