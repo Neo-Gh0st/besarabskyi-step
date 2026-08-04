@@ -291,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var floorTabs = document.querySelectorAll('.floor-tab');
     var floor1 = document.getElementById('floor1');
     var floor2 = document.getElementById('floor2');
+    var floor3 = document.getElementById('floor3');
 
     floorTabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
@@ -298,12 +299,16 @@ document.addEventListener('DOMContentLoaded', function() {
             tab.classList.add('floor-tab--active');
 
             var floor = tab.getAttribute('data-floor');
+            floor1.style.display = 'none';
+            floor2.style.display = 'none';
+            floor3.style.display = 'none';
+
             if (floor === '1') {
                 floor1.style.display = '';
-                floor2.style.display = 'none';
-            } else {
-                floor1.style.display = 'none';
+            } else if (floor === '2') {
                 floor2.style.display = '';
+            } else {
+                floor3.style.display = '';
             }
         });
     });
