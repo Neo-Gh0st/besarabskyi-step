@@ -67,6 +67,10 @@ function doPost(e) {
     return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
   }
 
+  if (rawData.action === 'review') {
+    return handleReview(rawData);
+  }
+
   var data = rawData;
   if (!data.name && e.parameter && e.parameter.name) {
     data = e.parameter;
@@ -222,9 +226,74 @@ function checkExpiredBookings() {
   return updated;
 }
 
+function handleReview(data) {
+  if (!data.name || !data.text || !data.rating) {
+    return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
+  }
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var reviewSheet = ss.getSheetByName('Reviews');
+  if (!reviewSheet) {
+    reviewSheet = ss.insertSheet('Reviews');
+    reviewSheet.getRange(1, 1, 1, 5).setValues([['Дата', 'Ім\'я', 'Текст', 'Оцінка', 'Статус']]);
+    reviewSheet.getRange(1, 1, 1, 5).setBackground('#1a73e8').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+    reviewSheet.setFrozenRows(1);
+    reviewSheet.setColumnWidths(1, 5, 180);
+  }
+  var now = new Date();
+  var dateStr = now.toLocaleString('uk-UA', { year: 'numeric', month: 'long' });
+  var rowData = [now.toLocaleString('uk-UA'), data.name, data.text, parseInt(data.rating) || 5, 'Новий'];
+  reviewSheet.getRange(reviewSheet.getLastRow() + 1, 1, 1, 5).setValues([rowData]);
+
+  var tgMsg = '⭐ *НОВИЙ ВІДГУК*\n\n👤 ' + data.name + '\n⭐ ' + data.rating + '/5\n\n💬 ' + data.text;
+  for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
+    try {
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+        method: 'post', contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({
+          chat_id: MODERATOR_CHAT_IDS[i],
+          text: tgMsg,
+          parse_mode: 'Markdown',
+          reply_markup: JSON.stringify({
+            inline_keyboard: [[
+              { text: '✅ Опублікувати', callback_data: 'review_approve_' + reviewSheet.getLastRow() },
+              { text: '❌ Відхилити', callback_data: 'review_reject_' + reviewSheet.getLastRow() }
+            ]]
+          })
+        })
+      });
+    } catch (err) { Logger.log(err); }
+  }
+
+  return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
+}
+
+function getApprovedReviews() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var reviewSheet = ss.getSheetByName('Reviews');
+  if (!reviewSheet) return [];
+  var lastRow = reviewSheet.getLastRow();
+  if (lastRow < 2) return [];
+  var data = reviewSheet.getRange(2, 1, lastRow - 1, 5).getValues();
+  var reviews = [];
+  for (var i = 0; i < data.length; i++) {
+    var status = String(data[i][4]).trim();
+    if (status === 'Опубліковано') {
+      var monthNames = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+      var d = new Date(data[i][0]);
+      var dateLabel = monthNames[d.getMonth()] + ' ' + d.getFullYear();
+      reviews.push({ text: String(data[i][2]), author: String(data[i][1]), date: dateLabel, stars: parseInt(data[i][3]) || 5 });
+    }
+  }
+  return reviews;
+}
+
 function doGet(e) {
   var action = e.parameter.action;
   if (action === 'booked') return getBookedDates(e);
+  if (action === 'reviews') {
+    var reviews = getApprovedReviews();
+    return ContentService.createTextOutput(JSON.stringify(reviews)).setMimeType(ContentService.MimeType.JSON);
+  }
   if (action === 'check') {
     var updated = checkExpiredBookings();
     return ContentService.createTextOutput('Оновлено: ' + updated + ' записів').setMimeType(ContentService.MimeType.TEXT);
@@ -238,8 +307,39 @@ function handleCallbackQuery(callbackQuery) {
   if (!data || !message) return;
   var parts = data.split('_');
   var action = parts[0];
-  var rowId = parseInt(parts[1]);
+  var rowId = parseInt(parts[parts.length - 1]);
   if (!rowId) return;
+
+  if (action === 'review') {
+    var reviewAction = parts[1];
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var reviewSheet = ss.getSheetByName('Reviews');
+    if (!reviewSheet) return;
+    var rowNum = rowId;
+    if (rowNum > reviewSheet.getLastRow()) return;
+    var newStatus = reviewAction === 'approve' ? 'Опубліковано' : 'Відхилено';
+    var emoji = reviewAction === 'approve' ? '✅' : '❌';
+    reviewSheet.getRange(rowNum, 5).setValue(newStatus);
+    var newText = message.text + '\n\n' + emoji + ' *Статус:* ' + newStatus;
+    try {
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/editMessageText', {
+        method: 'post', contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({
+          chat_id: message.chat.id, message_id: message.message_id,
+          text: newText, parse_mode: 'Markdown',
+          reply_markup: JSON.stringify({ inline_keyboard: [] })
+        })
+      });
+    } catch (err) { Logger.log(err); }
+    try {
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/answerCallbackQuery', {
+        method: 'post', contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({ callback_query_id: callbackQuery.id, text: newStatus })
+      });
+    } catch (err) { Logger.log(err); }
+    return;
+  }
+
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
   var lastRow = sheet.getLastRow();

@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // === Відгуки ===
 (function() {
-    var reviews = {
+    var hardcodedReviews = {
         uk: [
             { text: 'Чудове місце для сімейного відпочинку! Дуже затишно, чисто, привітний персонал. Море поруч, діти в захваті.', author: 'Олена та Олексій', date: 'Липень 2026', stars: 5 },
             { text: 'Їздили компанією — все сподобалось. Кухня обладнана, територія охайнна, є де посидіти вечором. Рекомендую!', author: 'Андрій', date: 'Червень 2026', stars: 5 },
@@ -559,6 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
 
+    var remoteReviews = [];
     var track = document.getElementById('reviewsTrack');
     var dotsContainer = document.getElementById('reviewsDots');
     var prevBtn = document.getElementById('reviewsPrev');
@@ -567,9 +568,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var current = 0;
 
-    function buildReviews() {
+    function getAllReviews() {
         var lang = window.getCurrentLang();
-        var list = reviews[lang] || reviews.uk;
+        var base = hardcodedReviews[lang] || hardcodedReviews.uk;
+        return base.concat(remoteReviews);
+    }
+
+    function buildReviews() {
+        var list = getAllReviews();
         track.innerHTML = '';
         dotsContainer.innerHTML = '';
         current = 0;
@@ -592,7 +598,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function goTo(index) {
-        var list = reviews[window.getCurrentLang()] || reviews.uk;
+        var list = getAllReviews();
         current = index;
         track.style.transform = 'translateX(-' + (current * 100) + '%)';
         var dots = dotsContainer.querySelectorAll('.reviews__dot');
@@ -600,16 +606,106 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     prevBtn.addEventListener('click', function() {
-        var list = reviews[window.getCurrentLang()] || reviews.uk;
+        var list = getAllReviews();
         goTo(current > 0 ? current - 1 : list.length - 1);
     });
     nextBtn.addEventListener('click', function() {
-        var list = reviews[window.getCurrentLang()] || reviews.uk;
+        var list = getAllReviews();
         goTo(current < list.length - 1 ? current + 1 : 0);
     });
 
+    // Load remote reviews
+    var calScriptUrl = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
+    fetch(calScriptUrl + '?action=reviews')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (Array.isArray(data) && data.length > 0) {
+                remoteReviews = data;
+                buildReviews();
+            }
+        })
+        .catch(function() {});
+
     buildReviews();
     window.renderReviews = buildReviews;
+})();
+
+// === Форма відгуку ===
+(function() {
+    var overlay = document.getElementById('reviewOverlay');
+    var openBtn = document.getElementById('openReviewForm');
+    var closeBtn = document.getElementById('closeReviewForm');
+    var form = document.getElementById('reviewForm');
+    var successEl = document.getElementById('reviewSuccess');
+    var stars = document.querySelectorAll('#starRating .star');
+    var ratingInput = document.getElementById('reviewRating');
+    if (!overlay || !form) return;
+
+    var scriptUrl = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
+
+    function openModal() {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        form.reset();
+        successEl.style.display = 'none';
+        form.style.display = '';
+        setRating(5);
+    }
+
+    function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+
+    function setRating(val) {
+        ratingInput.value = val;
+        stars.forEach(function(s) {
+            s.classList.toggle('active', parseInt(s.dataset.value) <= val);
+        });
+    }
+
+    stars.forEach(function(s) {
+        s.addEventListener('click', function() { setRating(parseInt(s.dataset.value)); });
+        s.addEventListener('mouseenter', function() {
+            var v = parseInt(s.dataset.value);
+            stars.forEach(function(x) { x.classList.toggle('active', parseInt(x.dataset.value) <= v); });
+        });
+    });
+
+    document.getElementById('starRating').addEventListener('mouseleave', function() {
+        setRating(parseInt(ratingInput.value));
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var name = document.getElementById('reviewName').value.trim();
+        var text = document.getElementById('reviewText').value.trim();
+        var rating = parseInt(ratingInput.value);
+        if (!name || !text) return;
+
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = '...';
+
+        var payload = JSON.stringify({ action: 'review', name: name, text: text, rating: rating });
+
+        fetch(scriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: payload,
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(function() {
+            form.style.display = 'none';
+            successEl.style.display = '';
+        }).catch(function() {
+            form.style.display = 'none';
+            successEl.style.display = '';
+        });
+    });
 })();
 
 // === Перемикач мови UA/EN ===
@@ -722,7 +818,14 @@ document.addEventListener('DOMContentLoaded', function() {
             modal_ok: 'Зрозуміло',
             modal_conflict_title: 'Ці дати вже зайняті!',
             modal_conflict_text: 'Обрані вами дати частково або повністю збігаються з існуючими бронюваннями:',
-            modal_conflict_hint: 'Спробуйте обрати інші дати або зателефонуйте нам для уточнення.'
+            modal_conflict_hint: 'Спробуйте обрати інші дати або зателефонуйте нам для уточнення.',
+            reviews_write_btn: 'Написати відгук',
+            review_form_title: 'Залишити відгук',
+            review_form_name: 'Ваше ім\'я', review_form_name_ph: 'Олександр',
+            review_form_rating: 'Оцінка',
+            review_form_text: 'Ваш відгук', review_form_text_ph: 'Розкажіть про свій досвід відпочинку...',
+            review_form_submit: 'Надіслати відгук',
+            review_form_success: 'Дякуємо! Ваш відгук надіслано і з\'явиться на сайті після перевірки.'
         },
         en: {
             logo_text: 'Bessarabskyi Steppe',
@@ -831,7 +934,14 @@ document.addEventListener('DOMContentLoaded', function() {
             modal_ok: 'Got it',
             modal_conflict_title: 'These dates are already booked!',
             modal_conflict_text: 'Your selected dates partially or fully overlap with existing bookings:',
-            modal_conflict_hint: 'Try selecting different dates or call us for details.'
+            modal_conflict_hint: 'Try selecting different dates or call us for details.',
+            reviews_write_btn: 'Write a review',
+            review_form_title: 'Leave a review',
+            review_form_name: 'Your name', review_form_name_ph: 'John',
+            review_form_rating: 'Rating',
+            review_form_text: 'Your review', review_form_text_ph: 'Tell us about your stay...',
+            review_form_submit: 'Submit review',
+            review_form_success: 'Thank you! Your review has been submitted and will appear on the site after moderation.'
         }
     };
 

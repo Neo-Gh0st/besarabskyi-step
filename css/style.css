@@ -1602,3 +1602,112 @@ body {
         font-size: 1rem;
     }
 }
+
+/* Reviews Add Button */
+.reviews__add {
+    text-align: center;
+    margin-top: 25px;
+}
+
+/* Review Form Modal */
+.modal--review {
+    max-width: 480px;
+    position: relative;
+}
+
+.modal__close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--gray);
+    cursor: pointer;
+    line-height: 1;
+    z-index: 1;
+}
+
+.modal__close:hover {
+    color: var(--dark);
+}
+
+.review-form .form__group {
+    margin-bottom: 16px;
+}
+
+.review-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--dark);
+}
+
+.review-form input[type="text"],
+.review-form textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.review-form input[type="text"]:focus,
+.review-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+}
+
+.review-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Star Rating */
+.star-rating {
+    display: flex;
+    gap: 4px;
+    direction: rtl;
+    justify-content: flex-end;
+}
+
+.star-rating .star {
+    font-size: 1.8rem;
+    color: #d1d5db;
+    cursor: pointer;
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.star-rating .star:hover,
+.star-rating .star.active {
+    color: #f59e0b;
+}
+
+/* Review Success */
+.review-form__success {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.review-form__success-icon {
+    width: 60px;
+    height: 60px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 16px;
+}
+
+.review-form__success p {
+    color: var(--text);
+    font-size: 1rem;
+}

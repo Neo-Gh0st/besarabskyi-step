@@ -545,6 +545,9 @@
                         <button class="reviews__arrow reviews__arrow--next" id="reviewsNext">&#8594;</button>
                     </div>
                 </div>
+                <div class="reviews__add">
+                    <button class="btn btn--primary" id="openReviewForm" data-i18n="reviews_write_btn">Написати відгук</button>
+                </div>
             </div>
         </section>
 
@@ -618,6 +621,39 @@
             <div class="conflict-table" id="conflictTable"></div>
             <p class="modal__hint" data-i18n="modal_conflict_hint">Спробуйте обрати інші дати або зателефонуйте нам для уточнення.</p>
             <button class="modal__btn" id="conflictBtn" data-i18n="modal_ok">Зрозуміло</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reviewOverlay">
+        <div class="modal modal--review">
+            <button class="modal__close" id="closeReviewForm">&times;</button>
+            <h3 class="modal__title" data-i18n="review_form_title">Залишити відгук</h3>
+            <form id="reviewForm" class="review-form">
+                <div class="form__group">
+                    <label for="reviewName" data-i18n="review_form_name">Ваше ім'я</label>
+                    <input type="text" id="reviewName" name="name" required data-i18n-placeholder="review_form_name_ph" placeholder="Олександр">
+                </div>
+                <div class="form__group">
+                    <label data-i18n="review_form_rating">Оцінка</label>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" id="reviewRating" name="rating" value="5">
+                </div>
+                <div class="form__group">
+                    <label for="reviewText" data-i18n="review_form_text">Ваш відгук</label>
+                    <textarea id="reviewText" name="text" rows="4" required data-i18n-placeholder="review_form_text_ph" placeholder="Розкажіть про свій досвід відпочинку..."></textarea>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full" data-i18n="review_form_submit">Надіслати відгук</button>
+            </form>
+            <div class="review-form__success" id="reviewSuccess" style="display:none;">
+                <div class="review-form__success-icon">&#10003;</div>
+                <p data-i18n="review_form_success">Дякуємо! Ваш відгук надіслано і з'явиться на сайті після перевірки.</p>
+            </div>
         </div>
     </div>
 
