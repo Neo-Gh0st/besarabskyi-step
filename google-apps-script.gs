@@ -1,13 +1,16 @@
 var TELEGRAM_BOT_TOKEN = '8737422467:AAEzLfb8K5SaVhl2ffCpPOaSiYfx5CLiKyY';
 
-// ID чатів модераторів (особисті чати з ботом)
-var MODERATOR_CHAT_IDS = [
-  '8737422467', // модератор 1
-];
+var MODERATOR_CHAT_IDS = ['6680739920'];
 
-function onInstall() {
-  setWebhook();
-}
+var ROOM_NAMES = {
+  'family': 'Сімейний',
+  'family-plus': 'Сімейний+',
+  'family-lux': 'Сімейний Люкс',
+  'family-2': 'Сімейний 2',
+  'family-plus-2': 'Сімейний+ 2',
+  'double-lux-1': 'Люкс 1',
+  'double-lux-2': 'Люкс 2'
+};
 
 function formatDate(d) {
   if (!d) return '';
@@ -25,27 +28,18 @@ function formatDate(d) {
 function checkOverlap(sheet, roomType, dateIn, dateOut, excludeRow) {
   var lastRow = sheet.getLastRow();
   if (lastRow < 6) return false;
-
   var data = sheet.getRange(6, 1, lastRow - 5, 9).getValues();
-
   for (var i = 0; i < data.length; i++) {
     var rowNum = 6 + i;
     if (excludeRow && rowNum === excludeRow) continue;
-
     var existingRoom = String(data[i][3]).trim();
     var existingStatus = String(data[i][8]).trim();
     var existingDateIn = formatDate(data[i][4]);
     var existingDateOut = formatDate(data[i][5]);
-
     if (existingRoom !== roomType) continue;
     if (existingStatus === 'Скасована') continue;
-
     if (dateIn <= existingDateOut && dateOut >= existingDateIn) {
-      return {
-        from: existingDateIn,
-        to: existingDateOut,
-        name: data[i][1] || 'Невідомий'
-      };
+      return { from: existingDateIn, to: existingDateOut, name: data[i][1] || 'Невідомий' };
     }
   }
   return false;
@@ -53,7 +47,6 @@ function checkOverlap(sheet, roomType, dateIn, dateOut, excludeRow) {
 
 function doPost(e) {
   var rawData = {};
-
   if (e.postData && e.postData.contents) {
     try {
       rawData = JSON.parse(e.postData.contents);
@@ -67,491 +60,223 @@ function doPost(e) {
     }
   }
 
-  // === Обробка callback_query від Telegram кнопок ===
-  if (rawData.callback_query) {
-    handleCallbackQuery(rawData.callback_query);
-    return ContentService.createTextOutput('OK')
-      .setMimeType(ContentService.MimeType.TEXT);
-  }
-
-  // === Обробка /start — відправка кнопки Web App модераторам ===
-  if (rawData.message) {
-    var msg = rawData.message;
-    var text = (msg.text || '').trim();
-    var chatId = String(msg.chat.id);
-    var chatType = msg.chat.type;
-
-    if (text.indexOf('/start') === 0) {
-      // Особистий чат — перевірка чи це модератор
-      if (chatType === 'private' && MODERATOR_CHAT_IDS.indexOf(chatId) !== -1) {
-        sendWebAppButton(chatId);
-        return ContentService.createTextOutput('OK')
-          .setMimeType(ContentService.MimeType.TEXT);
-      }
-      // Група — завжди відправляємо кнопку
-      if (chatType === 'group' || chatType === 'supergroup') {
-        sendWebAppButton(chatId);
-        return ContentService.createTextOutput('OK')
-          .setMimeType(ContentService.MimeType.TEXT);
-      }
+  if (rawData.update_id) {
+    if (rawData.callback_query) {
+      handleCallbackQuery(rawData.callback_query);
     }
+    return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
   }
 
-  // === Обробка бронювання з сайту ===
   var data = rawData;
   if (!data.name && e.parameter && e.parameter.name) {
     data = e.parameter;
   }
 
-  // === Google Таблица ===
+  if (!data.name || !data.phone || !data.roomType || !data.dateIn || !data.dateOut) {
+    return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  if (!ROOM_NAMES[data.roomType]) {
+    return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
+  }
+
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
-  var lastRow = sheet.getLastRow();
 
-  // Завжди оновлюємо заголовки
-  // Строка 1: Название
   sheet.getRange('A1').setValue('База відпочинку «Бесарабський степ» — Заявки з сайту');
-  sheet.getRange('A1:I1').merge()
-    .setBackground('#1e293b')
-    .setFontColor('#ffffff')
-    .setFontWeight('bold')
-    .setFontSize(14)
-    .setHorizontalAlignment('center');
+  sheet.getRange('A1:I1').merge().setBackground('#1e293b').setFontColor('#ffffff').setFontWeight('bold').setFontSize(14).setHorizontalAlignment('center');
   sheet.setRowHeight(1, 40);
 
-  // Строка 2: Описание
-  sheet.getRange('A2').setValue('Автообробка заявок з сайта besarabskyi-step.github.io. Заявки приходять в таблицю і Telegram автоматично.');
-  sheet.getRange('A2:I2').merge()
-    .setBackground('#e2e8f0')
-    .setFontColor('#475569')
-    .setFontSize(10)
-    .setHorizontalAlignment('center');
+  sheet.getRange('A2').setValue('Автообробка заявок з сайта besarabskyi-step.github.io');
+  sheet.getRange('A2:I2').merge().setBackground('#e2e8f0').setFontColor('#475569').setFontSize(10).setHorizontalAlignment('center');
   sheet.setRowHeight(2, 28);
-
-  // Строка 3: Пустая
   sheet.setRowHeight(3, 10);
 
-  // Строка 4: Заголовки
   var headers = [['Дата / час', 'Ім\'я', 'Телефон', 'Тип розміщення', 'Дата заїзду', 'Дата виїзду', 'Кількість гостей', 'Коментар', 'Статус']];
   sheet.getRange(4, 1, 1, 9).setValues(headers);
-  sheet.getRange(4, 1, 1, 9)
-    .setBackground('#1a73e8')
-    .setFontColor('#ffffff')
-    .setFontWeight('bold')
-    .setHorizontalAlignment('center')
-    .setFontSize(11);
+  sheet.getRange(4, 1, 1, 9).setBackground('#1a73e8').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
   sheet.setRowHeight(4, 35);
 
-  // Строка 5: Подсказки
-  var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Сімейний / Двомісний / Люкс', 'З якого числа', 'По яке число', 'Скільки осіб', 'Побажання клієнта', 'Нова / Підтверджена / Скасована']];
+  var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Тип', 'Заїзд', 'Виїзд', 'Гостей', 'Коментар', 'Статус']];
   sheet.getRange(5, 1, 1, 9).setValues(hints);
-  sheet.getRange(5, 1, 1, 9)
-    .setBackground('#dbeafe')
-    .setFontColor('#64748b')
-    .setFontStyle('italic')
-    .setFontSize(9)
-    .setHorizontalAlignment('center');
+  sheet.getRange(5, 1, 1, 9).setBackground('#dbeafe').setFontColor('#64748b').setFontStyle('italic').setFontSize(9).setHorizontalAlignment('center');
   sheet.setRowHeight(5, 25);
-
   sheet.setColumnWidths(1, 9, 150);
-  sheet.setColumnWidth(1, 160);
-  sheet.setColumnWidth(2, 150);
-  sheet.setColumnWidth(3, 150);
-  sheet.setColumnWidth(8, 200);
-  sheet.setColumnWidth(9, 140);
   sheet.setFrozenRows(5);
-
-  // === Проверка пересечений ===
-  var roomNames = {
-    'family': 'Сімейний',
-    'family-plus': 'Сімейний+',
-    'family-lux': 'Сімейний Люкс',
-    'family-2': 'Сімейний 2',
-    'family-plus-2': 'Сімейний+ 2',
-    'double-lux-1': 'Люкс 1',
-    'double-lux-2': 'Люкс 2'
-  };
 
   var newDateIn = formatDate(data.dateIn);
   var newDateOut = formatDate(data.dateOut);
   var isAdmin = data.admin === '1' || data.admin === 1;
 
-  // Перевірка перетину тільки для звичайних бронювань
   if (!isAdmin) {
     var overlap = checkOverlap(sheet, data.roomType, newDateIn, newDateOut, null);
     if (overlap) {
-      var roomLabel = roomNames[data.roomType] || data.roomType;
-      var msg = '❌ Бронювання неможливе!\n\n' +
-        'Тип: ' + roomLabel + '\n' +
-        'Ваші дати: ' + newDateIn + ' — ' + newDateOut + '\n\n' +
-        'Вже зайнято: ' + overlap.from + ' — ' + overlap.to + '\n' +
-        'Клієнт: ' + overlap.name;
-
-      // Відправляємо кожному модератору
+      var overlapMsg = '❌ Бронювання неможливе!\n\nТип: ' + (ROOM_NAMES[data.roomType] || data.roomType) + '\nВаші дати: ' + newDateIn + ' — ' + newDateOut + '\n\nВже зайнято: ' + overlap.from + ' — ' + overlap.to + '\nКлієнт: ' + overlap.name;
       for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
-        var chatId = MODERATOR_CHAT_IDS[i];
-        if (!chatId) continue;
         try {
-          UrlFetchApp.fetch(
-            'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-            {
-              method: 'post',
-              contentType: 'application/json; charset=utf-8',
-              payload: JSON.stringify({
-                chat_id: chatId,
-                text: msg
-              })
-            }
-          );
-        } catch (err) {}
+          UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+            method: 'post', contentType: 'application/json; charset=utf-8',
+            payload: JSON.stringify({ chat_id: MODERATOR_CHAT_IDS[i], text: overlapMsg })
+          });
+        } catch (err) { Logger.log(err); }
       }
-
       var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
-      return ContentService.createTextOutput(html)
-        .setMimeType(ContentService.MimeType.HTML);
+      return ContentService.createTextOutput(html).setMimeType(ContentService.MimeType.HTML);
     }
   }
 
-  // Данные
   var now = new Date();
   var rowData = [
     now.toLocaleString('uk-UA'),
-    data.name || '',
-    data.phone || '',
-    data.roomType || '',
-    data.dateIn || '',
-    data.dateOut || '',
-    data.guests || '',
+    data.name, data.phone, data.roomType,
+    data.dateIn, data.dateOut, data.guests,
     (isAdmin ? '[Телефон] ' : '') + (data.comment || ''),
     isAdmin ? 'Підтверджена' : 'Нова'
   ];
 
   var newRow = sheet.getLastRow() + 1;
   sheet.getRange(newRow, 1, 1, 9).setValues([rowData]);
-  sheet.getRange(newRow, 1, 1, 9)
-    .setHorizontalAlignment('center')
-    .setVerticalAlignment('middle')
-    .setBorder(true, true, true, true, true, true);
+  sheet.getRange(newRow, 1, 1, 9).setHorizontalAlignment('center').setVerticalAlignment('middle').setBorder(true, true, true, true, true, true);
+  if (newRow % 2 === 0) sheet.getRange(newRow, 1, 1, 9).setBackground('#f0f7ff');
+  sheet.getRange(newRow, 9).setFontColor(isAdmin ? '#166534' : '#d93025').setFontWeight('bold');
 
-  // Цвет строки
-  if (newRow % 2 === 0) {
-    sheet.getRange(newRow, 1, 1, 9).setBackground('#f0f7ff');
-  }
+  var headerText = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВА ЗАЯВКА*';
+  var tgMsgText = '━━━━━━━━━━━━━━━\n' + headerText + '\n━━━━━━━━━━━━━━━\n\n' +
+    '👤 *Ім\'я:* ' + data.name + '\n' +
+    '📞 *Телефон:* ' + data.phone + '\n' +
+    '🏠 *Тип:* ' + (ROOM_NAMES[data.roomType] || data.roomType) + '\n\n' +
+    '📅 *Заїзд:* ' + data.dateIn + '\n' +
+    '📅 *Виїзд:* ' + data.dateOut + '\n' +
+    '👥 *Гостей:* ' + data.guests + '\n';
+  if (data.comment) tgMsgText += '\n💬 *Коментар:*\n' + data.comment + '\n';
+  tgMsgText += '\n━━━━━━━━━━━━━━━\n🆔 Заявка #' + newRow;
 
-  // Статус
-  if (isAdmin) {
-    sheet.getRange(newRow, 9)
-      .setFontColor('#166534')
-      .setFontWeight('bold');
-  } else {
-    sheet.getRange(newRow, 9)
-      .setFontColor('#d93025')
-      .setFontWeight('bold');
-  }
-
-  // === Telegram ===
-  var roomNames2 = {
-    'family': 'Сімейний',
-    'family-plus': 'Сімейний+',
-    'family-lux': 'Сімейний Люкс',
-    'family-2': 'Сімейний 2',
-    'family-plus-2': 'Сімейний+ 2',
-    'double-lux-1': 'Люкс 1',
-    'double-lux-2': 'Люкс 2'
-  };
-
-  var header = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВА ЗАЯВКА*';
-
-  var msg = '━━━━━━━━━━━━━━━\n' +
-    header + '\n' +
-    '━━━━━━━━━━━━━━━\n\n' +
-    '👤 *Ім\'я:* ' + (data.name || '-') + '\n' +
-    '📞 *Телефон:* ' + (data.phone || '-') + '\n' +
-    '🏠 *Тип:* ' + (roomNames2[data.roomType] || data.roomType || '-') + '\n\n' +
-    '📅 *Заїзд:* ' + (data.dateIn || '-') + '\n' +
-    '📅 *Виїзд:* ' + (data.dateOut || '-') + '\n' +
-    '👥 *Гостей:* ' + (data.guests || '-') + '\n';
-
-  if (data.comment) {
-    msg += '\n💬 *Коментар:*\n' + data.comment + '\n';
-  }
-
-  msg += '\n━━━━━━━━━━━━━━━\n' +
-    '🆔 Заявка #' + newRow;
-
-  // Відправляємо кожному модератору
   for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
-    var chatId = MODERATOR_CHAT_IDS[i];
-    if (!chatId) continue;
     try {
-      UrlFetchApp.fetch(
-        'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-        {
-          method: 'post',
-          contentType: 'application/json; charset=utf-8',
-          payload: JSON.stringify({
-            chat_id: chatId,
-            text: msg,
-            parse_mode: 'Markdown',
-            reply_markup: JSON.stringify({
-              inline_keyboard: [
-                [
-                  { text: '✅ Підтвердити', callback_data: 'confirm_' + newRow },
-                  { text: '❌ Скасувати', callback_data: 'cancel_' + newRow }
-                ]
-              ]
-            })
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+        method: 'post', contentType: 'application/json; charset=utf-8',
+        payload: JSON.stringify({
+          chat_id: MODERATOR_CHAT_IDS[i],
+          text: tgMsgText,
+          parse_mode: 'Markdown',
+          reply_markup: JSON.stringify({
+            inline_keyboard: [[
+              { text: '✅ Підтвердити', callback_data: 'confirm_' + newRow },
+              { text: '❌ Скасувати', callback_data: 'cancel_' + newRow }
+            ]]
           })
-        }
-      );
-    } catch (err) {}
+        })
+      });
+    } catch (err) { Logger.log(err); }
   }
 
   var html = '<html><body><script>window.parent.postMessage("OK","*");</script></body></html>';
-  return ContentService.createTextOutput(html)
-    .setMimeType(ContentService.MimeType.HTML);
+  return ContentService.createTextOutput(html).setMimeType(ContentService.MimeType.HTML);
 }
 
 function getBookedDates(e) {
   checkExpiredBookings();
-
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
   var lastRow = sheet.getLastRow();
-
-  if (lastRow < 6) {
-    return ContentService.createTextOutput('[]')
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-
+  if (lastRow < 6) return ContentService.createTextOutput('[]').setMimeType(ContentService.MimeType.JSON);
   var data = sheet.getRange(6, 1, lastRow - 5, 9).getValues();
   var booked = [];
-
   for (var i = 0; i < data.length; i++) {
     var status = String(data[i][8]).trim();
-    var dateInRaw = data[i][4];
-    var dateOutRaw = data[i][5];
     var roomType = String(data[i][3]).trim();
-
     if (status === 'Нова' || status === 'Підтверджена') {
-      var dateIn = formatDate(dateInRaw);
-      var dateOut = formatDate(dateOutRaw);
-      if (dateIn && dateOut) {
-        booked.push({
-          from: dateIn,
-          to: dateOut,
-          room: roomType
-        });
-      }
+      var dateIn = formatDate(data[i][4]);
+      var dateOut = formatDate(data[i][5]);
+      if (dateIn && dateOut) booked.push({ from: dateIn, to: dateOut, room: roomType });
     }
   }
-
   var result = JSON.stringify(booked);
   var callback = e.parameter.callback;
-
   if (callback) {
-    return ContentService.createTextOutput(callback + '(' + result + ')')
-      .setMimeType(ContentService.MimeType.JAVASCRIPT);
-  } else {
-    return ContentService.createTextOutput(result)
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(callback + '(' + result + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
+  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
 }
 
 function checkExpiredBookings() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
   var lastRow = sheet.getLastRow();
-
-  if (lastRow < 6) return;
-
+  if (lastRow < 6) return 0;
   var today = new Date();
   today.setHours(0, 0, 0, 0);
-
   var data = sheet.getRange(6, 1, lastRow - 5, 9).getValues();
   var updated = 0;
-
   for (var i = 0; i < data.length; i++) {
     var rowNum = 6 + i;
     var status = String(data[i][8]).trim();
-    var dateOutRaw = data[i][5];
-
     if (status !== 'Нова' && status !== 'Підтверджена') continue;
-
-    var dateOut = formatDate(dateOutRaw);
+    var dateOut = formatDate(data[i][5]);
     if (!dateOut) continue;
-
-    var outDate = new Date(dateOut + 'T00:00:00');
-
-    if (outDate < today) {
-      sheet.getRange(rowNum, 9).setValue('Завершено');
-      sheet.getRange(rowNum, 9)
-        .setFontColor('#166534')
-        .setFontWeight('bold');
+    if (new Date(dateOut + 'T00:00:00') < today) {
+      sheet.getRange(rowNum, 9).setValue('Завершено').setFontColor('#166534').setFontWeight('bold');
       updated++;
     }
   }
-
   return updated;
 }
 
 function doGet(e) {
   var action = e.parameter.action;
-
-  if (action === 'booked') {
-    return getBookedDates(e);
-  }
-
+  if (action === 'booked') return getBookedDates(e);
   if (action === 'check') {
     var updated = checkExpiredBookings();
-    return ContentService.createTextOutput('Оновлено: ' + updated + ' записів')
-      .setMimeType(ContentService.MimeType.TEXT);
+    return ContentService.createTextOutput('Оновлено: ' + updated + ' записів').setMimeType(ContentService.MimeType.TEXT);
   }
-
-  return ContentService.createTextOutput('OK')
-    .setMimeType(ContentService.MimeType.TEXT);
+  return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
 }
 
-// === Обробка натискання кнопок в Telegram ===
 function handleCallbackQuery(callbackQuery) {
   var data = callbackQuery.data;
   var message = callbackQuery.message;
-
   if (!data || !message) return;
-
   var parts = data.split('_');
   var action = parts[0];
   var rowId = parseInt(parts[1]);
-
   if (!rowId) return;
-
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
-
-  // Знаходимо рядок за номером заявки
   var lastRow = sheet.getLastRow();
   var targetRow = -1;
-
   for (var i = 6; i <= lastRow; i++) {
-    if (sheet.getRange(i, 1).getValue() == rowId || i == rowId) {
-      targetRow = i;
-      break;
-    }
+    if (i === rowId) { targetRow = i; break; }
   }
-
-  // Якщо не знайшли по ID, шукаємо по тексту повідомлення
-  if (targetRow === -1) {
-    for (var i = 6; i <= lastRow; i++) {
-      var status = String(sheet.getRange(i, 9).getValue()).trim();
-      if (status === 'Нова') {
-        targetRow = i;
-        break;
-      }
-    }
-  }
-
   if (targetRow === -1) return;
-
-  var newStatus = '';
-  var emoji = '';
-  var btnText = '';
-
-  if (action === 'confirm') {
-    newStatus = 'Підтверджена';
-    emoji = '✅';
-    btnText = 'Підтверджено';
-  } else if (action === 'cancel') {
-    newStatus = 'Скасована';
-    emoji = '❌';
-    btnText = 'Скасовано';
-  }
-
-  // Оновлюємо статус в таблиці
+  var newStatus = action === 'confirm' ? 'Підтверджена' : 'Скасована';
+  var emoji = action === 'confirm' ? '✅' : '❌';
+  var btnText = action === 'confirm' ? 'Підтверджено' : 'Скасовано';
   sheet.getRange(targetRow, 9).setValue(newStatus);
-  if (action === 'confirm') {
-    sheet.getRange(targetRow, 9).setFontColor('#166534').setFontWeight('bold');
-  } else {
-    sheet.getRange(targetRow, 9).setFontColor('#dc2626').setFontWeight('bold');
-  }
-
-  // Редагуємо повідомлення в Telegram
-  var oldText = message.text;
-  var newText = oldText + '\n\n' + emoji + ' *Статус:* ' + btnText;
-
+  sheet.getRange(targetRow, 9).setFontColor(action === 'confirm' ? '#166534' : '#dc2626').setFontWeight('bold');
+  var newText = message.text + '\n\n' + emoji + ' *Статус:* ' + btnText;
   try {
-    UrlFetchApp.fetch(
-      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/editMessageText',
-      {
-        method: 'post',
-        contentType: 'application/json; charset=utf-8',
-        payload: JSON.stringify({
-          chat_id: message.chat.id,
-          message_id: message.message_id,
-          text: newText,
-          parse_mode: 'Markdown',
-          reply_markup: JSON.stringify({
-            inline_keyboard: []
-          })
-        })
-      }
-    );
-  } catch (err) {}
-
-  // Відповідаємо на callback
-  try {
-    UrlFetchApp.fetch(
-      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/answerCallbackQuery',
-      {
-        method: 'post',
-        contentType: 'application/json; charset=utf-8',
-        payload: JSON.stringify({
-          callback_query_id: callbackQuery.id,
-          text: btnText
-        })
-      }
-    );
-  } catch (err) {}
-}
-
-// === Встановлення webhook ===
-function setWebhook() {
-  var webAppUrl = ScriptApp.getService().getUrl();
-  var result = UrlFetchApp.fetch(
-    'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/setWebhook',
-    {
-      method: 'post',
-      contentType: 'application/json; charset=utf-8',
+    UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/editMessageText', {
+      method: 'post', contentType: 'application/json; charset=utf-8',
       payload: JSON.stringify({
-        url: webAppUrl,
-        allowed_updates: ['callback_query', 'message']
+        chat_id: message.chat.id, message_id: message.message_id,
+        text: newText, parse_mode: 'Markdown',
+        reply_markup: JSON.stringify({ inline_keyboard: [] })
       })
-    }
-  );
-  return result.getContentText();
+    });
+  } catch (err) { Logger.log(err); }
+  try {
+    UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/answerCallbackQuery', {
+      method: 'post', contentType: 'application/json; charset=utf-8',
+      payload: JSON.stringify({ callback_query_id: callbackQuery.id, text: btnText })
+    });
+  } catch (err) { Logger.log(err); }
 }
 
-// === Відправка кнопки Web App в групу ===
-function sendWebAppButton(chatId) {
-  var WEB_APP_URL = 'https://neo-gh0st.github.io/besarabskyi-step/admin.html';
-
-  try {
-    UrlFetchApp.fetch(
-      'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-      {
-        method: 'post',
-        contentType: 'application/json; charset=utf-8',
-        payload: JSON.stringify({
-          chat_id: chatId,
-          text: 'Натисніть кнопку нижче, щоб забронювати номер:',
-          reply_markup: JSON.stringify({
-            inline_keyboard: [
-              [
-                { text: 'Забронювати', web_app: { url: WEB_APP_URL } }
-              ]
-            ]
-          })
-        })
-      }
-    );
-  } catch (err) {}
+function setWebhook() {
+  var webAppUrl = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
+  var result = UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/setWebhook', {
+    method: 'post', contentType: 'application/json; charset=utf-8',
+    payload: JSON.stringify({ url: webAppUrl, allowed_updates: ['callback_query', 'message'] })
+  });
+  return result.getContentText();
 }

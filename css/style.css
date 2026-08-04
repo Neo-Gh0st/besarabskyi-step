@@ -1404,9 +1404,16 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .form__row {
+        grid-template-columns: 1fr;
+    }
+
     .calendars-row {
         grid-template-columns: 1fr;
         gap: 15px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .floor-tabs {
@@ -1443,10 +1450,6 @@ body {
         grid-template-columns: 1fr;
     }
     
-    .form__row {
-        grid-template-columns: 1fr;
-    }
-
     .calendar__type-name {
         font-size: 0.9rem;
     }
