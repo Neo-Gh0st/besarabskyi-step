@@ -1,6 +1,12 @@
 var TELEGRAM_BOT_TOKEN = '8737422467:AAEzLfb8K5SaVhl2ffCpPOaSiYfx5CLiKyY';
 var TELEGRAM_CHAT_ID = '-1004464763561';
 
+// ID чатів модераторів (особисті чати з ботом)
+var MODERATOR_CHAT_IDS = [
+  '', // модератор 1
+  '', // модератор 2
+];
+
 function onInstall() {
   setWebhook();
 }
@@ -70,16 +76,26 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.TEXT);
   }
 
-  // === Обробка /start в групі — відправка кнопки Web App ===
+  // === Обробка /start — відправка кнопки Web App модераторам ===
   if (rawData.message) {
     var msg = rawData.message;
     var text = (msg.text || '').trim();
+    var chatId = String(msg.chat.id);
     var chatType = msg.chat.type;
 
-    if (text.indexOf('/start') === 0 && (chatType === 'group' || chatType === 'supergroup')) {
-      sendWebAppButton(msg.chat.id);
-      return ContentService.createTextOutput('OK')
-        .setMimeType(ContentService.MimeType.TEXT);
+    if (text.indexOf('/start') === 0) {
+      // Особистий чат — перевірка чи це модератор
+      if (chatType === 'private' && MODERATOR_CHAT_IDS.indexOf(chatId) !== -1) {
+        sendWebAppButton(chatId);
+        return ContentService.createTextOutput('OK')
+          .setMimeType(ContentService.MimeType.TEXT);
+      }
+      // Група — завжди відправляємо кнопку
+      if (chatType === 'group' || chatType === 'supergroup') {
+        sendWebAppButton(chatId);
+        return ContentService.createTextOutput('OK')
+          .setMimeType(ContentService.MimeType.TEXT);
+      }
     }
   }
 
