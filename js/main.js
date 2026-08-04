@@ -317,8 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var calScriptUrl = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
     var bookedDates = [];
 
-    var monthNames = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
-        'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+    var monthNames = {
+        uk: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
+            'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
+        en: ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December']
+    };
 
     var calendars = [
         { type: 'family', month: new Date().getMonth(), year: new Date().getFullYear(),
@@ -347,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderCal(cal) {
         if (!cal.daysEl || !cal.monthEl) return;
 
-        cal.monthEl.textContent = monthNames[cal.month] + ' ' + cal.year;
+        cal.monthEl.textContent = monthNames[window.getCurrentLang()][cal.month] + ' ' + cal.year;
 
         var firstDay = new Date(cal.year, cal.month, 1);
         var lastDay = new Date(cal.year, cal.month + 1, 0);
@@ -528,17 +532,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+
+    window.renderAllCalendars = function() {
+        calendars.forEach(function(cal) { renderCal(cal); });
+    };
 });
 
 // === Відгуки ===
 (function() {
-    var reviews = [
-        { text: 'Чудове місце для сімейного відпочинку! Дуже затишно, чисто, привітний персонал. Море поруч, діти в захваті.', author: 'Олена та Олексій', date: 'Липень 2026', stars: 5 },
-        { text: 'Їздили компанією — все сподобалось. Кухня обладнана, територія охайнна, є де посидіти вечором. Рекомендую!', author: 'Андрій', date: 'Червень 2026', stars: 5 },
-        { text: 'Відпочивали з дитиною 3 роки. Дуже зручно — пляж недалеко, є місце для ігор. Номер Люкс — просто супер!', author: 'Марина', date: 'Серпень 2025', stars: 5 },
-        { text: 'Гарне місце, але хотілося б більше активностей для дітей. Загалом — рекомендую для тихого відпочинку.', author: 'Ігор та Наталія', date: 'Липень 2025', stars: 4 },
-        { text: 'Повертаємось вже втретє! Щоразу краще. Дякуємо за гостинність!', author: 'Родина Коваленко', date: 'Вересень 2025', stars: 5 }
-    ];
+    var reviews = {
+        uk: [
+            { text: 'Чудове місце для сімейного відпочинку! Дуже затишно, чисто, привітний персонал. Море поруч, діти в захваті.', author: 'Олена та Олексій', date: 'Липень 2026', stars: 5 },
+            { text: 'Їздили компанією — все сподобалось. Кухня обладнана, територія охайнна, є де посидіти вечором. Рекомендую!', author: 'Андрій', date: 'Червень 2026', stars: 5 },
+            { text: 'Відпочивали з дитиною 3 роки. Дуже зручно — пляж недалеко, є місце для ігор. Номер Люкс — просто супер!', author: 'Марина', date: 'Серпень 2025', stars: 5 },
+            { text: 'Гарне місце, але хотілося б більше активностей для дітей. Загалом — рекомендую для тихого відпочинку.', author: 'Ігор та Наталія', date: 'Липень 2025', stars: 4 },
+            { text: 'Повертаємось вже втретє! Щоразу краще. Дякуємо за гостинність!', author: 'Родина Коваленко', date: 'Вересень 2025', stars: 5 }
+        ],
+        en: [
+            { text: 'A wonderful place for family vacation! Very cozy, clean, friendly staff. Sea nearby, kids love it.', author: 'Olena & Oleksii', date: 'July 2026', stars: 5 },
+            { text: 'Went with a group — everything was great. Kitchen is well-equipped, territory is tidy, nice place to sit in the evening. Highly recommend!', author: 'Andrii', date: 'June 2026', stars: 5 },
+            { text: 'Vacationed with a 3-year-old. Very convenient — beach is close, there\'s a play area. The Lux room is simply amazing!', author: 'Maryna', date: 'August 2025', stars: 5 },
+            { text: 'Nice place, but would love more activities for kids. Overall — recommended for a quiet getaway.', author: 'Ihor & Nataliia', date: 'July 2025', stars: 4 },
+            { text: 'We\'ve been back for the third time! Better every visit. Thank you for the hospitality!', author: 'Kovalenko Family', date: 'September 2025', stars: 5 }
+        ]
+    };
 
     var track = document.getElementById('reviewsTrack');
     var dotsContainer = document.getElementById('reviewsDots');
@@ -548,30 +565,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var current = 0;
 
-    reviews.forEach(function(r, i) {
-        var card = document.createElement('div');
-        card.className = 'review-card';
-        card.innerHTML = '<div class="review-card__stars">' + '&#9733;'.repeat(r.stars) + '&#9734;'.repeat(5 - r.stars) + '</div>' +
-            '<p class="review-card__text">"' + r.text + '"</p>' +
-            '<div class="review-card__author">' + r.author + '</div>' +
-            '<div class="review-card__date">' + r.date + '</div>';
-        track.appendChild(card);
+    function buildReviews() {
+        var lang = window.getCurrentLang();
+        var list = reviews[lang] || reviews.uk;
+        track.innerHTML = '';
+        dotsContainer.innerHTML = '';
+        current = 0;
+        track.style.transform = 'translateX(0)';
 
-        var dot = document.createElement('button');
-        dot.className = 'reviews__dot' + (i === 0 ? ' active' : '');
-        dot.addEventListener('click', function() { goTo(i); });
-        dotsContainer.appendChild(dot);
-    });
+        list.forEach(function(r, i) {
+            var card = document.createElement('div');
+            card.className = 'review-card';
+            card.innerHTML = '<div class="review-card__stars">' + '&#9733;'.repeat(r.stars) + '&#9734;'.repeat(5 - r.stars) + '</div>' +
+                '<p class="review-card__text">"' + r.text + '"</p>' +
+                '<div class="review-card__author">' + r.author + '</div>' +
+                '<div class="review-card__date">' + r.date + '</div>';
+            track.appendChild(card);
+
+            var dot = document.createElement('button');
+            dot.className = 'reviews__dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', function() { goTo(i); });
+            dotsContainer.appendChild(dot);
+        });
+    }
 
     function goTo(index) {
+        var list = reviews[window.getCurrentLang()] || reviews.uk;
         current = index;
         track.style.transform = 'translateX(-' + (current * 100) + '%)';
         var dots = dotsContainer.querySelectorAll('.reviews__dot');
         dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
     }
 
-    prevBtn.addEventListener('click', function() { goTo(current > 0 ? current - 1 : reviews.length - 1); });
-    nextBtn.addEventListener('click', function() { goTo(current < reviews.length - 1 ? current + 1 : 0); });
+    prevBtn.addEventListener('click', function() {
+        var list = reviews[window.getCurrentLang()] || reviews.uk;
+        goTo(current > 0 ? current - 1 : list.length - 1);
+    });
+    nextBtn.addEventListener('click', function() {
+        var list = reviews[window.getCurrentLang()] || reviews.uk;
+        goTo(current < list.length - 1 ? current + 1 : 0);
+    });
+
+    buildReviews();
+    window.renderReviews = buildReviews;
 })();
 
 // === Перемикач мови UA/EN ===
@@ -814,6 +850,8 @@ document.addEventListener('DOMContentLoaded', function() {
         langBtns.forEach(function(btn) { btn.classList.toggle('active', btn.dataset.lang === lang); });
         document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
         localStorage.setItem('lang', lang);
+        if (window.renderAllCalendars) window.renderAllCalendars();
+        if (window.renderReviews) window.renderReviews();
     }
 
     langBtns.forEach(function(btn) {
