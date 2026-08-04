@@ -529,3 +529,106 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// === Відгуки ===
+(function() {
+    var reviews = [
+        { text: 'Чудове місце для сімейного відпочинку! Дуже затишно, чисто, привітний персонал. Море поруч, діти в захваті.', author: 'Олена та Олексій', date: 'Липень 2026', stars: 5 },
+        { text: 'Їздили компанією — все сподобалось. Кухня обладнана, територія охайнна, є де посидіти вечором. Рекомендую!', author: 'Андрій', date: 'Червень 2026', stars: 5 },
+        { text: 'Відпочивали з дитиною 3 роки. Дуже зручно — пляж недалеко, є місце для ігор. Номер Люкс — просто супер!', author: 'Марина', date: 'Серпень 2025', stars: 5 },
+        { text: 'Гарне місце, але хотілося б більше активностей для дітей. Загалом — рекомендую для тихого відпочинку.', author: 'Ігор та Наталія', date: 'Липень 2025', stars: 4 },
+        { text: 'Повертаємось вже втретє! Щоразу краще. Дякуємо за гостинність!', author: 'Родина Коваленко', date: 'Вересень 2025', stars: 5 }
+    ];
+
+    var track = document.getElementById('reviewsTrack');
+    var dotsContainer = document.getElementById('reviewsDots');
+    var prevBtn = document.getElementById('reviewsPrev');
+    var nextBtn = document.getElementById('reviewsNext');
+    if (!track) return;
+
+    var current = 0;
+
+    reviews.forEach(function(r, i) {
+        var card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = '<div class="review-card__stars">' + '&#9733;'.repeat(r.stars) + '&#9734;'.repeat(5 - r.stars) + '</div>' +
+            '<p class="review-card__text">"' + r.text + '"</p>' +
+            '<div class="review-card__author">' + r.author + '</div>' +
+            '<div class="review-card__date">' + r.date + '</div>';
+        track.appendChild(card);
+
+        var dot = document.createElement('button');
+        dot.className = 'reviews__dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', function() { goTo(i); });
+        dotsContainer.appendChild(dot);
+    });
+
+    function goTo(index) {
+        current = index;
+        track.style.transform = 'translateX(-' + (current * 100) + '%)';
+        var dots = dotsContainer.querySelectorAll('.reviews__dot');
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+    }
+
+    prevBtn.addEventListener('click', function() { goTo(current > 0 ? current - 1 : reviews.length - 1); });
+    nextBtn.addEventListener('click', function() { goTo(current < reviews.length - 1 ? current + 1 : 0); });
+})();
+
+// === Перемикач мови UA/EN ===
+(function() {
+    var translations = {
+        uk: {
+            nav_about: 'Про нас', nav_layout: 'Корпуси', nav_rooms: 'Номери', nav_gallery: 'Галерея',
+            nav_checkpoint: 'Проїзд', nav_booking: 'Бронювання', nav_contacts: 'Контакти',
+            hero_title: 'Відпочинок біля моря<br>поруч з Одесою',
+            hero_subtitle: 'Затишна база відпочинку для сімей, компаній і тих, хто хоче відпочити від міської метушні',
+            hero_btn_book: 'Забронювати', hero_btn_more: 'Дізнатися більше',
+            about_title: 'Про нас',
+            about_text: 'База відпочинку «Бесарабський степ» — це затишне місце біля Чорного моря, поруч з Одесою. У нас ви знайдете комфортні номери, чистий пляж та справжній відпочинок від міської метушні.',
+            rooms_title: 'Номери',
+            gallery_title: 'Галерея',
+            checkpoint_title: 'Проїзд через Паланку',
+            booking_title: 'Бронювання',
+            reviews_title: 'Відгуки гостей',
+            contacts_title: 'Контакти',
+            footer_tagline: 'Відпочинок біля моря поруч з Одесою'
+        },
+        en: {
+            nav_about: 'About', nav_layout: 'Buildings', nav_rooms: 'Rooms', nav_gallery: 'Gallery',
+            nav_checkpoint: 'Directions', nav_booking: 'Booking', nav_contacts: 'Contacts',
+            hero_title: 'Seaside retreat<br>near Odessa',
+            hero_subtitle: 'A cozy recreation base for families, groups, and anyone looking to escape the city hustle',
+            hero_btn_book: 'Book now', hero_btn_more: 'Learn more',
+            about_title: 'About us',
+            about_text: 'Bessarabskyi Steppe recreation base is a cozy place by the Black Sea, near Odessa. Here you will find comfortable rooms, a clean beach, and a true escape from city life.',
+            rooms_title: 'Rooms',
+            gallery_title: 'Gallery',
+            checkpoint_title: 'Palanka border crossing',
+            booking_title: 'Booking',
+            reviews_title: 'Guest reviews',
+            contacts_title: 'Contacts',
+            footer_tagline: 'Seaside retreat near Odessa'
+        }
+    };
+
+    var langBtns = document.querySelectorAll('.lang-btn');
+    var savedLang = localStorage.getItem('lang') || 'uk';
+
+    function applyLang(lang) {
+        var t = translations[lang];
+        if (!t) return;
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            if (t[key]) el.innerHTML = t[key];
+        });
+        langBtns.forEach(function(btn) { btn.classList.toggle('active', btn.dataset.lang === lang); });
+        document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
+        localStorage.setItem('lang', lang);
+    }
+
+    langBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() { applyLang(btn.dataset.lang); });
+    });
+
+    applyLang(savedLang);
+})();

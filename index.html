@@ -18,14 +18,18 @@
                 <span class="logo__text">Бесарабський степ</span>
             </a>
             <nav class="nav" id="nav">
-                <a href="#about" class="nav__link">Про нас</a>
-                <a href="#layout" class="nav__link">Корпуси</a>
-                <a href="#rooms" class="nav__link">Номери</a>
-                <a href="#gallery" class="nav__link">Галерея</a>
-                <a href="#checkpoint" class="nav__link">Проїзд</a>
-                <a href="#booking" class="nav__link">Бронювання</a>
-                <a href="#contacts" class="nav__link">Контакти</a>
+                <a href="#about" class="nav__link" data-i18n="nav_about">Про нас</a>
+                <a href="#layout" class="nav__link" data-i18n="nav_layout">Корпуси</a>
+                <a href="#rooms" class="nav__link" data-i18n="nav_rooms">Номери</a>
+                <a href="#gallery" class="nav__link" data-i18n="nav_gallery">Галерея</a>
+                <a href="#checkpoint" class="nav__link" data-i18n="nav_checkpoint">Проїзд</a>
+                <a href="#booking" class="nav__link" data-i18n="nav_booking">Бронювання</a>
+                <a href="#contacts" class="nav__link" data-i18n="nav_contacts">Контакти</a>
             </nav>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="uk">UA</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
             <a href="tel:+380672641017" class="header__phone">067 264 10 17</a>
             <button class="burger" id="burger" aria-label="Меню">
                 <span></span>
@@ -39,11 +43,11 @@
         <section class="hero" id="hero">
             <div class="hero__overlay"></div>
             <div class="container hero__content">
-                <h1 class="hero__title">Відпочинок біля моря<br>поруч з Одесою</h1>
-                <p class="hero__subtitle">Затишна база відпочинку для сімей, компаній і тих, хто хоче відпочити від міської метушні</p>
+                <h1 class="hero__title" data-i18n="hero_title">Відпочинок біля моря<br>поруч з Одесою</h1>
+                <p class="hero__subtitle" data-i18n="hero_subtitle">Затишна база відпочинку для сімей, компаній і тих, хто хоче відпочити від міської метушні</p>
                 <div class="hero__buttons">
-                    <a href="#booking" class="btn btn--primary">Забронювати</a>
-                    <a href="#about" class="btn btn--outline">Дізнатися більше</a>
+                    <a href="#booking" class="btn btn--primary" data-i18n="hero_btn_book">Забронювати</a>
+                    <a href="#about" class="btn btn--outline" data-i18n="hero_btn_more">Дізнатися більше</a>
                 </div>
             </div>
         </section>
@@ -295,7 +299,7 @@
 
         <section class="about section" id="about">
             <div class="container">
-                <h2 class="section__title">Про нашу базу</h2>
+                <h2 class="section__title" data-i18n="about_title">Про нашу базу</h2>
                 <div class="about__grid">
                     <div class="about__text">
                         <p>База відпочинку «Бесарабський степ» розташована в мальовничому місці Чорного моря, всього в 30 хвилинах їзди від Одеси. Ми пропонуємо комфортне розміщення в затишних котеджах і номерах з видом на море.</p>
@@ -329,7 +333,7 @@
 
         <section class="rooms section" id="rooms">
             <div class="container">
-                <h2 class="section__title">Номери та котеджі</h2>
+                <h2 class="section__title" data-i18n="rooms_title">Номери та котеджі</h2>
                 <div class="rooms__grid">
                     <div class="room-card">
                         <div class="room-card__image">
@@ -382,7 +386,7 @@
 
         <section class="gallery section" id="gallery">
             <div class="container">
-                <h2 class="section__title">Галерея</h2>
+                <h2 class="section__title" data-i18n="gallery_title">Галерея</h2>
                 <div class="gallery__filters">
                     <button class="gallery__filter active" data-filter="all">Все</button>
                     <button class="gallery__filter" data-filter="territory">Територія</button>
@@ -428,7 +432,7 @@
 
         <section class="booking section" id="booking">
             <div class="container">
-                <h2 class="section__title">Бронювання</h2>
+                <h2 class="section__title" data-i18n="booking_title">Бронювання</h2>
                 <div class="booking__wrapper">
                     <div class="booking__info">
                         <h3>Як забронювати?</h3>
@@ -498,7 +502,7 @@
 
         <section class="map section" id="map">
             <div class="container">
-                <h2 class="section__title">Як доїхати</h2>
+                <h2 class="section__title" data-i18n="checkpoint_title">Як доїхати</h2>
                 <div class="map__wrapper">
                     <div class="map__info">
                         <div class="map__address">
@@ -529,9 +533,23 @@
             </div>
         </section>
 
+        <section class="reviews section" id="reviews">
+            <div class="container">
+                <h2 class="section__title" data-i18n="reviews_title">Відгуки гостей</h2>
+                <div class="reviews__slider" id="reviewsSlider">
+                    <div class="reviews__track" id="reviewsTrack"></div>
+                    <div class="reviews__nav">
+                        <button class="reviews__arrow reviews__arrow--prev" id="reviewsPrev">&#8592;</button>
+                        <div class="reviews__dots" id="reviewsDots"></div>
+                        <button class="reviews__arrow reviews__arrow--next" id="reviewsNext">&#8594;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="contacts section" id="contacts">
             <div class="container">
-                <h2 class="section__title">Контакти</h2>
+                <h2 class="section__title" data-i18n="contacts_title">Контакти</h2>
                 <div class="contacts__grid">
                     <div class="contact-card">
                         <div class="contact-card__icon">📞</div>
