@@ -912,7 +912,8 @@ document.addEventListener('DOMContentLoaded', function() {
             review_form_text: 'Ваш відгук', review_form_text_ph: 'Розкажіть про свій досвід відпочинку...',
             review_form_submit: 'Надіслати відгук',
             review_form_success: 'Дякуємо! Ваш відгук надіслано і з\'явиться на сайті після перевірки.',
-            booking_total_nights: 'Ночей:', booking_total_price_per_day: 'Ціна за добу:', booking_total_sum: 'Разом:'
+            booking_total_nights: 'Ночей:', booking_total_price_per_day: 'Ціна за добу:', booking_total_sum: 'Разом:',
+            booking_total_note: 'Оплата на місці при заїзді'
         },
         en: {
             logo_text: 'Bessarabskyi Steppe',
@@ -1029,7 +1030,8 @@ document.addEventListener('DOMContentLoaded', function() {
             review_form_text: 'Your review', review_form_text_ph: 'Tell us about your stay...',
             review_form_submit: 'Submit review',
             review_form_success: 'Thank you! Your review has been submitted and will appear on the site after moderation.',
-            booking_total_nights: 'Nights:', booking_total_price_per_day: 'Price per night:', booking_total_sum: 'Total:'
+            booking_total_nights: 'Nights:', booking_total_price_per_day: 'Price per night:', booking_total_sum: 'Total:',
+            booking_total_note: 'Payment on-site upon check-in'
         }
     };
 
