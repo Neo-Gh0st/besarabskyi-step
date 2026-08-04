@@ -244,7 +244,7 @@ function handleReview(data) {
   var rowData = [now.toLocaleString('uk-UA'), data.name, data.text, parseInt(data.rating) || 5, 'Новий'];
   reviewSheet.getRange(reviewSheet.getLastRow() + 1, 1, 1, 5).setValues([rowData]);
 
-  var tgMsg = '⭐ *НОВИЙ ВІДГУК*\n\n👤 ' + data.name + '\n⭐ ' + data.rating + '/5\n\n💬 ' + data.text;
+  var tgMsg = '⭐ НОВИЙ ВІДГУК\n\n👤 ' + data.name + '\n⭐ ' + data.rating + '/5\n\n💬 ' + data.text;
   for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
     try {
       UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
@@ -252,7 +252,6 @@ function handleReview(data) {
         payload: JSON.stringify({
           chat_id: MODERATOR_CHAT_IDS[i],
           text: tgMsg,
-          parse_mode: 'Markdown',
           reply_markup: JSON.stringify({
             inline_keyboard: [[
               { text: '✅ Опублікувати', callback_data: 'review_approve_' + reviewSheet.getLastRow() },
