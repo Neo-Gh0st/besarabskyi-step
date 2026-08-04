@@ -2,8 +2,7 @@ var TELEGRAM_BOT_TOKEN = '8737422467:AAEzLfb8K5SaVhl2ffCpPOaSiYfx5CLiKyY';
 
 // ID чатів модераторів (особисті чати з ботом)
 var MODERATOR_CHAT_IDS = [
-  '', // модератор 1
-  '', // модератор 2
+  '8737422467', // модератор 1
 ];
 
 function onInstall() {
