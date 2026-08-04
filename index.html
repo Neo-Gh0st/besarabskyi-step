@@ -15,7 +15,7 @@
         <div class="container header__inner">
             <a href="#" class="logo">
                     <span class="logo__icon"></span>
-                <span class="logo__text">Бесарабський степ</span>
+                <span class="logo__text" data-i18n="logo_text">Бесарабський степ</span>
             </a>
             <nav class="nav" id="nav">
                 <a href="#about" class="nav__link" data-i18n="nav_about">Про нас</a>
@@ -55,89 +55,89 @@
 
         <section class="layout section" id="layout">
             <div class="container">
-                <h2 class="section__title">Наявність номерів</h2>
-                <p class="layout__subtitle">Заброньовані номери підсвічуються червоним.</p>
+                <h2 class="section__title" data-i18n="layout_title">Наявність номерів</h2>
+                <p class="layout__subtitle" data-i18n="layout_subtitle">Заброньовані номери підсвічуються червоним.</p>
 
                 <div class="plan-floors">
                     <div class="plan-floor">
-                        <h3 class="plan-floor__title">1 этаж — Сімейні</h3>
+                        <h3 class="plan-floor__title" data-i18n="floor1_title">1 этаж — Сімейні</h3>
                         <div class="plan-p">
                             <div class="plan-p__left" data-room="family" id="plan1Left">
-                                <span>Сімейний</span>
+                                <span data-i18n="plan_family">Сімейний</span>
                             </div>
                             <div class="plan-p__top" data-room="family-plus" id="plan1Top">
-                                <span>Сімейний+</span>
+                                <span data-i18n="plan_family_plus">Сімейний+</span>
                             </div>
                             <div class="plan-p__right" data-room="family-lux" id="plan1Right">
-                                <span>Сімейний Люкс</span>
+                                <span data-i18n="plan_family_lux">Сімейний Люкс</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="plan-floor">
-                        <h3 class="plan-floor__title">2 этаж — Для пар</h3>
+                        <h3 class="plan-floor__title" data-i18n="floor2_title">2 этаж — Для пар</h3>
                         <div class="plan-p">
                             <div class="plan-p__left" data-room="family-2" id="plan2Left">
-                                <span>Сімейний 2</span>
+                                <span data-i18n="plan_family_2">Сімейний 2</span>
                             </div>
                             <div class="plan-p__top plan-p__top--split">
                                 <div class="plan-p__room" data-room="double-lux-1" id="plan2Top1">
-                                    <span>Люкс 1</span>
+                                    <span data-i18n="plan_lux_1">Люкс 1</span>
                                 </div>
                                 <div class="plan-p__room" data-room="double-lux-2" id="plan2Top2">
-                                    <span>Люкс 2</span>
+                                    <span data-i18n="plan_lux_2">Люкс 2</span>
                                 </div>
                             </div>
                             <div class="plan-p__right" data-room="family-plus-2" id="plan2Right">
-                                <span>Сімейний+ 2</span>
+                                <span data-i18n="plan_family_plus_2">Сімейний+ 2</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="floor-tabs">
-                    <button class="floor-tab floor-tab--active" data-floor="1">1 поверх — Сімейні</button>
-                    <button class="floor-tab" data-floor="2">2 поверх — Люкс</button>
-                    <button class="floor-tab" data-floor="3">2 поверх (Бокові кімнати)</button>
+                    <button class="floor-tab floor-tab--active" data-floor="1" data-i18n="floor_tab_1">1 поверх — Сімейні</button>
+                    <button class="floor-tab" data-floor="2" data-i18n="floor_tab_2">2 поверх — Люкс</button>
+                    <button class="floor-tab" data-floor="3" data-i18n="floor_tab_3">2 поверх (Бокові кімнати)</button>
                 </div>
 
                 <div class="floor-content" id="floor1">
                     <div class="calendars-row">
                         <div class="calendar">
-                            <div class="calendar__type-name">Сімейний</div>
+                            <div class="calendar__type-name" data-i18n="cal_family">Сімейний</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevFamily">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthFamily"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextFamily">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysFamily"></div>
                         </div>
 
                         <div class="calendar">
-                            <div class="calendar__type-name">Сімейний+</div>
+                            <div class="calendar__type-name" data-i18n="cal_family_plus">Сімейний+</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevFamilyPlus">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthFamilyPlus"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextFamilyPlus">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysFamilyPlus"></div>
                         </div>
 
                         <div class="calendar">
-                            <div class="calendar__type-name">Сімейний Люкс</div>
+                            <div class="calendar__type-name" data-i18n="cal_family_lux">Сімейний Люкс</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevFamilyLux">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthFamilyLux"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextFamilyLux">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysFamilyLux"></div>
                         </div>
@@ -147,27 +147,27 @@
                 <div class="floor-content" id="floor2" style="display:none;">
                     <div class="calendars-row">
                         <div class="calendar">
-                            <div class="calendar__type-name">Люкс 1</div>
+                            <div class="calendar__type-name" data-i18n="cal_lux_1">Люкс 1</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevDoubleLux1">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthDoubleLux1"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextDoubleLux1">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysDoubleLux1"></div>
                         </div>
 
                         <div class="calendar">
-                            <div class="calendar__type-name">Люкс 2</div>
+                            <div class="calendar__type-name" data-i18n="cal_lux_2">Люкс 2</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevDoubleLux2">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthDoubleLux2"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextDoubleLux2">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysDoubleLux2"></div>
                         </div>
@@ -177,27 +177,27 @@
                 <div class="floor-content" id="floor3" style="display:none;">
                     <div class="calendars-row">
                         <div class="calendar">
-                            <div class="calendar__type-name">Сімейний 2</div>
+                            <div class="calendar__type-name" data-i18n="cal_family_2">Сімейний 2</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevFamily2">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthFamily2"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextFamily2">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysFamily2"></div>
                         </div>
 
                         <div class="calendar">
-                            <div class="calendar__type-name">Сімейний+ 2</div>
+                            <div class="calendar__type-name" data-i18n="cal_family_plus_2">Сімейний+ 2</div>
                             <div class="calendar__header">
                                 <button class="calendar__nav calendar__prev" id="calPrevFamilyPlus2">&#9664;</button>
                                 <h3 class="calendar__month" id="calMonthFamilyPlus2"></h3>
                                 <button class="calendar__nav calendar__next" id="calNextFamilyPlus2">&#9654;</button>
                             </div>
                             <div class="calendar__weekdays">
-                                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                                <div data-i18n="wd_mon">Пн</div><div data-i18n="wd_tue">Вт</div><div data-i18n="wd_wed">Ср</div><div data-i18n="wd_thu">Чт</div><div data-i18n="wd_fri">Пт</div><div data-i18n="wd_sat">Сб</div><div data-i18n="wd_sun">Нд</div>
                             </div>
                             <div class="calendar__days" id="calDaysFamilyPlus2"></div>
                         </div>
@@ -212,86 +212,86 @@
                 <div class="checkpoint__card">
                     <div class="checkpoint__header">
                         <span class="checkpoint__icon"></span>
-                        <h2 class="checkpoint__title">Проїзд через КПП «Паланка»</h2>
-                        <span class="checkpoint__warning">Важливо для чоловіків 18-60 років</span>
+                        <h2 class="checkpoint__title" data-i18n="checkpoint_heading">Проїзд через КПП «Паланка»</h2>
+                        <span class="checkpoint__warning" data-i18n="checkpoint_warning">Важливо для чоловіків 18-60 років</span>
                     </div>
                     <div class="checkpoint__body">
-                        <div class="checkpoint__alert">
+                        <div class="checkpoint__alert" data-i18n="checkpoint_alert">
                             <strong>До нашої бази можна доїхати лише через транзитну ділянку траси Одеса–Рені в районі с. Паланка (територія Молдови).</strong> Альтернативний міст через Дністровський лиман пошкоджений внаслідок ракетних ударів.
                         </div>
 
                         <div class="checkpoint__section">
-                            <h3>Хто може проїхати без дозволу:</h3>
+                            <h3 data-i18n="checkpoint_who_title">Хто може проїхати без дозволу:</h3>
                             <ul>
-                                <li>Жінки та чоловіки старші 60 / молодші 18 років — <strong>вільно за паспортом</strong></li>
-                                <li>Особи з дійсною візою або дозволом на виїзд за кордон (загранпаспорт + віза)</li>
+                                <li data-i18n="checkpoint_who_1">Жінки та чоловіки старші 60 / молодші 18 років — <strong>вільно за паспортом</strong></li>
+                                <li data-i18n="checkpoint_who_2">Особи з дійсною візою або дозволом на виїзд за кордон (загранпаспорт + віза)</li>
                             </ul>
                         </div>
 
                         <div class="checkpoint__section">
-                            <h3>📋 Що потрібно чоловікам 18-60 років:</h3>
-                            <p>Проїзд дозволений <strong>лише за наявності</strong> однієї з умов:</p>
+                            <h3 data-i18n="checkpoint_men_title">📋 Що потрібно чоловікам 18-60 років:</h3>
+                            <p data-i18n="checkpoint_men_text">Проїзд дозволений <strong>лише за наявності</strong> однієї з умов:</p>
                             <ol>
-                                <li><strong>Законні підстави для виїзду за кордон</strong> — загранпаспорт + віза/дозвіл на в'їзд в іншу країну</li>
-                                <li><strong>Дозвіл від 25 прикордонного загону</strong> — оформлюється заздалегідь</li>
+                                <li data-i18n="checkpoint_men_1"><strong>Законні підстави для виїзду за кордон</strong> — загранпаспорт + віза/дозвіл на в'їзд в іншу країну</li>
+                                <li data-i18n="checkpoint_men_2"><strong>Дозвіл від 25 прикордонного загону</strong> — оформлюється заздалегідь</li>
                             </ol>
                         </div>
 
                         <div class="checkpoint__section checkpoint__section--highlight">
-                            <h3>📝 Як отримати дозвіл (покрокова інструкція):</h3>
+                            <h3 data-i18n="checkpoint_how_title">📝 Як отримати дозвіл (покрокова інструкція):</h3>
                             <ol>
-                                <li>Напишіть заяву з вказівкою:
+                                <li data-i18n="checkpoint_how_1">Напишіть заяву з вказівкою:
                                     <ul>
-                                        <li>ПІБ, дата народження</li>
-                                        <li>Мета поїздки (відпочинок, база відпочинку «Бесарабський степ»)</li>
-                                        <li>Бажані дати проїзду</li>
+                                        <li data-i18n="checkpoint_how_1a">ПІБ, дата народження</li>
+                                        <li data-i18n="checkpoint_how_1b">Мета поїздки (відпочинок, база відпочинку «Бесарабський степ»)</li>
+                                        <li data-i18n="checkpoint_how_1c">Бажані дати проїзду</li>
                                     </ul>
                                 </li>
-                                <li>Додайте копії:
+                                <li data-i18n="checkpoint_how_2">Додайте копії:
                                     <ul>
-                                        <li>Паспорта громадянина України (1-2 сторінки)</li>
-                                        <li>Військово-облікових документів (для військовозобов'язаних)</li>
-                                        <li>Документів, що підтверджують мету (бронювання житла, путівка)</li>
+                                        <li data-i18n="checkpoint_how_2a">Паспорта громадянина України (1-2 сторінки)</li>
+                                        <li data-i18n="checkpoint_how_2b">Військово-облікових документів (для військовозобов'язаних)</li>
+                                        <li data-i18n="checkpoint_how_2c">Документів, що підтверджують мету (бронювання житла, путівка)</li>
                                     </ul>
                                 </li>
-                                <li>Надішліть на email: <a href="mailto:bilgorod_dnistrovskiy_zagin@dpsu.gov.ua">bilgorod_dnistrovskiy_zagin@dpsu.gov.ua</a></li>
-                                <li>Чекайте відповідь — <strong>до 3 робочих днів</strong></li>
+                                <li data-i18n="checkpoint_how_3">Надішліть на email: <a href="mailto:bilgorod_dnistrovskiy_zagin@dpsu.gov.ua">bilgorod_dnistrovskiy_zagin@dpsu.gov.ua</a></li>
+                                <li data-i18n="checkpoint_how_4">Чекайте відповідь — <strong>до 3 робочих днів</strong></li>
                             </ol>
                         </div>
 
                         <div class="checkpoint__section">
-                            <h3>⏰ Термін дії дозволу:</h3>
+                            <h3 data-i18n="checkpoint_valid_title">⏰ Термін дії дозволу:</h3>
                             <ul>
-                                <li><strong>До 1 року</strong> (з 01.11.2025, раніше було 6 місяців)</li>
-                                <li>Термін вказується відповідно до заявленої мети (наприклад, на 2 тижні відпочинку)</li>
+                                <li data-i18n="checkpoint_valid_1"><strong>До 1 року</strong> (з 01.11.2025, раніше було 6 місяців)</li>
+                                <li data-i18n="checkpoint_valid_2">Термін вказується відповідно до заявленої мети (наприклад, на 2 тижні відпочинку)</li>
                             </ul>
                         </div>
 
                         <div class="checkpoint__section">
-                            <h3>🪖 Військовим:</h3>
+                            <h3 data-i18n="checkpoint_army_title">🪖 Військовим:</h3>
                             <ul>
-                                <li>Мати при собі військовий квиток або службове посвідчення</li>
-                                <li><strong>Обов'язково мати записку про звільнення</strong> від командування</li>
-                                <li>Бронювання або відстрочка від мобілізації <strong>не є підставою</strong> для вільного проїзду — потрібен дозвіл</li>
+                                <li data-i18n="checkpoint_army_1">Мати при собі військовий квиток або службове посвідчення</li>
+                                <li data-i18n="checkpoint_army_2"><strong>Обов'язково мати записку про звільнення</strong> від командування</li>
+                                <li data-i18n="checkpoint_army_3">Бронювання або відстрочка від мобілізації <strong>не є підставою</strong> для вільного проїзду — потрібен дозвіл</li>
                             </ul>
                         </div>
 
                         <div class="checkpoint__section">
-                            <h3>💡 Корисні поради:</h3>
+                            <h3 data-i18n="checkpoint_tips_title">💡 Корисні поради:</h3>
                             <ul>
-                                <li>На КПП Маяки беріть талон з кількістю пасажирів</li>
-                                <li>Не зупиняйтесь та не паркуйтесь в зоні Маяків</li>
-                                <li>Майте при собі документи на авто (техпаспорт, страхування «Зелена карта»)</li>
-                                <li>Спори вирішуються на місці — з прикордонником краще не сперечатись</li>
-                                <li><strong>Радимо заздалегідь надіслати документи для оформлення дозволу</strong></li>
+                                <li data-i18n="checkpoint_tips_1">На КПП Маяки беріть талон з кількістю пасажирів</li>
+                                <li data-i18n="checkpoint_tips_2">Не зупиняйтесь та не паркуйтесь в зоні Маяків</li>
+                                <li data-i18n="checkpoint_tips_3">Майте при собі документи на авто (техпаспорт, страхування «Зелена карта»)</li>
+                                <li data-i18n="checkpoint_tips_4">Спори вирішуються на місці — з прикордонником краще не сперечатись</li>
+                                <li data-i18n="checkpoint_tips_5"><strong>Радимо заздалегідь надіслати документи для оформлення дозволу</strong></li>
                             </ul>
                         </div>
 
                         <div class="checkpoint__contacts">
-                            <h3>📞 Контакти 25 прикордонного загону:</h3>
-                            <p>Email: <a href="mailto:bilgorod_dnistrovskiy_zagin@dpsu.gov.ua">bilgorod_dnistrovskiy_zagin@dpsu.gov.ua</a></p>
-                            <p>Телефон: <a href="tel:+380484960198">(04849) 6-01-98</a></p>
-                            <p>Адреса: 67707, м. Білгород-Дністровський, вул. Військової слави, 14</p>
+                            <h3 data-i18n="checkpoint_contacts_title">📞 Контакти 25 прикордонного загону:</h3>
+                            <p><span data-i18n="checkpoint_contacts_email">Email:</span> <a href="mailto:bilgorod_dnistrovskiy_zagin@dpsu.gov.ua">bilgorod_dnistrovskiy_zagin@dpsu.gov.ua</a></p>
+                            <p><span data-i18n="checkpoint_contacts_phone">Телефон:</span> <a href="tel:+380484960198">(04849) 6-01-98</a></p>
+                            <p><span data-i18n="checkpoint_contacts_address">Адреса:</span> 67707, м. Білгород-Дністровський, вул. Військової слави, 14</p>
                         </div>
                     </div>
                 </div>
@@ -341,14 +341,14 @@
                             <div class="room-card__placeholder"></div>
                         </div>
                         <div class="room-card__content">
-                            <h3 class="room-card__title">Стандарт</h3>
-                            <p class="room-card__description">Затишний двомісний номер з видом на територію. Ванна кімната, кондиціонер, Wi-Fi.</p>
+                            <h3 class="room-card__title" data-i18n="room_standard_title">Стандарт</h3>
+                            <p class="room-card__description" data-i18n="room_standard_desc">Затишний двомісний номер з видом на територію. Ванна кімната, кондиціонер, Wi-Fi.</p>
                             <ul class="room-card__features">
-                                <li>2 гості</li>
-                                <li>20 м²</li>
-                                <li>Кондиціонер</li>
+                                <li data-i18n="room_standard_guests">2 гості</li>
+                                <li data-i18n="room_standard_area">20 м²</li>
+                                <li data-i18n="room_standard_ac">Кондиціонер</li>
                             </ul>
-                            <div class="room-card__price">від 1 500 грн <span>/добу</span></div>
+                            <div class="room-card__price"><span data-i18n="room_standard_price">від 1 500 грн</span> <span data-i18n="per_day">/добу</span></div>
                         </div>
                     </div>
                     <div class="room-card">
@@ -356,14 +356,14 @@
                             <div class="room-card__placeholder"></div>
                         </div>
                         <div class="room-card__content">
-                            <h3 class="room-card__title">Котедж</h3>
-                            <p class="room-card__description">Просторий котедж для сім'ї. Дві спальні, кухня, тераса з видом на море.</p>
+                            <h3 class="room-card__title" data-i18n="room_cottage_title">Котедж</h3>
+                            <p class="room-card__description" data-i18n="room_cottage_desc">Просторий котедж для сім'ї. Дві спальні, кухня, тераса з видом на море.</p>
                             <ul class="room-card__features">
-                                <li>4-6 гостей</li>
-                                <li>50 м²</li>
-                                <li>Кухня</li>
+                                <li data-i18n="room_cottage_guests">4-6 гостей</li>
+                                <li data-i18n="room_cottage_area">50 м²</li>
+                                <li data-i18n="room_cottage_kitchen">Кухня</li>
                             </ul>
-                            <div class="room-card__price">від 4 000 грн <span>/добу</span></div>
+                            <div class="room-card__price"><span data-i18n="room_cottage_price">від 4 000 грн</span> <span data-i18n="per_day">/добу</span></div>
                         </div>
                     </div>
                     <div class="room-card">
@@ -371,14 +371,14 @@
                             <div class="room-card__placeholder"></div>
                         </div>
                         <div class="room-card__content">
-                            <h3 class="room-card__title">Люкс</h3>
-                            <p class="room-card__description">Преміальний котедж з панорамним видом на море. Джакузи, три спальні, простора вітальня.</p>
+                            <h3 class="room-card__title" data-i18n="room_lux_title">Люкс</h3>
+                            <p class="room-card__description" data-i18n="room_lux_desc">Преміальний котедж з панорамним видом на море. Джакузи, три спальні, простора вітальня.</p>
                             <ul class="room-card__features">
-                                <li>6-8 гостей</li>
-                                <li>80 м²</li>
-                                <li>Джакузи</li>
+                                <li data-i18n="room_lux_guests">6-8 гостей</li>
+                                <li data-i18n="room_lux_area">80 м²</li>
+                                <li data-i18n="room_lux_jacuzzi">Джакузи</li>
                             </ul>
-                            <div class="room-card__price">від 7 000 грн <span>/добу</span></div>
+                            <div class="room-card__price"><span data-i18n="room_lux_price">від 7 000 грн</span> <span data-i18n="per_day">/добу</span></div>
                         </div>
                     </div>
                 </div>
@@ -389,43 +389,43 @@
             <div class="container">
                 <h2 class="section__title" data-i18n="gallery_title">Галерея</h2>
                 <div class="gallery__filters">
-                    <button class="gallery__filter active" data-filter="all">Все</button>
-                    <button class="gallery__filter" data-filter="territory">Територія</button>
-                    <button class="gallery__filter" data-filter="rooms">Номери</button>
-                    <button class="gallery__filter" data-filter="beach">Пляж</button>
+                    <button class="gallery__filter active" data-filter="all" data-i18n="gallery_all">Все</button>
+                    <button class="gallery__filter" data-filter="territory" data-i18n="gallery_territory">Територія</button>
+                    <button class="gallery__filter" data-filter="rooms" data-i18n="gallery_rooms">Номери</button>
+                    <button class="gallery__filter" data-filter="beach" data-i18n="gallery_beach">Пляж</button>
                 </div>
                 <div class="gallery__grid" id="galleryGrid">
                     <div class="gallery__item" data-category="territory">
                         <div class="gallery__placeholder">🌅</div>
-                        <div class="gallery__caption">Територія бази</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_1">Територія бази</div>
                     </div>
                     <div class="gallery__item" data-category="beach">
                         <div class="gallery__placeholder">🏖️</div>
-                        <div class="gallery__caption">Наш пляж</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_2">Наш пляж</div>
                     </div>
                     <div class="gallery__item" data-category="rooms">
                         <div class="gallery__placeholder">🛏️</div>
-                        <div class="gallery__caption">Номер Стандарт</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_3">Номер Стандарт</div>
                     </div>
                     <div class="gallery__item" data-category="territory">
                         <div class="gallery__placeholder">🌳</div>
-                        <div class="gallery__caption">Зелена зона</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_4">Зелена зона</div>
                     </div>
                     <div class="gallery__item" data-category="rooms">
                         <div class="gallery__placeholder">🛋️</div>
-                        <div class="gallery__caption">Котедж — вітальня</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_5">Котедж — вітальня</div>
                     </div>
                     <div class="gallery__item" data-category="beach">
                         <div class="gallery__placeholder">🏊</div>
-                        <div class="gallery__caption">Море</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_6">Море</div>
                     </div>
                     <div class="gallery__item" data-category="territory">
                         <div class="gallery__placeholder">🔥</div>
-                        <div class="gallery__caption">Зона барбекю</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_7">Зона барбекю</div>
                     </div>
                     <div class="gallery__item" data-category="rooms">
                         <div class="gallery__placeholder">🍳</div>
-                        <div class="gallery__caption">Кухня в котеджі</div>
+                        <div class="gallery__caption" data-i18n="gallery_cap_8">Кухня в котеджі</div>
                     </div>
                 </div>
             </div>
@@ -436,66 +436,66 @@
                 <h2 class="section__title" data-i18n="booking_title">Бронювання</h2>
                 <div class="booking__wrapper">
                     <div class="booking__info">
-                        <h3>Як забронювати?</h3>
+                        <h3 data-i18n="booking_how_title">Як забронювати?</h3>
                         <ol class="booking__steps">
-                            <li>Оберіть зручні дати та тип розміщення</li>
-                            <li>Заповніть форму або зателефонуйте нам</li>
-                            <li>Ми підтвердимо бронювання протягом 1 години</li>
-                            <li>Внесіть передоплату для гарантії броні</li>
+                            <li data-i18n="booking_step_1">Оберіть зручні дати та тип розміщення</li>
+                            <li data-i18n="booking_step_2">Заповніть форму або зателефонуйте нам</li>
+                            <li data-i18n="booking_step_3">Ми підтвердимо бронювання протягом 1 години</li>
+                            <li data-i18n="booking_step_4">Внесіть передоплату для гарантії броні</li>
                         </ol>
                         <div class="booking__contacts">
-                            <p>📞 Телефон: <a href="tel:+380672641017">067 264 10 17</a></p>
-                            <p>📞 Телефон: <a href="tel:+380507713856">050 771 38 56</a></p>
-                            <p>💬 Viber: <a href="viber://chat?number=%2B380672641017">Написати в Viber</a></p>
+                            <p data-i18n="booking_phone_1">📞 Телефон: <a href="tel:+380672641017">067 264 10 17</a></p>
+                            <p data-i18n="booking_phone_2">📞 Телефон: <a href="tel:+380507713856">050 771 38 56</a></p>
+                            <p>💬 <span data-i18n="booking_viber_label">Viber:</span> <a href="viber://chat?number=%2B380672641017" data-i18n="booking_viber_link">Написати в Viber</a></p>
                         </div>
                     </div>
                     <form class="booking__form" id="bookingForm">
                         <div class="form__group">
-                            <label for="name">Ваше ім'я</label>
-                            <input type="text" id="name" name="name" required placeholder="Олександр Олександрович">
+                            <label for="name" data-i18n="booking_form_name">Ваше ім'я</label>
+                            <input type="text" id="name" name="name" required data-i18n-placeholder="booking_form_name_ph" placeholder="Олександр Олександрович">
                         </div>
                         <div class="form__group">
-                            <label for="phone">Телефон</label>
+                            <label for="phone" data-i18n="booking_form_phone">Телефон</label>
                             <input type="tel" id="phone" name="phone" required placeholder="+38 (0__) ___-__-__">
                         </div>
                         <div class="form__group">
-                            <label for="roomType">Тип розміщення</label>
+                            <label for="roomType" data-i18n="booking_form_type">Тип розміщення</label>
                             <select id="roomType" name="roomType" required>
-                                <option value="">Оберіть тип</option>
-                                <optgroup label="1 поверх — Сімейні">
-                                    <option value="family">Сімейний — від 1 500 грн</option>
-                                    <option value="family-plus">Сімейний+ — від 2 000 грн</option>
-                                    <option value="family-lux">Сімейний Люкс — від 3 000 грн</option>
+                                <option value="" data-i18n="booking_form_type_def">Оберіть тип</option>
+                                <optgroup data-i18n="booking_form_grp1" label="1 поверх — Сімейні">
+                                    <option value="family" data-i18n="booking_form_opt1">Сімейний — від 1 500 грн</option>
+                                    <option value="family-plus" data-i18n="booking_form_opt2">Сімейний+ — від 2 000 грн</option>
+                                    <option value="family-lux" data-i18n="booking_form_opt3">Сімейний Люкс — від 3 000 грн</option>
                                 </optgroup>
-                                <optgroup label="2 поверх — Сімейні">
-                                    <option value="family-2">Сімейний 2 — від 1 500 грн</option>
-                                    <option value="family-plus-2">Сімейний+ 2 — від 2 000 грн</option>
+                                <optgroup data-i18n="booking_form_grp2" label="2 поверх — Сімейні">
+                                    <option value="family-2" data-i18n="booking_form_opt4">Сімейний 2 — від 1 500 грн</option>
+                                    <option value="family-plus-2" data-i18n="booking_form_opt5">Сімейний+ 2 — від 2 000 грн</option>
                                 </optgroup>
-                                <optgroup label="2 поверх — Люкс (2 кімнати)">
-                                    <option value="double-lux-1">Люкс 1 — від 2 500 грн</option>
-                                    <option value="double-lux-2">Люкс 2 — від 2 500 грн</option>
+                                <optgroup data-i18n="booking_form_grp3" label="2 поверх — Люкс (2 кімнати)">
+                                    <option value="double-lux-1" data-i18n="booking_form_opt6">Люкс 1 — від 2 500 грн</option>
+                                    <option value="double-lux-2" data-i18n="booking_form_opt7">Люкс 2 — від 2 500 грн</option>
                                 </optgroup>
                             </select>
                         </div>
                         <div class="form__row">
                             <div class="form__group">
-                                <label for="dateIn">Заїзд</label>
+                                <label for="dateIn" data-i18n="booking_form_checkin">Заїзд</label>
                                 <input type="date" id="dateIn" name="dateIn" required>
                             </div>
                             <div class="form__group">
-                                <label for="dateOut">Виїзд</label>
+                                <label for="dateOut" data-i18n="booking_form_checkout">Виїзд</label>
                                 <input type="date" id="dateOut" name="dateOut" required>
                             </div>
                         </div>
                         <div class="form__group">
-                            <label for="guests">Кількість гостей</label>
+                            <label for="guests" data-i18n="booking_form_guests">Кількість гостей</label>
                             <input type="number" id="guests" name="guests" min="1" max="10" value="2" required>
                         </div>
                         <div class="form__group">
-                            <label for="comment">Коментар</label>
-                            <textarea id="comment" name="comment" rows="3" placeholder="Особливі побажання..."></textarea>
+                            <label for="comment" data-i18n="booking_form_comment">Коментар</label>
+                            <textarea id="comment" name="comment" rows="3" data-i18n-placeholder="booking_form_comment_ph" placeholder="Особливі побажання..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn--primary btn--full">Надіслати заявку</button>
+                        <button type="submit" class="btn btn--primary btn--full" data-i18n="booking_form_submit">Надіслати заявку</button>
                     </form>
                 </div>
             </div>
@@ -507,16 +507,16 @@
                 <div class="map__wrapper">
                     <div class="map__info">
                         <div class="map__address">
-                            <h3>📍 Адреса</h3>
-                            <p>Одеська область, с. Косяківка</p>
+                            <h3 data-i18n="map_address_title">📍 Адреса</h3>
+                            <p data-i18n="map_address">Одеська область, с. Косяківка</p>
                         </div>
                         <div class="map__routes">
-                            <h3>Як доїхати</h3>
-                            <p><strong>З Одеси:</strong> від 1,5 до 2,5 годин в залежності від завантаженості дороги</p>
+                            <h3 data-i18n="map_routes_title">Як доїхати</h3>
+                            <p><strong data-i18n="map_from_odessa">З Одеси:</strong> <span data-i18n="map_from_odessa_text">від 1,5 до 2,5 годин в залежності від завантаженості дороги</span></p>
                         </div>
                         <div class="map__pickup">
-                            <h3>🚌 Трансфер</h3>
-                            <p>Трансфер організовує окрема людина. Номер телефону для зв'язку уточнюйте у нас.</p>
+                            <h3 data-i18n="map_transfer_title">🚌 Трансфер</h3>
+                            <p data-i18n="map_transfer_text">Трансфер організовує окрема людина. Номер телефону для зв'язку уточнюйте у нас.</p>
                         </div>
                     </div>
                     <div class="map__iframe">
@@ -554,18 +554,18 @@
                 <div class="contacts__grid">
                     <div class="contact-card">
                         <div class="contact-card__icon">📞</div>
-                        <h3 class="contact-card__title">Телефон</h3>
+                        <h3 class="contact-card__title" data-i18n="contact_phone">Телефон</h3>
                         <a href="tel:+380672641017" class="contact-card__value">067 264 10 17</a>
                     </div>
                     <div class="contact-card">
                         <div class="contact-card__icon">📞</div>
-                        <h3 class="contact-card__title">Телефон</h3>
+                        <h3 class="contact-card__title" data-i18n="contact_phone">Телефон</h3>
                         <a href="tel:+380507713856" class="contact-card__value">050 771 38 56</a>
                     </div>
                     <div class="contact-card">
                         <div class="contact-card__icon">💬</div>
-                        <h3 class="contact-card__title">Viber</h3>
-                        <a href="viber://chat?number=%2B380672641017" class="contact-card__value">Написати в Viber</a>
+                        <h3 class="contact-card__title" data-i18n="contact_viber">Viber</h3>
+                        <a href="viber://chat?number=%2B380672641017" class="contact-card__value" data-i18n="contact_viber_link">Написати в Viber</a>
                     </div>
                 </div>
             </div>
@@ -577,16 +577,16 @@
             <div class="footer__brand">
                 <a href="#" class="logo">
                 <span class="logo__icon"></span>
-                    <span class="logo__text">Бесарабський степ</span>
+                    <span class="logo__text" data-i18n="logo_text">Бесарабський степ</span>
                 </a>
                 <p class="footer__tagline" data-i18n="footer_tagline">Відпочинок біля моря поруч з Одесою</p>
             </div>
             <div class="footer__nav">
-                <a href="#about">Про нас</a>
-                <a href="#rooms">Номери</a>
-                <a href="#gallery">Галерея</a>
-                <a href="#booking">Бронювання</a>
-                <a href="#contacts">Контакти</a>
+                <a href="#about" data-i18n="nav_about">Про нас</a>
+                <a href="#rooms" data-i18n="nav_rooms">Номери</a>
+                <a href="#gallery" data-i18n="nav_gallery">Галерея</a>
+                <a href="#booking" data-i18n="nav_booking">Бронювання</a>
+                <a href="#contacts" data-i18n="nav_contacts">Контакти</a>
             </div>
             <div class="footer__social">
                 <a href="#" class="footer__social-link" aria-label="Instagram">📷</a>
@@ -596,7 +596,7 @@
         </div>
         <div class="footer__bottom">
             <div class="container">
-                <p>&copy; 2026 База відпочинку «Бесарабський степ». Усі права захищені.</p>
+                <p data-i18n="footer_copyright">&copy; 2026 База відпочинку «Бесарабський степ». Усі права захищені.</p>
             </div>
         </div>
     </footer>
@@ -606,21 +606,21 @@
             <div class="modal__icon" id="modalIcon"></div>
             <h3 class="modal__title" id="modalTitle"></h3>
             <p class="modal__text" id="modalText"></p>
-            <button class="modal__btn" id="modalBtn">Зрозуміло</button>
+            <button class="modal__btn" id="modalBtn" data-i18n="modal_ok">Зрозуміло</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="conflictOverlay">
         <div class="modal modal--conflict">
             <div class="modal__icon">🚫</div>
-            <h3 class="modal__title modal__title--conflict">Ці дати вже зайняті!</h3>
-            <p class="modal__text">Обрані вами дати частково або повністю збігаються з існуючими бронюваннями:</p>
+            <h3 class="modal__title modal__title--conflict" data-i18n="modal_conflict_title">Ці дати вже зайняті!</h3>
+            <p class="modal__text" data-i18n="modal_conflict_text">Обрані вами дати частково або повністю збігаються з існуючими бронюваннями:</p>
             <div class="conflict-table" id="conflictTable"></div>
-            <p class="modal__hint">Спробуйте обрати інші дати або зателефонуйте нам для уточнення.</p>
-            <button class="modal__btn" id="conflictBtn">Зрозуміло</button>
+            <p class="modal__hint" data-i18n="modal_conflict_hint">Спробуйте обрати інші дати або зателефонуйте нам для уточнення.</p>
+            <button class="modal__btn" id="conflictBtn" data-i18n="modal_ok">Зрозуміло</button>
         </div>
     </div>
 
-    <script src="js/main.js?v=2"></script>
+    <script src="js/main.js?v=3"></script>
 </body>
 </html>
