@@ -170,9 +170,8 @@ function doPost(e) {
     'family': 'Сімейний',
     'family-plus': 'Сімейний+',
     'family-lux': 'Сімейний Люкс',
-    'double': 'Двомісний',
-    'double-lux': 'Двомісний Люкс',
-    'double-premium': 'Двомісний Преміум'
+    'double-lux-1': 'Люкс 1',
+    'double-lux-2': 'Люкс 2'
   };
 
   var newDateIn = formatDate(data.dateIn);
@@ -252,9 +251,8 @@ function doPost(e) {
     'family': '🏠 Сімейний',
     'family-plus': '🏠 Сімейний+',
     'family-lux': '🏠 Сімейний Люкс',
-    'double': '🛏️ Двомісний',
-    'double-lux': '🛏️ Двомісний Люкс',
-    'double-premium': '🛏️ Двомісний Преміум'
+    'double-lux-1': '🛏️ Люкс 1',
+    'double-lux-2': '🛏️ Люкс 2'
   };
 
   var header = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВАЯ ЗАЯВКА*';

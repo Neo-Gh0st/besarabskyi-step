@@ -115,9 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
             family: 'Сімейний',
             'family-plus': 'Сімейний+',
             'family-lux': 'Сімейний Люкс',
-            double: 'Двомісний',
-            'double-lux': 'Двомісний Люкс',
-            'double-premium': 'Двомісний Преміум'
+            'double-lux-1': 'Люкс 1',
+            'double-lux-2': 'Люкс 2'
         };
         return labels[type] || type;
     }
@@ -324,15 +323,12 @@ document.addEventListener('DOMContentLoaded', function() {
         { type: 'family-lux', month: new Date().getMonth(), year: new Date().getFullYear(),
           monthEl: document.getElementById('calMonthFamilyLux'), daysEl: document.getElementById('calDaysFamilyLux'),
           prevBtn: document.getElementById('calPrevFamilyLux'), nextBtn: document.getElementById('calNextFamilyLux') },
-        { type: 'double', month: new Date().getMonth(), year: new Date().getFullYear(),
-          monthEl: document.getElementById('calMonthDouble'), daysEl: document.getElementById('calDaysDouble'),
-          prevBtn: document.getElementById('calPrevDouble'), nextBtn: document.getElementById('calNextDouble') },
-        { type: 'double-lux', month: new Date().getMonth(), year: new Date().getFullYear(),
-          monthEl: document.getElementById('calMonthDoubleLux'), daysEl: document.getElementById('calDaysDoubleLux'),
-          prevBtn: document.getElementById('calPrevDoubleLux'), nextBtn: document.getElementById('calNextDoubleLux') },
-        { type: 'double-premium', month: new Date().getMonth(), year: new Date().getFullYear(),
-          monthEl: document.getElementById('calMonthDoublePremium'), daysEl: document.getElementById('calDaysDoublePremium'),
-          prevBtn: document.getElementById('calPrevDoublePremium'), nextBtn: document.getElementById('calNextDoublePremium') }
+        { type: 'double-lux-1', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthDoubleLux1'), daysEl: document.getElementById('calDaysDoubleLux1'),
+          prevBtn: document.getElementById('calPrevDoubleLux1'), nextBtn: document.getElementById('calNextDoubleLux1') },
+        { type: 'double-lux-2', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthDoubleLux2'), daysEl: document.getElementById('calDaysDoubleLux2'),
+          prevBtn: document.getElementById('calPrevDoubleLux2'), nextBtn: document.getElementById('calNextDoubleLux2') }
     ];
 
     function renderCal(cal) {
@@ -469,8 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         var floor1Map = { Left: 'family', Top: 'family-plus', Right: 'family-lux' };
-        var floor2Map = { Left: 'double', Top: 'double-lux', Right: 'double-premium' };
-        var parts = ['Left', 'Top', 'Right'];
+        var parts = ['Left', 'Right'];
 
         for (var p = 0; p < parts.length; p++) {
             var el1 = document.getElementById('plan1' + parts[p]);
@@ -483,11 +478,39 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             var el2 = document.getElementById('plan2' + parts[p]);
             if (el2) {
-                if (bookedRooms[floor2Map[parts[p]]]) {
+                if (bookedRooms['family']) {
                     el2.classList.add('booked');
                 } else {
                     el2.classList.remove('booked');
                 }
+            }
+        }
+
+        // Центр 1 поверху
+        var plan1Top = document.getElementById('plan1Top');
+        if (plan1Top) {
+            if (bookedRooms['family-plus']) {
+                plan1Top.classList.add('booked');
+            } else {
+                plan1Top.classList.remove('booked');
+            }
+        }
+
+        // Центр 2 поверху (дві кімнати)
+        var plan2Top1 = document.getElementById('plan2Top1');
+        var plan2Top2 = document.getElementById('plan2Top2');
+        if (plan2Top1) {
+            if (bookedRooms['double-lux-1']) {
+                plan2Top1.classList.add('booked');
+            } else {
+                plan2Top1.classList.remove('booked');
+            }
+        }
+        if (plan2Top2) {
+            if (bookedRooms['double-lux-2']) {
+                plan2Top2.classList.add('booked');
+            } else {
+                plan2Top2.classList.remove('booked');
             }
         }
     }
