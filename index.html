@@ -517,7 +517,10 @@
                         </div>
                         <div class="form__group">
                             <label for="phone" data-i18n="booking_form_phone">Телефон</label>
-                            <input type="tel" id="phone" name="phone" required placeholder="+38 (0__) ___-__-__">
+                            <div class="phone-input">
+                                <span class="phone-input__prefix">+380</span>
+                                <input type="tel" id="phone" name="phone" required placeholder="(__) ___-__-__" pattern="\d{2}\s?\d{3}\s?\d{2}\s?\d{2}" maxlength="13">
+                            </div>
                         </div>
                         <div class="form__group">
                             <label for="roomType" data-i18n="booking_form_type">Тип розміщення</label>
