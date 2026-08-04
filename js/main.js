@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             var data = {
                 name: formData.get('name'),
-                phone: '+380' + formData.get('phone').replace(/\D/g, ''),
+                phone: '+380' + formData.get('phone').replace(/\D/g, '').replace(/^0+/, ''),
                 roomType: roomType,
                 dateIn: dateIn,
                 dateOut: dateOut,
