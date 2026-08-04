@@ -170,6 +170,8 @@ function doPost(e) {
     'family': 'Сімейний',
     'family-plus': 'Сімейний+',
     'family-lux': 'Сімейний Люкс',
+    'family-2': 'Сімейний 2',
+    'family-plus-2': 'Сімейний+ 2',
     'double-lux-1': 'Люкс 1',
     'double-lux-2': 'Люкс 2'
   };
@@ -251,6 +253,8 @@ function doPost(e) {
     'family': '🏠 Сімейний',
     'family-plus': '🏠 Сімейний+',
     'family-lux': '🏠 Сімейний Люкс',
+    'family-2': '🏠 Сімейний 2',
+    'family-plus-2': '🏠 Сімейний+ 2',
     'double-lux-1': '🛏️ Люкс 1',
     'double-lux-2': '🛏️ Люкс 2'
   };

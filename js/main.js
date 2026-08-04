@@ -115,6 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
             family: 'Сімейний',
             'family-plus': 'Сімейний+',
             'family-lux': 'Сімейний Люкс',
+            'family-2': 'Сімейний 2',
+            'family-plus-2': 'Сімейний+ 2',
             'double-lux-1': 'Люкс 1',
             'double-lux-2': 'Люкс 2'
         };
@@ -323,6 +325,12 @@ document.addEventListener('DOMContentLoaded', function() {
         { type: 'family-lux', month: new Date().getMonth(), year: new Date().getFullYear(),
           monthEl: document.getElementById('calMonthFamilyLux'), daysEl: document.getElementById('calDaysFamilyLux'),
           prevBtn: document.getElementById('calPrevFamilyLux'), nextBtn: document.getElementById('calNextFamilyLux') },
+        { type: 'family-2', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthFamily2'), daysEl: document.getElementById('calDaysFamily2'),
+          prevBtn: document.getElementById('calPrevFamily2'), nextBtn: document.getElementById('calNextFamily2') },
+        { type: 'family-plus-2', month: new Date().getMonth(), year: new Date().getFullYear(),
+          monthEl: document.getElementById('calMonthFamilyPlus2'), daysEl: document.getElementById('calDaysFamilyPlus2'),
+          prevBtn: document.getElementById('calPrevFamilyPlus2'), nextBtn: document.getElementById('calNextFamilyPlus2') },
         { type: 'double-lux-1', month: new Date().getMonth(), year: new Date().getFullYear(),
           monthEl: document.getElementById('calMonthDoubleLux1'), daysEl: document.getElementById('calDaysDoubleLux1'),
           prevBtn: document.getElementById('calPrevDoubleLux1'), nextBtn: document.getElementById('calNextDoubleLux1') },
@@ -465,6 +473,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         var floor1Map = { Left: 'family', Top: 'family-plus', Right: 'family-lux' };
+        var floor2Map = { Left: 'family-2', Right: 'family-plus-2' };
         var parts = ['Left', 'Right'];
 
         for (var p = 0; p < parts.length; p++) {
@@ -478,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             var el2 = document.getElementById('plan2' + parts[p]);
             if (el2) {
-                if (bookedRooms['family']) {
+                if (bookedRooms[floor2Map[parts[p]]]) {
                     el2.classList.add('booked');
                 } else {
                     el2.classList.remove('booked');
