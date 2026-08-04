@@ -185,7 +185,7 @@ function getBookedDates(e) {
   for (var i = 0; i < data.length; i++) {
     var status = String(data[i][8]).trim();
     var roomType = String(data[i][3]).trim();
-    if (status === 'Нова' || status === 'Підтверджена') {
+    if (status === 'Підтверджена') {
       var dateIn = formatDate(data[i][4]);
       var dateOut = formatDate(data[i][5]);
       if (dateIn && dateOut) booked.push({ from: dateIn, to: dateOut, room: roomType });
