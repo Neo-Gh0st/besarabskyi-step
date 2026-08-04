@@ -68,6 +68,7 @@ function doPost(e) {
   }
 
   if (rawData.action === 'review') {
+    Logger.log('Routing to handleReview');
     return handleReview(rawData);
   }
 
@@ -227,7 +228,9 @@ function checkExpiredBookings() {
 }
 
 function handleReview(data) {
+  Logger.log('handleReview called: ' + JSON.stringify(data));
   if (!data.name || !data.text || !data.rating) {
+    Logger.log('handleReview: missing fields');
     return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
   }
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -240,27 +243,32 @@ function handleReview(data) {
     reviewSheet.setColumnWidths(1, 5, 180);
   }
   var now = new Date();
-  var dateStr = now.toLocaleString('uk-UA', { year: 'numeric', month: 'long' });
   var rowData = [now.toLocaleString('uk-UA'), data.name, data.text, parseInt(data.rating) || 5, 'Новий'];
   reviewSheet.getRange(reviewSheet.getLastRow() + 1, 1, 1, 5).setValues([rowData]);
+  var rowNum = reviewSheet.getLastRow();
+  Logger.log('Review saved to row: ' + rowNum);
 
   var tgMsg = '⭐ НОВИЙ ВІДГУК\n\n👤 ' + data.name + '\n⭐ ' + data.rating + '/5\n\n💬 ' + data.text;
+  Logger.log('Sending to chat IDs: ' + MODERATOR_CHAT_IDS.join(', '));
   for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
     try {
-      UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+      var result = UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
         method: 'post', contentType: 'application/json; charset=utf-8',
         payload: JSON.stringify({
           chat_id: MODERATOR_CHAT_IDS[i],
           text: tgMsg,
           reply_markup: JSON.stringify({
             inline_keyboard: [[
-              { text: '✅ Опублікувати', callback_data: 'review_approve_' + reviewSheet.getLastRow() },
-              { text: '❌ Відхилити', callback_data: 'review_reject_' + reviewSheet.getLastRow() }
+              { text: '✅ Опублікувати', callback_data: 'review_approve_' + rowNum },
+              { text: '❌ Відхилити', callback_data: 'review_reject_' + rowNum }
             ]]
           })
         })
       });
-    } catch (err) { Logger.log(err); }
+      Logger.log('Telegram result for ' + MODERATOR_CHAT_IDS[i] + ': ' + result.getContentText());
+    } catch (err) {
+      Logger.log('Telegram error for ' + MODERATOR_CHAT_IDS[i] + ': ' + err.toString());
+    }
   }
 
   return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
