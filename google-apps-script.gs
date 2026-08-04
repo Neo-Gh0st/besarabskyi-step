@@ -110,60 +110,58 @@ function doPost(e) {
   var sheet = ss.getActiveSheet();
   var lastRow = sheet.getLastRow();
 
-  // Заголовки в первой строке
-  if (lastRow <= 1) {
-    // Строка 1: Название
-    sheet.getRange('A1').setValue('База отдыха «Бесарабський степ» — Заявки с сайта');
-    sheet.getRange('A1:I1').merge()
-      .setBackground('#1e293b')
-      .setFontColor('#ffffff')
-      .setFontWeight('bold')
-      .setFontSize(14)
-      .setHorizontalAlignment('center');
-    sheet.setRowHeight(1, 40);
+  // Завжди оновлюємо заголовки
+  // Строка 1: Название
+  sheet.getRange('A1').setValue('База відпочинку «Бесарабський степ» — Заявки з сайту');
+  sheet.getRange('A1:I1').merge()
+    .setBackground('#1e293b')
+    .setFontColor('#ffffff')
+    .setFontWeight('bold')
+    .setFontSize(14)
+    .setHorizontalAlignment('center');
+  sheet.setRowHeight(1, 40);
 
-    // Строка 2: Описание
-    sheet.getRange('A2').setValue('Автообработка заявок с сайта besarabskyi-step.github.io. Заявки приходят в таблицу и Telegram автоматически.');
-    sheet.getRange('A2:I2').merge()
-      .setBackground('#e2e8f0')
-      .setFontColor('#475569')
-      .setFontSize(10)
-      .setHorizontalAlignment('center');
-    sheet.setRowHeight(2, 28);
+  // Строка 2: Описание
+  sheet.getRange('A2').setValue('Автообробка заявок з сайта besarabskyi-step.github.io. Заявки приходять в таблицю і Telegram автоматично.');
+  sheet.getRange('A2:I2').merge()
+    .setBackground('#e2e8f0')
+    .setFontColor('#475569')
+    .setFontSize(10)
+    .setHorizontalAlignment('center');
+  sheet.setRowHeight(2, 28);
 
-    // Строка 3: Пустая
-    sheet.setRowHeight(3, 10);
+  // Строка 3: Пустая
+  sheet.setRowHeight(3, 10);
 
-    // Строка 4: Заголовки
-    var headers = [['Дата / час', 'Ім\'я', 'Телефон', 'Тип розміщення', 'Дата заїзду', 'Дата виїзду', 'Кількість гостей', 'Коментар', 'Статус']];
-    sheet.getRange(4, 1, 1, 9).setValues(headers);
-    sheet.getRange(4, 1, 1, 9)
-      .setBackground('#1a73e8')
-      .setFontColor('#ffffff')
-      .setFontWeight('bold')
-      .setHorizontalAlignment('center')
-      .setFontSize(11);
-    sheet.setRowHeight(4, 35);
+  // Строка 4: Заголовки
+  var headers = [['Дата / час', 'Ім\'я', 'Телефон', 'Тип розміщення', 'Дата заїзду', 'Дата виїзду', 'Кількість гостей', 'Коментар', 'Статус']];
+  sheet.getRange(4, 1, 1, 9).setValues(headers);
+  sheet.getRange(4, 1, 1, 9)
+    .setBackground('#1a73e8')
+    .setFontColor('#ffffff')
+    .setFontWeight('bold')
+    .setHorizontalAlignment('center')
+    .setFontSize(11);
+  sheet.setRowHeight(4, 35);
 
-    // Строка 5: Подсказки
-    var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Сімейний / Двомісний / Люкс', 'З якого числа', 'По яке число', 'Скільки осіб', 'Побажання клієнта', 'Нова / Підтверджена / Скасована']];
-    sheet.getRange(5, 1, 1, 9).setValues(hints);
-    sheet.getRange(5, 1, 1, 9)
-      .setBackground('#dbeafe')
-      .setFontColor('#64748b')
-      .setFontStyle('italic')
-      .setFontSize(9)
-      .setHorizontalAlignment('center');
-    sheet.setRowHeight(5, 25);
+  // Строка 5: Подсказки
+  var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Сімейний / Двомісний / Люкс', 'З якого числа', 'По яке число', 'Скільки осіб', 'Побажання клієнта', 'Нова / Підтверджена / Скасована']];
+  sheet.getRange(5, 1, 1, 9).setValues(hints);
+  sheet.getRange(5, 1, 1, 9)
+    .setBackground('#dbeafe')
+    .setFontColor('#64748b')
+    .setFontStyle('italic')
+    .setFontSize(9)
+    .setHorizontalAlignment('center');
+  sheet.setRowHeight(5, 25);
 
-    sheet.setColumnWidths(1, 9, 150);
-    sheet.setColumnWidth(1, 160);
-    sheet.setColumnWidth(2, 150);
-    sheet.setColumnWidth(3, 150);
-    sheet.setColumnWidth(8, 200);
-    sheet.setColumnWidth(9, 140);
-    sheet.setFrozenRows(5);
-  }
+  sheet.setColumnWidths(1, 9, 150);
+  sheet.setColumnWidth(1, 160);
+  sheet.setColumnWidth(2, 150);
+  sheet.setColumnWidth(3, 150);
+  sheet.setColumnWidth(8, 200);
+  sheet.setColumnWidth(9, 140);
+  sheet.setFrozenRows(5);
 
   // === Проверка пересечений ===
   var roomNames = {
