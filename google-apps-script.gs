@@ -40,7 +40,7 @@ function checkOverlap(sheet, roomType, dateIn, dateOut, excludeRow) {
     var existingDateOut = formatDate(data[i][5]);
 
     if (existingRoom !== roomType) continue;
-    if (existingStatus === 'Отменена') continue;
+    if (existingStatus === 'Скасована') continue;
 
     if (dateIn <= existingDateOut && dateOut >= existingDateIn) {
       return {
@@ -135,7 +135,7 @@ function doPost(e) {
     sheet.setRowHeight(3, 10);
 
     // Строка 4: Заголовки
-    var headers = [['Дата / время', 'Имя', 'Телефон', 'Тип размещения', 'Дата заезда', 'Дата выезда', 'Кол-во гостей', 'Комментарий', 'Статус']];
+    var headers = [['Дата / час', 'Ім\'я', 'Телефон', 'Тип розміщення', 'Дата заїзду', 'Дата виїзду', 'Кількість гостей', 'Коментар', 'Статус']];
     sheet.getRange(4, 1, 1, 9).setValues(headers);
     sheet.getRange(4, 1, 1, 9)
       .setBackground('#1a73e8')
@@ -146,7 +146,7 @@ function doPost(e) {
     sheet.setRowHeight(4, 35);
 
     // Строка 5: Подсказки
-    var hints = [['Когда заявлено', 'Как зовут', 'Номер для связи', 'Стандарт / Коттедж / Люкс', 'С какого числа', 'По какое число', 'Сколько человек', 'Пожелания клиента', 'Новая / Подтверждена / Отменена']];
+    var hints = [['Коли заявлено', 'Як звати', 'Номер для зв\'язку', 'Сімейний / Двомісний / Люкс', 'З якого числа', 'По яке число', 'Скільки осіб', 'Побажання клієнта', 'Нова / Підтверджена / Скасована']];
     sheet.getRange(5, 1, 1, 9).setValues(hints);
     sheet.getRange(5, 1, 1, 9)
       .setBackground('#dbeafe')
@@ -222,7 +222,7 @@ function doPost(e) {
     data.dateOut || '',
     data.guests || '',
     (isAdmin ? '[Телефон] ' : '') + (data.comment || ''),
-    isAdmin ? 'Подтверждена' : 'Новая'
+    isAdmin ? 'Підтверджена' : 'Нова'
   ];
 
   var newRow = sheet.getLastRow() + 1;
@@ -250,29 +250,29 @@ function doPost(e) {
 
   // === Telegram ===
   var roomNames2 = {
-    'family': '🏠 Сімейний',
-    'family-plus': '🏠 Сімейний+',
-    'family-lux': '🏠 Сімейний Люкс',
-    'family-2': '🏠 Сімейний 2',
-    'family-plus-2': '🏠 Сімейний+ 2',
-    'double-lux-1': '🛏️ Люкс 1',
-    'double-lux-2': '🛏️ Люкс 2'
+    'family': 'Сімейний',
+    'family-plus': 'Сімейний+',
+    'family-lux': 'Сімейний Люкс',
+    'family-2': 'Сімейний 2',
+    'family-plus-2': 'Сімейний+ 2',
+    'double-lux-1': 'Люкс 1',
+    'double-lux-2': 'Люкс 2'
   };
 
-  var header = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВАЯ ЗАЯВКА*';
+  var header = isAdmin ? '📞 *БРОНЮВАННЯ ПО ТЕЛЕФОНУ*' : '📩 *НОВА ЗАЯВКА*';
 
   var msg = '━━━━━━━━━━━━━━━\n' +
     header + '\n' +
     '━━━━━━━━━━━━━━━\n\n' +
-    '👤 *Имя:* ' + (data.name || '-') + '\n' +
+    '👤 *Ім\'я:* ' + (data.name || '-') + '\n' +
     '📞 *Телефон:* ' + (data.phone || '-') + '\n' +
     '🏠 *Тип:* ' + (roomNames2[data.roomType] || data.roomType || '-') + '\n\n' +
-    '📅 *Заезд:* ' + (data.dateIn || '-') + '\n' +
-    '📅 *Выезд:* ' + (data.dateOut || '-') + '\n' +
+    '📅 *Заїзд:* ' + (data.dateIn || '-') + '\n' +
+    '📅 *Виїзд:* ' + (data.dateOut || '-') + '\n' +
     '👥 *Гостей:* ' + (data.guests || '-') + '\n';
 
   if (data.comment) {
-    msg += '\n💬 *Комментарий:*\n' + data.comment + '\n';
+    msg += '\n💬 *Коментар:*\n' + data.comment + '\n';
   }
 
   msg += '\n━━━━━━━━━━━━━━━\n' +
@@ -327,7 +327,7 @@ function getBookedDates(e) {
     var dateOutRaw = data[i][5];
     var roomType = String(data[i][3]).trim();
 
-    if (status === 'Новая' || status === 'Подтверждена') {
+    if (status === 'Нова' || status === 'Підтверджена') {
       var dateIn = formatDate(dateInRaw);
       var dateOut = formatDate(dateOutRaw);
       if (dateIn && dateOut) {
@@ -370,7 +370,7 @@ function checkExpiredBookings() {
     var status = String(data[i][8]).trim();
     var dateOutRaw = data[i][5];
 
-    if (status !== 'Новая' && status !== 'Подтверждена') continue;
+    if (status !== 'Нова' && status !== 'Підтверджена') continue;
 
     var dateOut = formatDate(dateOutRaw);
     if (!dateOut) continue;
@@ -437,7 +437,7 @@ function handleCallbackQuery(callbackQuery) {
   if (targetRow === -1) {
     for (var i = 6; i <= lastRow; i++) {
       var status = String(sheet.getRange(i, 9).getValue()).trim();
-      if (status === 'Новая') {
+      if (status === 'Нова') {
         targetRow = i;
         break;
       }
@@ -451,11 +451,11 @@ function handleCallbackQuery(callbackQuery) {
   var btnText = '';
 
   if (action === 'confirm') {
-    newStatus = 'Подтверждена';
+    newStatus = 'Підтверджена';
     emoji = '✅';
     btnText = 'Підтверджено';
   } else if (action === 'cancel') {
-    newStatus = 'Отменена';
+    newStatus = 'Скасована';
     emoji = '❌';
     btnText = 'Скасовано';
   }
