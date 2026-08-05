@@ -255,7 +255,39 @@ function checkExpiredBookings() {
       updated++;
     }
   }
+  updateSeasonSummary(sheet);
   return updated;
+}
+
+function updateSeasonSummary(sheet) {
+  if (!sheet) {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    sheet = ss.getActiveSheet();
+  }
+  var lastRow = sheet.getLastRow();
+  var totalSum = 0;
+  var confirmedCount = 0;
+  var totalNights = 0;
+  if (lastRow >= 6) {
+    var data = sheet.getRange(6, 1, lastRow - 5, 10).getValues();
+    for (var i = 0; i < data.length; i++) {
+      var status = String(data[i][8]).trim();
+      if (status === 'Підтверджена' || status === 'Завершено') {
+        var sum = parseInt(data[i][9]) || 0;
+        totalSum += sum;
+        confirmedCount++;
+        var dIn = formatDate(data[i][4]);
+        var dOut = formatDate(data[i][5]);
+        if (dIn && dOut) {
+          var nights = Math.round((new Date(dOut) - new Date(dIn)) / (1000 * 60 * 60 * 24));
+          totalNights += nights;
+        }
+      }
+    }
+  }
+  var summaryRow = 3;
+  sheet.getRange(summaryRow, 1).setValue('📊 Сезон: підтверджено ' + confirmedCount + ' бронювань | ' + totalNights + ' ночей | ' + totalSum.toLocaleString('uk-UA') + ' грн').setBackground('#fef3c7').setFontColor('#92400e').setFontWeight('bold').setFontSize(11).setHorizontalAlignment('center');
+  sheet.getRange(summaryRow, 1, 1, 10).merge();
 }
 
 function handleReview(data) {
@@ -391,6 +423,7 @@ function handleCallbackQuery(callbackQuery) {
   var btnText = action === 'confirm' ? 'Підтверджено' : 'Скасовано';
   sheet.getRange(targetRow, 9).setValue(newStatus);
   sheet.getRange(targetRow, 9).setFontColor(action === 'confirm' ? '#166534' : '#dc2626').setFontWeight('bold');
+  updateSeasonSummary(sheet);
   var newText = message.text + '\n\n' + emoji + ' *Статус:* ' + btnText;
   try {
     UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/editMessageText', {
