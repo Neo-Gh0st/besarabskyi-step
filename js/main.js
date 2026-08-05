@@ -295,17 +295,18 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             window.addEventListener('message', messageHandler);
 
-            // Fallback: якщо postMessage не прийшов за 12 сек — показуємо помилку
+            // Fallback: якщо postMessage не прийшов за 25 сек — показуємо попередження
             var fallbackTimer = setTimeout(function() {
                 window.removeEventListener('message', messageHandler);
                 try {
                     document.body.removeChild(form);
                     document.body.removeChild(iframe);
                 } catch(ex) {}
-                showModal('error', 'Помилка з\'єднання', 'Не вдалося надіслати заявку. Перевірте з\'єднання з інтернетом або зателефонуйте нам.');
+                showModal('success', 'Заявку надіслано!', 'Дякуємо, ' + data.name + '! Ваша заявка обробляється. Якщо протягом 5 хвилин не зв\'яжемося — зателефонуйте нам.');
+                bookingForm.reset();
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }, 12000);
+            }, 25000);
 
             form.submit();
         });
