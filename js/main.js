@@ -217,11 +217,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 nights: nights
             };
 
-            // Клієнтська перевірка перетину дат
+            // Клієнтська перевірка перетину дат (оновлюємо дані з сервера)
             if (data.dateIn && data.dateOut && data.roomType) {
+                var SCRIPT_URL_CHECK = 'https://script.google.com/macros/s/AKfycbzNACUD2FO4cCRQw1IcqdKxRYvsPAdRzA4vy-1d3ErKQbe1HGl76mtzPoUHR_Uu3nKTZw/exec';
+                try {
+                    var freshBooked = [];
+                    var cbName = '_cb_' + Date.now();
+                    window[cbName] = function(arr) { freshBooked = arr; delete window[cbName]; };
+                    var script = document.createElement('script');
+                    script.src = SCRIPT_URL_CHECK + '?action=booked&callback=' + cbName;
+                    document.head.appendChild(script);
+                    var waitStart = Date.now();
+                    while (!freshBooked.length && Date.now() - waitStart < 3000) {}
+                    if (freshBooked.length) {
+                        bookedDates = freshBooked;
+                    }
+                } catch(ex) {}
                 var conflicts = findConflicts(data.dateIn, data.dateOut, data.roomType);
                 if (conflicts.length > 0) {
                     showConflictModal(conflicts);
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                     return;
                 }
             }
@@ -279,18 +295,17 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             window.addEventListener('message', messageHandler);
 
-            // Fallback: якщо postMessage не прийшов за 8 сек — показуємо success
+            // Fallback: якщо postMessage не прийшов за 12 сек — показуємо помилку
             var fallbackTimer = setTimeout(function() {
                 window.removeEventListener('message', messageHandler);
                 try {
                     document.body.removeChild(form);
                     document.body.removeChild(iframe);
                 } catch(ex) {}
-                showModal('success', 'Заявку надіслано!', 'Дякуємо, ' + data.name + '! Ми зв\'яжемося з вами найближчим часом для підтвердження бронювання.');
-                bookingForm.reset();
+                showModal('error', 'Помилка з\'єднання', 'Не вдалося надіслати заявку. Перевірте з\'єднання з інтернетом або зателефонуйте нам.');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }, 8000);
+            }, 12000);
 
             form.submit();
         });

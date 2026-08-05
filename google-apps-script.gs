@@ -138,6 +138,21 @@ function doPost(e) {
       var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
       return ContentService.createTextOutput(html).setMimeType(ContentService.MimeType.HTML);
     }
+  } else {
+    var overlap = checkOverlap(sheet, data.roomType, newDateIn, newDateOut, null);
+    if (overlap) {
+      var overlapMsg = '❌ Адмін: бронювання неможливе!\n\nТип: ' + (ROOM_NAMES[data.roomType] || data.roomType) + '\nДати: ' + newDateIn + ' — ' + newDateOut + '\n\nВже зайнято: ' + overlap.from + ' — ' + overlap.to + '\nКлієнт: ' + overlap.name;
+      for (var i = 0; i < MODERATOR_CHAT_IDS.length; i++) {
+        try {
+          UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+            method: 'post', contentType: 'application/json; charset=utf-8',
+            payload: JSON.stringify({ chat_id: MODERATOR_CHAT_IDS[i], text: overlapMsg })
+          });
+        } catch (err) { Logger.log(err); }
+      }
+      var html = '<html><body><script>window.parent.postMessage("OVERLAP","*");</script></body></html>';
+      return ContentService.createTextOutput(html).setMimeType(ContentService.MimeType.HTML);
+    }
   }
 
   var now = new Date();
